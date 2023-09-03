@@ -1,0 +1,96 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="#534F4F"
+    tools:context=".address">
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="#FFFFFF">
+
+        <Button
+            android:id="@+id/button5"
+            android:layout_width="209dp"
+            android:layout_height="50dp"
+            android:backgroundTint="#787070"
+            android:text="다음"
+            android:textColorHighlight="#807171"
+            tools:layout_editor_absoluteX="101dp"
+            tools:layout_editor_absoluteY="440dp" />
+
+        <TextView
+            android:id="@+id/textView15"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="우편 번호"
+            tools:layout_editor_absoluteX="101dp"
+            tools:layout_editor_absoluteY="245dp" />
+
+        <EditText
+            android:id="@+id/editTextTextPassword9"
+            android:layout_width="165dp"
+            android:layout_height="45dp"
+            android:ems="10"
+            android:inputType="textPassword"
+            tools:layout_editor_absoluteX="166dp"
+            tools:layout_editor_absoluteY="233dp" />
+
+        <TextView
+            android:id="@+id/textView16"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="상세 주소"
+            tools:layout_editor_absoluteX="101dp"
+            tools:layout_editor_absoluteY="355dp" />
+
+        <EditText
+            android:id="@+id/editTextTextPassword10"
+            android:layout_width="167dp"
+            android:layout_height="38dp"
+            android:ems="10"
+            android:inputType="textPassword"
+            tools:layout_editor_absoluteX="164dp"
+            tools:layout_editor_absoluteY="293dp" />
+
+        <EditText
+            android:id="@+id/editTextTextPassword7"
+            android:layout_width="165dp"
+            android:layout_height="45dp"
+            android:ems="10"
+            android:inputType="textPassword"
+            tools:layout_editor_absoluteX="166dp"
+            tools:layout_editor_absoluteY="233dp" />
+
+        <TextView
+            android:id="@+id/textView12"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="주소 입력"
+            tools:layout_editor_absoluteX="101dp"
+            tools:layout_editor_absoluteY="300dp" />
+
+        <EditText
+            android:id="@+id/editTextTextPassword11"
+            android:layout_width="167dp"
+            android:layout_height="38dp"
+            android:ems="10"
+            android:inputType="textPassword"
+            tools:layout_editor_absoluteX="164dp"
+            tools:layout_editor_absoluteY="346dp" />
+
+        <TextView
+            android:id="@+id/textView5"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="주소 입력"
+            android:textAllCaps="false"
+            android:textSize="32sp"
+            tools:layout_editor_absoluteX="134dp"
+            tools:layout_editor_absoluteY="136dp" />
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
