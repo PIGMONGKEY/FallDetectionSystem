@@ -1,0 +1,19 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Show Video</title>
+</head>
+<body>
+    <h1>SHOW VIDEO</h1>
+    <div id="videoDiv">
+
+    </div>
+</body>
+<script>
+    const socket = new WebSocket("ws://localhost:10000/video");
+    socket.addEventListener("open", () => {
+        console.log("connected");
+    });
+</script>
+</html>
