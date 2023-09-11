@@ -22,12 +22,13 @@
 
     $connect.on("click", function() {
         socket = new WebSocket("ws://localhost:10000/video");
+
         socket.addEventListener("open", () => {
             console.log("connected");
         });
 
         socket.addEventListener("message", (event) => {
-           console.log("receive data", event.data);
+            console.log("Message from server");
         });
 
         socket.addEventListener("close", (event) => {

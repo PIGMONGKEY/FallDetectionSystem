@@ -24,11 +24,13 @@ public class VideoWebSocketHandler extends TextWebSocketHandler {
 
     @Override
     protected void handleBinaryMessage(WebSocketSession session, BinaryMessage message) {
+        log.info(message.getPayload().toString());
         if (session == sessions.get(senderSessionID)) {
-            for (String key : sessions.keySet()) {
+            for (String key : receiverSessionID) {
                 WebSocketSession wss = sessions.get(key);
                 try {
-                    wss.sendMessage(message);
+                    log.info("send to : " + key);
+                    wss.sendMessage(new BinaryMessage(message.getPayload()));
                 } catch (IOException e) {
                     throw new RuntimeException(e);
                 }
@@ -69,8 +71,10 @@ public class VideoWebSocketHandler extends TextWebSocketHandler {
         sessions.remove(session.getId());
         if (session.getId() == senderSessionID) {
             senderSessionID = null;
+            log.info("sender disconnected");
         } else {
             receiverSessionID.remove(session.getId());
+            log.info("receiver disconnected : " + session.getId());
         }
     }
 }
