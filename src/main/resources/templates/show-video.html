@@ -6,14 +6,42 @@
 </head>
 <body>
     <h1>SHOW VIDEO</h1>
+    <button type="button" name="connect">connect</button>
+    <button type="button" name="disconnect">disconnect</button>
+    <button type="button" name="send">send</button>
     <div id="videoDiv">
 
     </div>
 </body>
+<script src="http://code.jquery.com/jquery-3.6.4.min.js"></script>
 <script>
-    const socket = new WebSocket("ws://localhost:10000/video");
-    socket.addEventListener("open", () => {
-        console.log("connected");
+    let socket;
+    const $connect = $("button[name='connect']");
+    const $disconnect = $("button[name='disconnect']");
+    const $send = $("button[name='send']");
+
+    $connect.on("click", function() {
+        socket = new WebSocket("ws://localhost:10000/video");
+        socket.addEventListener("open", () => {
+            console.log("connected");
+        });
+
+        socket.addEventListener("message", (event) => {
+           console.log("receive data", event.data);
+        });
+
+        socket.addEventListener("close", (event) => {
+            console.log("closed");
+        });
     });
+
+    $send.on("click", function() {
+        socket.send("hello");
+    });
+
+    $disconnect.on("click", function() {
+        socket.close();
+    });
+
 </script>
 </html>
