@@ -9,9 +9,7 @@
     <button type="button" name="connect">connect</button>
     <button type="button" name="disconnect">disconnect</button>
     <button type="button" name="send">send</button>
-    <div id="videoDiv">
-
-    </div>
+    <video id="video" autoplay controls></video>
 </body>
 <script src="http://code.jquery.com/jquery-3.6.4.min.js"></script>
 <script>
@@ -19,8 +17,11 @@
     const $connect = $("button[name='connect']");
     const $disconnect = $("button[name='disconnect']");
     const $send = $("button[name='send']");
+    const $video = document.getElementById("video");
+    let list = ["image/apng", "image/aces", "image/avci", "image/avcs", "image/avif", "mage/bmp", "image/cgm", "mage/dicom-rle", "image/dpx", "image/emf", "image/example", "mage/fits", "image/g3fax", "image/heic", "image/heic-sequence", "image/heif", "image/heif-sequence", "image/hej2k", "image/hsj2", "mage/j2c", "image/jls", "image/jp2", "image/jph", "image/jphc", "image/jpm", "image/jpx", "image/jxr", "image/jxrA", "image/jxrS", "image/jxs", "image/jxsc", "image/jxsi" ," image/jxss", "image/ktx", "image/ktx2", "image/naplps", "image/png"]
+    let count = 0;
 
-    $connect.on("click", function() {
+    $connect.on("click", function (arrayLike) {
         socket = new WebSocket("ws://localhost:10000/video");
 
         socket.addEventListener("open", () => {
@@ -28,11 +29,14 @@
         });
 
         socket.addEventListener("message", (event) => {
-            console.log("Message from server");
-        });
+            if (count<1) {
+                const frameArray = Uint8Array.from(atob(event.data), c => c.charCodeAt(0));
+                const frameBlob = new Blob([frameArray], {type: 'image/jpeg'});
+                const frameUrl = URL.createObjectURL(frameBlob);
 
-        socket.addEventListener("close", (event) => {
-            console.log("closed");
+                $video.src = frameUrl;
+                count += 1;
+            }
         });
     });
 
@@ -43,6 +47,7 @@
     $disconnect.on("click", function() {
         socket.close();
     });
+
 
 </script>
 </html>

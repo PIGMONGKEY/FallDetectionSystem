@@ -40,13 +40,15 @@ public class VideoWebSocketHandler extends TextWebSocketHandler {
 
     @Override
     protected void handleTextMessage(WebSocketSession session, TextMessage message) throws Exception {
+//        log.info(message.getPayload());
         if (session == sessions.get(senderSessionID)) {
-            for (String key : sessions.keySet()) {
+            for (String key : receiverSessionID) {
+                WebSocketSession wss = sessions.get(key);
                 try {
-                    WebSocketSession wss = sessions.get(key);
-                    wss.sendMessage(message);
+                    log.info("send to : " + key);
+                    wss.sendMessage(new TextMessage(message.getPayload()));
                 } catch (IOException e) {
-                    e.printStackTrace();
+                    throw new RuntimeException(e);
                 }
             }
         }
@@ -55,6 +57,7 @@ public class VideoWebSocketHandler extends TextWebSocketHandler {
     @Override
     public void afterConnectionEstablished(WebSocketSession session) throws Exception {
             session.setBinaryMessageSizeLimit(10000000);
+            session.setTextMessageSizeLimit(10000000);
         if (sessions.isEmpty()){
             sessions.put(session.getId(), session);
             senderSessionID = session.getId();
