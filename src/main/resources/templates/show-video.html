@@ -9,7 +9,7 @@
     <button type="button" name="connect">connect</button>
     <button type="button" name="disconnect">disconnect</button>
     <button type="button" name="send">send</button>
-    <video id="video" autoplay controls></video>
+    <img id="video" autoplay controls></img>
 </body>
 <script src="http://code.jquery.com/jquery-3.6.4.min.js"></script>
 <script>
@@ -29,14 +29,12 @@
         });
 
         socket.addEventListener("message", (event) => {
-            if (count<1) {
-                const frameArray = Uint8Array.from(atob(event.data), c => c.charCodeAt(0));
-                const frameBlob = new Blob([frameArray], {type: 'image/jpeg'});
-                const frameUrl = URL.createObjectURL(frameBlob);
-
-                $video.src = frameUrl;
-                count += 1;
-            }
+            // console.log(event.data);
+            const blob = new Blob([event.data], {type: "image/jpeg"});
+            console.log(blob);
+            const blobURL = URL.createObjectURL(blob);
+            $video.src = blobURL;
+            count += 1;
         });
     });
 
