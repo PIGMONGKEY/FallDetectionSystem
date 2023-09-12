@@ -18,6 +18,10 @@
     const $disconnect = $("button[name='disconnect']");
     const $send = $("button[name='send']");
     const $video = document.getElementById("video");
+    let blob;
+    let blobCheck = 1;
+    let blobURL_1;
+    let blobURL_2;
 
     $connect.on("click", function (arrayLike) {
         socket = new WebSocket("ws://localhost:10000/video");
@@ -27,10 +31,18 @@
         });
 
         socket.addEventListener("message", (event) => {
-            const blob = new Blob([event.data], {type: "image/jpeg"});
-            const blobURL = URL.createObjectURL(blob);
-            $video.src = blobURL;
-            URL.revokeObjectURL(blobURL);
+            blob = new Blob([event.data], {type: "image/jpeg"});
+            if (blobCheck == 1) {
+                blobURL_1 = URL.createObjectURL(blob);
+                $video.src = blobURL_1;
+                blobCheck = -1;
+                URL.revokeObjectURL(blobURL_2);
+            } else {
+                blobURL_2 = URL.createObjectURL(blob);
+                $video.src = blobURL_2;
+                blobCheck = 1;
+                URL.revokeObjectURL(blobURL_1);
+            }
         });
     });
 
