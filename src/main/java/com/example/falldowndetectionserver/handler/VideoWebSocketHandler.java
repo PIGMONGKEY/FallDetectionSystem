@@ -5,7 +5,6 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Component;
 import org.springframework.web.socket.BinaryMessage;
 import org.springframework.web.socket.CloseStatus;
-import org.springframework.web.socket.TextMessage;
 import org.springframework.web.socket.WebSocketSession;
 import org.springframework.web.socket.handler.TextWebSocketHandler;
 
@@ -24,12 +23,10 @@ public class VideoWebSocketHandler extends TextWebSocketHandler {
 
     @Override
     protected void handleBinaryMessage(WebSocketSession session, BinaryMessage message) {
-        log.info(message.getPayload().toString());
         if (session == sessions.get(senderSessionID)) {
             for (String key : receiverSessionID) {
                 WebSocketSession wss = sessions.get(key);
                 try {
-                    log.info("send to : " + key);
                     wss.sendMessage(new BinaryMessage(message.getPayload()));
                 } catch (IOException e) {
                     throw new RuntimeException(e);
@@ -39,25 +36,9 @@ public class VideoWebSocketHandler extends TextWebSocketHandler {
     }
 
     @Override
-    protected void handleTextMessage(WebSocketSession session, TextMessage message) throws Exception {
-//        log.info(message.getPayload());
-        if (session == sessions.get(senderSessionID)) {
-            for (String key : receiverSessionID) {
-                WebSocketSession wss = sessions.get(key);
-                try {
-                    log.info("send to : " + key);
-                    wss.sendMessage(new TextMessage(message.getPayload()));
-                } catch (IOException e) {
-                    throw new RuntimeException(e);
-                }
-            }
-        }
-    }
-
-    @Override
     public void afterConnectionEstablished(WebSocketSession session) throws Exception {
-            session.setBinaryMessageSizeLimit(10000000);
-            session.setTextMessageSizeLimit(10000000);
+            session.setBinaryMessageSizeLimit(1000000);
+            session.setTextMessageSizeLimit(1000000);
         if (sessions.isEmpty()){
             sessions.put(session.getId(), session);
             senderSessionID = session.getId();

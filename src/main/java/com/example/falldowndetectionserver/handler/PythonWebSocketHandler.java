@@ -1,6 +1,7 @@
 package com.example.falldowndetectionserver.handler;
 
 import com.example.falldowndetectionserver.domain.PositionJsonData;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.json.simple.JSONObject;
@@ -11,23 +12,37 @@ import org.springframework.web.socket.TextMessage;
 import org.springframework.web.socket.WebSocketSession;
 import org.springframework.web.socket.handler.TextWebSocketHandler;
 
+import javax.swing.text.Position;
+import java.sql.Array;
+import java.util.ArrayList;
+import java.util.LinkedList;
+import java.util.List;
+import java.util.Queue;
+
 @Slf4j
 @Component
 @RequiredArgsConstructor
 public class PythonWebSocketHandler extends TextWebSocketHandler {
-    private final PositionJsonData positionJsonData;
+    private final ObjectMapper objectMapper;
+    private Queue<PositionJsonData> dtos = new LinkedList<>();
     JSONParser parser = new JSONParser();
 
     @Override
     public void afterConnectionEstablished(WebSocketSession session) throws Exception {
-        log.info("Client Connected : " + session.getId());
+        log.info("Text Connected : " + session.getId());
     }
 
     @Override
     protected void handleTextMessage(WebSocketSession session, TextMessage message) throws Exception {
-        String data = message.getPayload();
-        JSONObject object = (JSONObject) parser.parse(data);
-        log.info(object.get("min_x").toString());
+        PositionJsonData dto = objectMapper.readValue(message.getPayload(), PositionJsonData.class);
+        if (dtos.size() < 60) {
+            dtos.add(dto);
+        } else {
+            dtos.remove();
+            dtos.add(dto);
+        }
+
+        log.info(dtos.toString());
     }
 
     @Override
