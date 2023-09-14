@@ -5,7 +5,7 @@ import org.springframework.stereotype.Component;
 
 @Component
 @Data
-public class PositionJsonData {
+public class PositionVO {
     private int min_x;
     private int min_y;
     private int max_x;

@@ -1,6 +1,6 @@
 package com.example.falldowndetectionserver.handler;
 
-import com.example.falldowndetectionserver.domain.PositionJsonData;
+import com.example.falldowndetectionserver.domain.PositionVO;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -18,7 +18,7 @@ import java.util.Queue;
 @RequiredArgsConstructor
 public class PythonWebSocketHandler extends TextWebSocketHandler {
     private final ObjectMapper objectMapper;
-    private Queue<PositionJsonData> dtos = new LinkedList<>();
+    private Queue<PositionVO> dtos = new LinkedList<>();
 
     @Override
     public void afterConnectionEstablished(WebSocketSession session) throws Exception {
@@ -27,7 +27,7 @@ public class PythonWebSocketHandler extends TextWebSocketHandler {
 
     @Override
     protected void handleTextMessage(WebSocketSession session, TextMessage message) throws Exception {
-        PositionJsonData dto = objectMapper.readValue(message.getPayload(), PositionJsonData.class);
+        PositionVO dto = objectMapper.readValue(message.getPayload(), PositionVO.class);
         if (dtos.size() < 60) {
             dtos.add(dto);
         } else {
