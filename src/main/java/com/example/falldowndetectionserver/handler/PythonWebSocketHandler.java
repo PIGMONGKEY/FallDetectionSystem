@@ -4,19 +4,13 @@ import com.example.falldowndetectionserver.domain.PositionJsonData;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.json.simple.JSONObject;
-import org.json.simple.parser.JSONParser;
 import org.springframework.stereotype.Component;
 import org.springframework.web.socket.CloseStatus;
 import org.springframework.web.socket.TextMessage;
 import org.springframework.web.socket.WebSocketSession;
 import org.springframework.web.socket.handler.TextWebSocketHandler;
 
-import javax.swing.text.Position;
-import java.sql.Array;
-import java.util.ArrayList;
 import java.util.LinkedList;
-import java.util.List;
 import java.util.Queue;
 
 @Slf4j
@@ -25,7 +19,6 @@ import java.util.Queue;
 public class PythonWebSocketHandler extends TextWebSocketHandler {
     private final ObjectMapper objectMapper;
     private Queue<PositionJsonData> dtos = new LinkedList<>();
-    JSONParser parser = new JSONParser();
 
     @Override
     public void afterConnectionEstablished(WebSocketSession session) throws Exception {

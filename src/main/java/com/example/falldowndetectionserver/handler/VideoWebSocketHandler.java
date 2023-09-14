@@ -5,6 +5,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Component;
 import org.springframework.web.socket.BinaryMessage;
 import org.springframework.web.socket.CloseStatus;
+import org.springframework.web.socket.TextMessage;
 import org.springframework.web.socket.WebSocketSession;
 import org.springframework.web.socket.handler.TextWebSocketHandler;
 
@@ -22,6 +23,17 @@ public class VideoWebSocketHandler extends TextWebSocketHandler {
     private List<String> receiverSessionID = new ArrayList<>();
 
     @Override
+    protected void handleTextMessage(WebSocketSession session, TextMessage message) throws Exception {
+        if (message.getPayload().equals("camera")) {
+            senderSessionID = session.getId();
+            log.info("sender connected : " + session.getId());
+        } else if (message.getPayload().equals("receiver")) {
+            receiverSessionID.add(session.getId());
+            log.info("receiver connected : " + session.getId());
+        }
+    }
+
+    @Override
     protected void handleBinaryMessage(WebSocketSession session, BinaryMessage message) {
         if (session == sessions.get(senderSessionID)) {
             for (String key : receiverSessionID) {
@@ -37,17 +49,8 @@ public class VideoWebSocketHandler extends TextWebSocketHandler {
 
     @Override
     public void afterConnectionEstablished(WebSocketSession session) throws Exception {
-            session.setBinaryMessageSizeLimit(1000000);
-            session.setTextMessageSizeLimit(1000000);
-        if (sessions.isEmpty()){
-            sessions.put(session.getId(), session);
-            senderSessionID = session.getId();
-            log.info("sender connected : " + senderSessionID);
-        } else {
-            sessions.put(session.getId(), session);
-            receiverSessionID.add(session.getId());
-            log.info("receiver connected : " + session.getId());
-        }
+        session.setBinaryMessageSizeLimit(1000000);
+        sessions.put(session.getId(), session);
     }
 
     @Override
@@ -55,10 +58,8 @@ public class VideoWebSocketHandler extends TextWebSocketHandler {
         sessions.remove(session.getId());
         if (session.getId() == senderSessionID) {
             senderSessionID = null;
-            log.info("sender disconnected");
         } else {
             receiverSessionID.remove(session.getId());
-            log.info("receiver disconnected : " + session.getId());
         }
     }
 }

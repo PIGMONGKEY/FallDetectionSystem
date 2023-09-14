@@ -8,15 +8,13 @@
     <h1>SHOW VIDEO</h1>
     <button type="button" name="connect">connect</button>
     <button type="button" name="disconnect">disconnect</button>
-    <button type="button" name="send">send</button>
-    <img id="video" autoplay controls></img>
+    <img id="video" />
 </body>
 <script src="http://code.jquery.com/jquery-3.6.4.min.js"></script>
 <script>
     let socket;
     const $connect = $("button[name='connect']");
     const $disconnect = $("button[name='disconnect']");
-    const $send = $("button[name='send']");
     const $video = document.getElementById("video");
     let blob;
     let blobCheck = 1;
@@ -28,6 +26,7 @@
 
         socket.addEventListener("open", () => {
             console.log("connected");
+            socket.send("receiver");
         });
 
         socket.addEventListener("message", (event) => {
@@ -44,10 +43,6 @@
                 URL.revokeObjectURL(blobURL_1);
             }
         });
-    });
-
-    $send.on("click", function() {
-        socket.send("hello");
     });
 
     $disconnect.on("click", function() {
