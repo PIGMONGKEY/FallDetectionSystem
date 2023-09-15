@@ -17,7 +17,8 @@ public class WebSocketConfig implements WebSocketConfigurer {
 
     @Override
     public void registerWebSocketHandlers(WebSocketHandlerRegistry registry) {
-        registry.addHandler(videoWebSocketHandler, "/video");
+        registry.addHandler(videoWebSocketHandler, "/video")
+                .setAllowedOriginPatterns("*");
         registry.addHandler(pythonWebSocketHandler, "/python");
     }
 }
