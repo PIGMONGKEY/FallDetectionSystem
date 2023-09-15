@@ -24,7 +24,7 @@ public class VideoWebSocketHandler extends TextWebSocketHandler {
 
     @Override
     protected void handleTextMessage(WebSocketSession session, TextMessage message) throws Exception {
-        if (message.getPayload().equals("camera")) {
+        if (message.getPayload().equals("sender")) {
             senderSessionID = session.getId();
             log.info("sender connected : " + session.getId());
         } else if (message.getPayload().equals("receiver")) {
@@ -58,8 +58,10 @@ public class VideoWebSocketHandler extends TextWebSocketHandler {
         sessions.remove(session.getId());
         if (session.getId() == senderSessionID) {
             senderSessionID = null;
+            log.info("sender disconnected");
         } else {
             receiverSessionID.remove(session.getId());
+            log.info("receiver disconnected");
         }
     }
 }
