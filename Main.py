@@ -16,8 +16,12 @@ async def send_video_and_position():
             if not ret:
                 break
             # jpg 이미지 형태로 인코딩
-            _, encoded_image = cv2.imencode('jpg', frame)
+            _, encoded_image = cv2.imencode('.jpg', frame)
             # 이미지를 byte 형식으로 변환
             encoded_image = encoded_image.tobytes()
             # 서버로 전송
             await websocket.send(encoded_image)
+
+
+if __name__ == "__main__":
+    asyncio.get_event_loop().run_until_complete(send_video_and_position())
