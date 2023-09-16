@@ -1,5 +1,6 @@
 package com.example.falldowndetectionserver.handler;
 
+import com.sun.tools.jconsole.JConsoleContext;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Component;
@@ -21,6 +22,12 @@ public class VideoWebSocketHandler extends TextWebSocketHandler {
     private final HashMap<String, WebSocketSession> sessions = new HashMap<>();
     private String senderSessionID;
     private List<String> receiverSessionID = new ArrayList<>();
+
+    @Override
+    public void afterConnectionEstablished(WebSocketSession session) throws Exception {
+        session.setBinaryMessageSizeLimit(1000000);
+        sessions.put(session.getId(), session);
+    }
 
     @Override
     protected void handleTextMessage(WebSocketSession session, TextMessage message) throws Exception {
@@ -45,12 +52,6 @@ public class VideoWebSocketHandler extends TextWebSocketHandler {
                 }
             }
         }
-    }
-
-    @Override
-    public void afterConnectionEstablished(WebSocketSession session) throws Exception {
-        session.setBinaryMessageSizeLimit(1000000);
-        sessions.put(session.getId(), session);
     }
 
     @Override
