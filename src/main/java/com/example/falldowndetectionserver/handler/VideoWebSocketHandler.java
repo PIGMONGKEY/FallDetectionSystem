@@ -1,5 +1,6 @@
 package com.example.falldowndetectionserver.handler;
 
+import com.example.falldowndetectionserver.domain.SessionVO;
 import com.sun.tools.jconsole.JConsoleContext;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -20,19 +21,26 @@ import java.util.List;
 @RequiredArgsConstructor
 public class VideoWebSocketHandler extends TextWebSocketHandler {
     private final HashMap<String, WebSocketSession> sessions = new HashMap<>();
+//    private List<SessionVO> sessions = new ArrayList<>();
     private String senderSessionID;
     private List<String> receiverSessionID = new ArrayList<>();
 
     @Override
     public void afterConnectionEstablished(WebSocketSession session) throws Exception {
         session.setBinaryMessageSizeLimit(1000000);
-        if (session.getHandshakeHeaders().get("identifier").get(0).equals("sender")) {
-            senderSessionID = session.getId();
-            log.info("sender connected : " + session.getId());
-        } else {
+        try {
+            if (session.getHandshakeHeaders().get("identifier").get(0).equals("sender")) {
+                senderSessionID = session.getId();
+                log.info("sender connected : " + session.getId());
+            } else {
+                receiverSessionID.add(session.getId());
+                log.info("receiver connected : " + session.getId());
+            }
+        } catch (Exception e) {
             receiverSessionID.add(session.getId());
             log.info("receiver connected : " + session.getId());
         }
+
         sessions.put(session.getId(), session);
     }
 
