@@ -1,9 +1,9 @@
 package com.example.falldowndetectionserver.handler;
 
-import com.example.falldowndetectionserver.domain.SessionVO;
-import com.sun.tools.jconsole.JConsoleContext;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.json.simple.JSONObject;
+import org.json.simple.parser.JSONParser;
 import org.springframework.stereotype.Component;
 import org.springframework.web.socket.BinaryMessage;
 import org.springframework.web.socket.CloseStatus;
@@ -20,10 +20,12 @@ import java.util.List;
 @Slf4j
 @RequiredArgsConstructor
 public class VideoWebSocketHandler extends TextWebSocketHandler {
+    private final JSONParser jsonParser = new JSONParser();
     private final HashMap<String, WebSocketSession> sessions = new HashMap<>();
-//    private List<SessionVO> sessions = new ArrayList<>();
     private String senderSessionID;
     private List<String> receiverSessionID = new ArrayList<>();
+
+
 
     @Override
     public void afterConnectionEstablished(WebSocketSession session) throws Exception {
@@ -35,10 +37,12 @@ public class VideoWebSocketHandler extends TextWebSocketHandler {
             } else {
                 receiverSessionID.add(session.getId());
                 log.info("receiver connected : " + session.getId());
+                log.info(session.getHandshakeHeaders().get("identifier").get(0));
             }
         } catch (Exception e) {
             receiverSessionID.add(session.getId());
             log.info("receiver connected : " + session.getId());
+            log.info(session.getHandshakeHeaders().toString());
         }
 
         sessions.put(session.getId(), session);
@@ -46,6 +50,7 @@ public class VideoWebSocketHandler extends TextWebSocketHandler {
 
     @Override
     protected void handleTextMessage(WebSocketSession session, TextMessage message) throws Exception {
+        JSONObject object = (JSONObject) jsonParser.parse(message.getPayload());
 
     }
 
