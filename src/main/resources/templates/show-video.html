@@ -20,13 +20,17 @@
     let blobCheck = 1;
     let blobURL_1;
     let blobURL_2;
+    const CONNECT_INFO = JSON.stringify({
+        "camera_id": "cam01",
+        "identifier": "receiver"
+    });
 
     $connect.on("click", function (arrayLike) {
         socket = new WebSocket("ws://localhost:10000/video");
 
         socket.addEventListener("open", () => {
             console.log("connected");
-            socket.send("receiver");
+            socket.send(CONNECT_INFO);
         });
 
         socket.addEventListener("message", (event) => {

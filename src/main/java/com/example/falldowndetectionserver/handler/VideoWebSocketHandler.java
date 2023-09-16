@@ -12,71 +12,63 @@ import org.springframework.web.socket.WebSocketSession;
 import org.springframework.web.socket.handler.TextWebSocketHandler;
 
 import java.io.IOException;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
+import java.util.*;
 
 @Component
 @Slf4j
 @RequiredArgsConstructor
 public class VideoWebSocketHandler extends TextWebSocketHandler {
     private final JSONParser jsonParser = new JSONParser();
+    private final HashMap<String, String> senderSessions = new HashMap<>();
+    private final HashMap<String, String> receiverSessions = new HashMap<>();
     private final HashMap<String, WebSocketSession> sessions = new HashMap<>();
-    private String senderSessionID;
-    private List<String> receiverSessionID = new ArrayList<>();
-
-
 
     @Override
     public void afterConnectionEstablished(WebSocketSession session) throws Exception {
         session.setBinaryMessageSizeLimit(1000000);
-        try {
-            if (session.getHandshakeHeaders().get("identifier").get(0).equals("sender")) {
-                senderSessionID = session.getId();
-                log.info("sender connected : " + session.getId());
-            } else {
-                receiverSessionID.add(session.getId());
-                log.info("receiver connected : " + session.getId());
-                log.info(session.getHandshakeHeaders().get("identifier").get(0));
-            }
-        } catch (Exception e) {
-            receiverSessionID.add(session.getId());
-            log.info("receiver connected : " + session.getId());
-            log.info(session.getHandshakeHeaders().toString());
-        }
-
-        sessions.put(session.getId(), session);
     }
 
     @Override
     protected void handleTextMessage(WebSocketSession session, TextMessage message) throws Exception {
-        JSONObject object = (JSONObject) jsonParser.parse(message.getPayload());
+        try {
+            JSONObject object = (JSONObject) jsonParser.parse(message.getPayload());
+            String identifier = object.get("identifier").toString();
+            //        보내는 쪽일 때 - senderSessions에 put
+            if (identifier.equals("sender")) {
+                senderSessions.put(object.get("camera_id").toString(), session.getId());
+                sessions.put(session.getId(), session);
+                log.info("sender connected");
 
+                //        받는 쪽일 때 - receiverSessions에 put
+            } else if (identifier.equals("receiver")) {
+                receiverSessions.put(object.get("camera_id").toString(), session.getId());
+                sessions.put(session.getId(), session);
+                log.info("receiver connected");
+
+                //        이상한 놈일 때 - 연결 종료
+            } else {
+                session.close();
+            }
+        } catch (Exception e) {
+            session.close();
+        }
     }
 
     @Override
     protected void handleBinaryMessage(WebSocketSession session, BinaryMessage message) {
-        if (session == sessions.get(senderSessionID)) {
-            for (String key : receiverSessionID) {
-                WebSocketSession wss = sessions.get(key);
-                try {
-                    wss.sendMessage(new BinaryMessage(message.getPayload()));
-                } catch (IOException e) {
-                    throw new RuntimeException(e);
-                }
-            }
+        try {
+            String caid = session.getHandshakeHeaders().get("camera_id").get(0);
+            WebSocketSession temp_session = sessions.get(receiverSessions.get(caid));
+            temp_session.sendMessage(message);
+        } catch (IOException e) {
+//
+        } catch (NullPointerException e) {
+//
         }
     }
 
     @Override
     public void afterConnectionClosed(WebSocketSession session, CloseStatus status) throws Exception {
-        sessions.remove(session.getId());
-        if (session.getId() == senderSessionID) {
-            senderSessionID = null;
-            log.info("sender disconnected");
-        } else {
-            receiverSessionID.remove(session.getId());
-            log.info("receiver disconnected");
-        }
+        log.info("disconnected");
     }
 }
