@@ -26,18 +26,19 @@ public class VideoWebSocketHandler extends TextWebSocketHandler {
     @Override
     public void afterConnectionEstablished(WebSocketSession session) throws Exception {
         session.setBinaryMessageSizeLimit(1000000);
+        if (session.getHandshakeHeaders().get("identifier").get(0).equals("sender")) {
+            senderSessionID = session.getId();
+            log.info("sender connected : " + session.getId());
+        } else {
+            receiverSessionID.add(session.getId());
+            log.info("receiver connected : " + session.getId());
+        }
         sessions.put(session.getId(), session);
     }
 
     @Override
     protected void handleTextMessage(WebSocketSession session, TextMessage message) throws Exception {
-        if (message.getPayload().equals("sender")) {
-            senderSessionID = session.getId();
-            log.info("sender connected : " + session.getId());
-        } else if (message.getPayload().equals("receiver")) {
-            receiverSessionID.add(session.getId());
-            log.info("receiver connected : " + session.getId());
-        }
+
     }
 
     @Override
