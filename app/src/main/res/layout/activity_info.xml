@@ -1,126 +1,154 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="#FFFFFF"
+    android:foregroundTint="#FEFEFE"
+    android:orientation="vertical"
     tools:context=".info">
 
-    <androidx.constraintlayout.widget.ConstraintLayout
+    <TextView
+        android:id="@+id/textView"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        tools:layout_editor_absoluteX="0dp"
-        tools:layout_editor_absoluteY="-58dp">
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:gravity="bottom|center"
+        android:paddingTop="150dp"
+        android:paddingBottom="30dp"
+        android:text="신상정보"
+        android:textAlignment="center"
+        android:textSize="30sp"
+        android:textStyle="bold" />
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:orientation="horizontal"
+        android:padding="20dp">
+
+        <TextView
+            android:id="@+id/textView17"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:paddingLeft="60dp"
+            android:paddingRight="10dp"
+            android:text="이름"
+            android:textAlignment="center"
+            android:textSize="16sp"
+            android:textStyle="bold" />
+
+        <EditText
+            android:id="@+id/editTextTextPostalAddress2"
+            android:layout_width="190dp"
+            android:layout_height="match_parent"
+            android:layout_gravity="center"
+            android:ems="10"
+            android:inputType="textPostalAddress"
+            android:paddingLeft="10dp"
+            android:paddingRight="60dp" />
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:padding="20dp">
+
+        <TextView
+            android:id="@+id/textView18"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:paddingLeft="60dp"
+            android:paddingRight="10dp"
+            android:text="전화번호"
+            android:textAlignment="center"
+            android:textSize="16sp"
+            android:textStyle="bold" />
+
+        <EditText
+            android:id="@+id/editTextTextPostalAddress3"
+            android:layout_width="190dp"
+            android:layout_height="match_parent"
+            android:layout_gravity="center"
+            android:ems="10"
+            android:inputType="textPostalAddress"
+            android:paddingLeft="10dp"
+            android:paddingRight="60dp" />
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:padding="20dp">
+
+        <TextView
+            android:id="@+id/textView19"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:paddingLeft="60dp"
+            android:paddingRight="10dp"
+            android:text="인증번호"
+            android:textAlignment="center"
+            android:textSize="16sp"
+            android:textStyle="bold" />
+
+        <EditText
+            android:id="@+id/editTextTextPostalAddress4"
+            android:layout_width="100dp"
+            android:layout_height="match_parent"
+            android:layout_gravity="center"
+            android:ems="10"
+            android:inputType="textPostalAddress"
+            android:paddingLeft="10dp"
+            android:paddingRight="60dp" />
 
         <Button
-            android:id="@+id/button10"
-            android:layout_width="86dp"
-            android:layout_height="43dp"
-            android:backgroundTint="#787070"
-            android:text="확인"
-            android:textColorHighlight="#807171"
+            android:id="@+id/button2"
+            android:layout_width="50dp"
+            android:layout_height="match_parent"
+            android:layout_marginRight="5dp"
+            android:background="#808080"
+            android:gravity="center"
+            android:text="재전송"
+            android:textAlignment="center"
+            android:textColor="#FFFFFF"
             android:textSize="10sp"
-            tools:layout_editor_absoluteX="283dp"
-            tools:layout_editor_absoluteY="317dp" />
-
-        <EditText
-            android:id="@+id/editTextTextPassword4"
-            android:layout_width="263dp"
-            android:layout_height="42dp"
-            android:ems="10"
-            android:inputType="textPassword"
-            tools:layout_editor_absoluteX="104dp"
-            tools:layout_editor_absoluteY="234dp" />
-
-        <EditText
-            android:id="@+id/editTextTextPassword5"
-            android:layout_width="263dp"
-            android:layout_height="40dp"
-            android:ems="10"
-            android:inputType="textPassword"
-            tools:layout_editor_absoluteX="104dp"
-            tools:layout_editor_absoluteY="277dp" />
-
-        <TextView
-            android:id="@+id/textView13"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="전화번호"
-            tools:layout_editor_absoluteX="52dp"
-            tools:layout_editor_absoluteY="287dp" />
-
-        <TextView
-            android:id="@+id/textView3"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="인증 번호"
-            tools:layout_editor_absoluteX="49dp"
-            tools:layout_editor_absoluteY="328dp" />
-
-        <EditText
-            android:id="@+id/editTextTextPassword3"
-            android:layout_width="81dp"
-            android:layout_height="45dp"
-            android:ems="10"
-            android:inputType="textPassword"
-            tools:layout_editor_absoluteX="104dp"
-            tools:layout_editor_absoluteY="316dp" />
+            android:textStyle="bold" />
 
         <Button
             android:id="@+id/button3"
-            android:layout_width="84dp"
-            android:layout_height="42dp"
-            android:backgroundTint="#787070"
-            android:text="재전송"
-            android:textColorHighlight="#807171"
+            android:layout_width="50dp"
+            android:layout_height="match_parent"
+            android:background="#808080"
+            android:gravity="center"
+            android:text="확인"
+            android:textAlignment="center"
+            android:textColor="#FFFFFF"
             android:textSize="10sp"
-            tools:layout_editor_absoluteX="190dp"
-            tools:layout_editor_absoluteY="318dp" />
+            android:textStyle="bold" />
 
-        <TextView
-            android:id="@+id/textView9"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="이름"
-            tools:layout_editor_absoluteX="78dp"
-            tools:layout_editor_absoluteY="245dp" />
+    </LinearLayout>
 
-        <ImageView
-            android:id="@+id/imageView2"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            app:srcCompat="?attr/actionModeCloseDrawable"
-            tools:layout_editor_absoluteX="16dp"
-            tools:layout_editor_absoluteY="16dp" />
+    <Button
+        android:id="@+id/button7"
+        android:layout_width="250dp"
+        android:layout_height="30dp"
+        android:layout_gravity="center"
+        android:layout_marginTop="40dp"
+        android:background="#808080"
+        android:backgroundTint="#808080"
+        android:gravity="center"
+        android:text="확인"
+        android:textColor="#FFFFFF"
+        android:textSize="16sp"
+        android:textStyle="bold" />
 
-        <Button
-            android:id="@+id/button9"
-            android:layout_width="209dp"
-            android:layout_height="50dp"
-            android:backgroundTint="#787070"
-            android:text="다음"
-            android:textColorHighlight="#807171"
-            tools:layout_editor_absoluteX="104dp"
-            tools:layout_editor_absoluteY="451dp" />
 
-    </androidx.constraintlayout.widget.ConstraintLayout>
-
-    <TextView
-        android:id="@+id/textView14"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="신상 정보"
-        android:textAllCaps="false"
-        android:textSize="32sp"
-        tools:layout_editor_absoluteX="134dp"
-        tools:layout_editor_absoluteY="136dp" />
-
-    <ImageView
-        android:id="@+id/imageView3"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        app:srcCompat="?attr/actionModeCloseDrawable"
-        tools:layout_editor_absoluteX="16dp"
-        tools:layout_editor_absoluteY="16dp" />
-</androidx.constraintlayout.widget.ConstraintLayout>
+</LinearLayout>

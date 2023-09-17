@@ -1,3 +1,4 @@
 <resources>
     <string name="app_name">FallDetectionApp</string>
+    <string name="title_activity_signup">signup</string>
 </resources>
