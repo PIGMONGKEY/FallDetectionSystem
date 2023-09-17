@@ -1,96 +1,126 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="#534F4F"
+    android:orientation="vertical"
     tools:context=".address">
 
-    <androidx.constraintlayout.widget.ConstraintLayout
+    <TextView
+        android:id="@+id/textView"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:background="#FFFFFF">
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:gravity="bottom|center"
+        android:paddingTop="150dp"
+        android:paddingBottom="30dp"
+        android:text="주소 입력"
+        android:textAlignment="center"
+        android:textSize="30sp"
+        android:textStyle="bold" />
 
-        <Button
-            android:id="@+id/button5"
-            android:layout_width="209dp"
-            android:layout_height="50dp"
-            android:backgroundTint="#787070"
-            android:text="다음"
-            android:textColorHighlight="#807171"
-            tools:layout_editor_absoluteX="101dp"
-            tools:layout_editor_absoluteY="440dp" />
-
-        <TextView
-            android:id="@+id/textView15"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="우편 번호"
-            tools:layout_editor_absoluteX="101dp"
-            tools:layout_editor_absoluteY="245dp" />
-
-        <EditText
-            android:id="@+id/editTextTextPassword9"
-            android:layout_width="165dp"
-            android:layout_height="45dp"
-            android:ems="10"
-            android:inputType="textPassword"
-            tools:layout_editor_absoluteX="166dp"
-            tools:layout_editor_absoluteY="233dp" />
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:orientation="horizontal"
+        android:padding="20dp">
 
         <TextView
-            android:id="@+id/textView16"
+            android:id="@+id/textView17"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="상세 주소"
-            tools:layout_editor_absoluteX="101dp"
-            tools:layout_editor_absoluteY="355dp" />
+            android:layout_gravity="center"
+            android:paddingLeft="60dp"
+            android:paddingRight="10dp"
+            android:text="우편번호"
+            android:textAlignment="center"
+            android:textSize="16sp"
+            android:textStyle="bold" />
 
         <EditText
-            android:id="@+id/editTextTextPassword10"
-            android:layout_width="167dp"
-            android:layout_height="38dp"
+            android:id="@+id/editTextTextPostalAddress2"
+            android:layout_width="190dp"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
             android:ems="10"
-            android:inputType="textPassword"
-            tools:layout_editor_absoluteX="164dp"
-            tools:layout_editor_absoluteY="293dp" />
+            android:inputType="textPostalAddress"
+            android:paddingLeft="10dp"
+            android:paddingRight="60dp" />
 
-        <EditText
-            android:id="@+id/editTextTextPassword7"
-            android:layout_width="165dp"
-            android:layout_height="45dp"
-            android:ems="10"
-            android:inputType="textPassword"
-            tools:layout_editor_absoluteX="166dp"
-            tools:layout_editor_absoluteY="233dp" />
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:padding="20dp">
 
         <TextView
-            android:id="@+id/textView12"
+            android:id="@+id/textView18"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="주소 입력"
-            tools:layout_editor_absoluteX="101dp"
-            tools:layout_editor_absoluteY="300dp" />
+            android:layout_gravity="center"
+            android:paddingLeft="60dp"
+            android:paddingRight="10dp"
+            android:text="주소입력"
+            android:textAlignment="center"
+            android:textSize="16sp"
+            android:textStyle="bold" />
 
         <EditText
-            android:id="@+id/editTextTextPassword11"
-            android:layout_width="167dp"
-            android:layout_height="38dp"
+            android:id="@+id/editTextTextPostalAddress3"
+            android:layout_width="190dp"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
             android:ems="10"
-            android:inputType="textPassword"
-            tools:layout_editor_absoluteX="164dp"
-            tools:layout_editor_absoluteY="346dp" />
+            android:inputType="textPostalAddress"
+            android:paddingLeft="10dp"
+            android:paddingRight="60dp" />
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:padding="20dp">
 
         <TextView
-            android:id="@+id/textView5"
+            android:id="@+id/textView19"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="주소 입력"
-            android:textAllCaps="false"
-            android:textSize="32sp"
-            tools:layout_editor_absoluteX="134dp"
-            tools:layout_editor_absoluteY="136dp" />
+            android:layout_gravity="center"
+            android:paddingLeft="60dp"
+            android:paddingRight="10dp"
+            android:text="상세주소"
+            android:textAlignment="center"
+            android:textSize="16sp"
+            android:textStyle="bold" />
 
-    </androidx.constraintlayout.widget.ConstraintLayout>
+        <EditText
+            android:id="@+id/editTextTextPostalAddress4"
+            android:layout_width="190dp"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:ems="10"
+            android:inputType="textPostalAddress"
+            android:paddingLeft="10dp"
+            android:paddingRight="60dp" />
 
+    </LinearLayout>
+
+    <Button
+        android:id="@+id/button7"
+        android:layout_width="250dp"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:layout_marginTop="20dp"
+        android:backgroundTint="#808080"
+        android:gravity="center"
+        android:text="다음"
+        android:textSize="16sp"
+        android:textStyle="bold" />
+
+
+</LinearLayout>
