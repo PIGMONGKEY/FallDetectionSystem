@@ -15,6 +15,7 @@ public class WebSocketConfig implements WebSocketConfigurer {
     private final PythonWebSocketHandler pythonWebSocketHandler;
     private final VideoWebSocketHandler videoWebSocketHandler;
 
+//    소켓 핸들러를 등록하는 메소드
     @Override
     public void registerWebSocketHandlers(WebSocketHandlerRegistry registry) {
         registry.addHandler(videoWebSocketHandler, "/video")

@@ -19,15 +19,21 @@ import java.util.*;
 @RequiredArgsConstructor
 public class VideoWebSocketHandler extends TextWebSocketHandler {
     private final JSONParser jsonParser = new JSONParser();
+//    카메라ID, 세션ID
     private final HashMap<String, String> senderSessions = new HashMap<>();
+//    카메라ID, 세션ID
     private final HashMap<String, String> receiverSessions = new HashMap<>();
+//    세션ID, 세션
     private final HashMap<String, WebSocketSession> sessions = new HashMap<>();
 
+//    연결 되었을 때
     @Override
     public void afterConnectionEstablished(WebSocketSession session) throws Exception {
+//        소켓 통신 사이즈 제한 설정
         session.setBinaryMessageSizeLimit(1000000);
     }
 
+//    Text 메시지를 받았을 때
     @Override
     protected void handleTextMessage(WebSocketSession session, TextMessage message) throws Exception {
         try {
@@ -39,13 +45,14 @@ public class VideoWebSocketHandler extends TextWebSocketHandler {
                 sessions.put(session.getId(), session);
                 log.info("sender connected");
 
-                //        받는 쪽일 때 - receiverSessions에 put
+            //        받는 쪽일 때 - receiverSessions에 put
             } else if (identifier.equals("receiver")) {
                 receiverSessions.put(object.get("camera_id").toString(), session.getId());
                 sessions.put(session.getId(), session);
                 log.info("receiver connected");
 
-                //        이상한 놈일 때 - 연결 종료
+            //        이상한 놈일 때 - 연결 종료
+            //        TextMessage로 JSON이 아닌 메시지를 보내면 연결이 끊기게 되어 있음
             } else {
                 session.close();
             }
@@ -54,6 +61,7 @@ public class VideoWebSocketHandler extends TextWebSocketHandler {
         }
     }
 
+//    Binary 메시지를 받았을 때
     @Override
     protected void handleBinaryMessage(WebSocketSession session, BinaryMessage message) {
         try {
@@ -67,8 +75,10 @@ public class VideoWebSocketHandler extends TextWebSocketHandler {
         }
     }
 
+//    연결이 끊겼을 때
     @Override
     public void afterConnectionClosed(WebSocketSession session, CloseStatus status) throws Exception {
-        log.info("disconnected");
+        sessions.remove(session.getId());
+//        작업 필요
     }
 }
