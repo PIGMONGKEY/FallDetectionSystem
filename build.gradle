@@ -26,16 +26,19 @@ dependencies {
     implementation 'org.springframework.boot:spring-boot-starter-web'
     implementation 'org.springframework.boot:spring-boot-starter-web-services'
     implementation 'org.springframework.boot:spring-boot-starter-websocket'
+//    p6spy / log4jdbc
+    implementation 'org.bgee.log4jdbc-log4j2:log4jdbc-log4j2-jdbc4.1:1.16'
     implementation 'com.googlecode.json-simple:json-simple:1.1.1'
     implementation 'com.fasterxml.jackson.core:jackson-databind'
     implementation 'mysql:mysql-connector-java:8.0.22'
     implementation 'org.mybatis.spring.boot:mybatis-spring-boot-starter:3.0.0'
+//    lombok
     compileOnly 'org.projectlombok:lombok'
-    developmentOnly 'org.springframework.boot:spring-boot-devtools'
-    annotationProcessor 'org.springframework.boot:spring-boot-configuration-processor'
     annotationProcessor 'org.projectlombok:lombok'
     testAnnotationProcessor 'org.projectlombok:lombok'
     testImplementation 'org.projectlombok:lombok'
+    developmentOnly 'org.springframework.boot:spring-boot-devtools'
+    annotationProcessor 'org.springframework.boot:spring-boot-configuration-processor'
     testImplementation 'org.springframework.boot:spring-boot-starter-test'
 }
 

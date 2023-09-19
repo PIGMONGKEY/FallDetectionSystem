@@ -1,12 +1,23 @@
 server:
   port: 10000
 
+# JDBC spy log delegator
+#log4jdbc:
+#  spylogdelegator:
+#    name: net.sf.log4jdbc.log.slf4j.Slf4jSpyLogDelegator
+
+decorator:
+  datasource:
+    p6spy:
+      enable-logging: true
+
+
 # MySql Configuration
 spring:
   datasource:
     hikari:
-      driver-class-name: com.mysql.cj.jdbc.Driver
-      jdbc-url: jdbc:mysql://localhost:3306/falldown_test?serverTimezone=UTC&characterEncoding=UTF-8
+      driver-class-name: net.sf.log4jdbc.sql.jdbcapi.DriverSpy
+      jdbc-url: jdbc:log4jdbc:mysql://localhost:3306/falldown_test?serverTimezone=UTC&characterEncoding=UTF-8
       username: falldown_test
       password: Dnjsgml0202?
       pool-name: HikariPool
