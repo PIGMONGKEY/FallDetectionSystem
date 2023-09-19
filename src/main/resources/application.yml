@@ -1,2 +1,12 @@
 server:
   port: 10000
+
+# MySql Configuration
+spring:
+  datasource:
+    hikari:
+      driver-class-name: com.mysql.cj.jdbc.Driver
+      jdbc-url: jdbc:mysql://localhost:3306?serverTimezone=UTC&characterEncoding=UTF-8
+      username: falldown_test
+      password: Dnjsgml0202?
+      pool-name: HikariPool
