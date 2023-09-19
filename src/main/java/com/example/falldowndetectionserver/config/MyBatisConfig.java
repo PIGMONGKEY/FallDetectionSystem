@@ -11,14 +11,15 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
 import javax.sql.DataSource;
+import java.io.IOException;
 
 @Configuration
 @RequiredArgsConstructor
-public class DataBaseConfig {
+public class MyBatisConfig {
     private final ApplicationContext applicationContext;
 
-    @Bean
     @ConfigurationProperties(prefix = "spring.datasource.hikari")
+    @Bean
     public HikariConfig hikariConfig() {
         return new HikariConfig();
     }
@@ -29,17 +30,16 @@ public class DataBaseConfig {
     }
 
     @Bean
-    public SqlSessionFactory sqlSessionFactory(DataSource dataSource) throws Exception {
-        SqlSessionFactoryBean bean = new SqlSessionFactoryBean();
-
-        bean.setDataSource(dataSource);
-        bean.setMapperLocations(applicationContext.getResources("classpath:/mapper/*.xml"));
-        bean.setConfigLocation(applicationContext.getResource("classpath:/config/config.xml"));
+    public SqlSessionFactory sqlSessionFactory() throws IOException {
+        SqlSessionFactoryBean sqlSessionFactoryBean = new SqlSessionFactoryBean();
+        sqlSessionFactoryBean.setDataSource(dataSource());
+        sqlSessionFactoryBean.setMapperLocations(applicationContext.getResources("classpath*:/mapper/*.xml"));
+        sqlSessionFactoryBean.setConfigLocation(applicationContext.getResource("classpath:/config/config.xml"));
 
         try {
-            SqlSessionFactory sqlSessionFactory = bean.getObject();
+            SqlSessionFactory sqlSessionFactory = sqlSessionFactoryBean.getObject();
+//        setMapUnderscoreToCamelCase - 언더바를 카멜표기법으로 매핑
             sqlSessionFactory.getConfiguration().setMapUnderscoreToCamelCase(true);
-
             return sqlSessionFactory;
         } catch (Exception e) {
             e.printStackTrace();
