@@ -11,4 +11,9 @@
         FROM TBL_USER
         WHERE UNO = #{uno};
     </select>
+
+    <delete id="delete">
+        DELETE FROM TBL_USER
+        WHERE UNO = #{uno};
+    </delete>
 </mapper>

@@ -10,4 +10,5 @@ import org.springframework.stereotype.Component;
 public interface UserMapper {
     public void insert(UserVO userVO);
     public UserVO select(int uno);
+    public void delete(int uno);
 }

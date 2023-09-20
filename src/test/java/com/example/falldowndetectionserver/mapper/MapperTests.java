@@ -31,4 +31,9 @@ public class MapperTests {
     public void selectTest() {
         log.info(userMapper.select(2).toString());
     }
+
+    @Test
+    public void deleteTest() {
+        userMapper.delete(2);
+    }
 }
