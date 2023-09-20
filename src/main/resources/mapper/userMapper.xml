@@ -5,4 +5,10 @@
         INSERT INTO TBL_USER (CAMERA_ID, USER_NAME, USER_PASSWORD, USER_PHONE, USER_ADDRESS)
         VALUES (#{cameraId}, #{userName}, #{userPassword}, #{userPhone}, #{userAddress});
     </insert>
+
+    <select id="select" resultType="userVO">
+        SELECT UNO, CAMERA_ID, USER_NAME, USER_PASSWORD, USER_PHONE, USER_ADDRESS, REGDATE, UPDATEDATE
+        FROM TBL_USER
+        WHERE UNO = #{uno};
+    </select>
 </mapper>

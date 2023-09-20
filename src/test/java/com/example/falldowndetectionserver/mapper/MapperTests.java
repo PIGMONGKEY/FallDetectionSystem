@@ -16,11 +16,6 @@ public class MapperTests {
     private UserMapper userMapper;
 
     @Test
-    public void selectTest() {
-        log.info(testMapper.select().toString());
-    }
-
-    @Test
     public void insertTest() {
         UserVO userVO = new UserVO();
         userVO.setUserName("이원희");
@@ -30,5 +25,10 @@ public class MapperTests {
         userVO.setCameraId("cam02");
 
         userMapper.insert(userVO);
+    }
+
+    @Test
+    public void selectTest() {
+        log.info(userMapper.select(2).toString());
     }
 }
