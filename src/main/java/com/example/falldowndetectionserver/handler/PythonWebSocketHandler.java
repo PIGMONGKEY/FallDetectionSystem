@@ -18,7 +18,7 @@ import java.util.Queue;
 @RequiredArgsConstructor
 public class PythonWebSocketHandler extends TextWebSocketHandler {
     private final ObjectMapper objectMapper;
-    private Queue<PositionVO> dtos = new LinkedList<>();
+    private Queue<PositionVO> positionVOQueue = new LinkedList<>();
 
     @Override
     public void afterConnectionEstablished(WebSocketSession session) throws Exception {
@@ -28,14 +28,14 @@ public class PythonWebSocketHandler extends TextWebSocketHandler {
     @Override
     protected void handleTextMessage(WebSocketSession session, TextMessage message) throws Exception {
         PositionVO dto = objectMapper.readValue(message.getPayload(), PositionVO.class);
-        if (dtos.size() < 60) {
-            dtos.add(dto);
+        if (positionVOQueue.size() < 60) {
+            positionVOQueue.add(dto);
         } else {
-            dtos.remove();
-            dtos.add(dto);
+            positionVOQueue.remove();
+            positionVOQueue.add(dto);
         }
 
-        log.info(dtos.toString());
+        log.info(positionVOQueue.toString());
     }
 
     @Override

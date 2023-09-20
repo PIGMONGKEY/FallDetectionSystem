@@ -1,6 +1,5 @@
 package com.example.falldowndetectionserver.mapper;
 
-import com.example.falldowndetectionserver.domain.TestDTO;
 import com.example.falldowndetectionserver.domain.UserVO;
 import lombok.extern.slf4j.Slf4j;
 import org.junit.jupiter.api.Test;
@@ -10,8 +9,6 @@ import org.springframework.boot.test.context.SpringBootTest;
 @SpringBootTest
 @Slf4j
 public class MapperTests {
-    @Autowired
-    private TestMapper testMapper;
     @Autowired
     private UserMapper userMapper;
 
