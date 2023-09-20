@@ -11,4 +11,7 @@ public interface UserMapper {
     public void insert(UserVO userVO);
     public UserVO select(int uno);
     public void delete(int uno);
+
+//    이름, 비밀번호, 전화번호, 주소, 업데이트 시간
+    public void update(UserVO userVO);
 }

@@ -36,4 +36,15 @@ public class MapperTests {
     public void deleteTest() {
         userMapper.delete(2);
     }
+
+    @Test
+    public void updateTest() {
+        UserVO userVO = userMapper.select(3);
+        userVO.setUserName("이원희");
+        userVO.setUserPassword("Dnjsgml0202?");
+        userVO.setUserAddress("경기도 의정부시 호원동 현대아이파크 201-1201");
+        userVO.setUserPhone("010-5729-2701");
+
+        userMapper.update(userVO);
+    }
 }

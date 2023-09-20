@@ -16,4 +16,10 @@
         DELETE FROM TBL_USER
         WHERE UNO = #{uno};
     </delete>
+
+    <update id="update">
+        UPDATE TBL_USER
+        SET USER_NAME = #{userName}, USER_PASSWORD = #{userPassword}, USER_PHONE = #{userPhone}, USER_ADDRESS = #{userAddress}, UPDATEDATE = NOW()
+        WHERE UNO = #{uno};
+    </update>
 </mapper>
