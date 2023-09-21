@@ -3,5 +3,6 @@
 <configuration>
     <typeAliases>
         <typeAlias type="com.example.falldowndetectionserver.domain.UserVO" alias="userVO" />
+        <typeAlias type="com.example.falldowndetectionserver.domain.NOKPhoneVO" alias="nokPhoneVO" />
     </typeAliases>
 </configuration>
