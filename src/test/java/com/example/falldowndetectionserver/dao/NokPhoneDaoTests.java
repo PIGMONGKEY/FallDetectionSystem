@@ -1,4 +1,4 @@
-package com.example.falldowndetectionserver.mapper;
+package com.example.falldowndetectionserver.dao;
 
 import com.example.falldowndetectionserver.domain.NokPhoneVO;
 import lombok.extern.slf4j.Slf4j;
@@ -8,9 +8,9 @@ import org.springframework.boot.test.context.SpringBootTest;
 
 @SpringBootTest
 @Slf4j
-public class NokPhoneMapperTests {
+public class NokPhoneDaoTests {
     @Autowired
-    private NokPhoneMapper nokPhoneMapper;
+    private NokPhoneDao nokPhoneDao;
 
     @Test
     public void insertTest() {
@@ -18,16 +18,16 @@ public class NokPhoneMapperTests {
         nokPhoneVO.setNokPhone("010-1234-1234");
         nokPhoneVO.setUno(4);
 
-        nokPhoneMapper.insert(nokPhoneVO);
+        nokPhoneDao.insert(nokPhoneVO);
     }
 
     @Test
-    public void selectTest() {
-        nokPhoneMapper.selectAll(4);
+    public void selectAllTest() {
+        nokPhoneDao.selectAll(4);
     }
 
     @Test
     public void deleteTest() {
-        nokPhoneMapper.delete(4);
+        nokPhoneDao.delete(4);
     }
 }

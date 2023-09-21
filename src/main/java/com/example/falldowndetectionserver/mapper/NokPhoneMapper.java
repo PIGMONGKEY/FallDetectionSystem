@@ -1,6 +1,6 @@
 package com.example.falldowndetectionserver.mapper;
 
-import com.example.falldowndetectionserver.domain.NOKPhoneVO;
+import com.example.falldowndetectionserver.domain.NokPhoneVO;
 import org.apache.ibatis.annotations.Mapper;
 import org.springframework.stereotype.Component;
 
@@ -8,8 +8,8 @@ import java.util.List;
 
 @Mapper
 @Component
-public interface NOKPhoneMapper {
-    public void insert(NOKPhoneVO nokPhoneVO);
+public interface NokPhoneMapper {
+    public void insert(NokPhoneVO nokPhoneVO);
     public void delete(int uno);
-    public List<NOKPhoneVO> selectAll(int uno);
+    public List<NokPhoneVO> selectAll(int uno);
 }

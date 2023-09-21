@@ -5,7 +5,7 @@ import org.springframework.stereotype.Component;
 
 @Data
 @Component
-public class NOKPhoneVO {
+public class NokPhoneVO {
     private int uno;
     private String nokPhone;
 }
