@@ -21,7 +21,7 @@ public class ServiceTests {
         userVO.setUserPhone("010-5729-2701");
         userVO.setCameraId("cam02");
 
-        userService.register(userVO);
+        userService.registerUserInfo(userVO);
     }
 
     @Test

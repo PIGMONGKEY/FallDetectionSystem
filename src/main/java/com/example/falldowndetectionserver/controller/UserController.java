@@ -27,7 +27,7 @@ public class UserController {
      */
     @PostMapping("register")
     public void registerNewUser(@RequestBody UserVO userVO) {
-        userService.register(userVO);
+        userService.registerUserInfo(userVO);
     }
 
     /**
