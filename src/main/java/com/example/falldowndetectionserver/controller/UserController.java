@@ -26,7 +26,7 @@ public class UserController {
      * @param userVO UserVO 형태로 삽입할 데이터를 받아와야 함
      */
     @PostMapping("register")
-    public void registerNewUser(UserVO userVO) {
+    public void registerNewUser(@RequestBody UserVO userVO) {
         userService.register(userVO);
     }
 
@@ -44,7 +44,7 @@ public class UserController {
      * @param userVO UserVO 형태로 받아와야 하며, 모든 멤버를 다 체워야 한다.
      */
     @PutMapping("modify")
-    public void modifyUserInfo(UserVO userVO) {
+    public void modifyUserInfo(@RequestBody UserVO userVO) {
         userService.modifyUserInfo(userVO);
     }
 }

@@ -17,7 +17,7 @@ spring:
   datasource:
     hikari:
       driver-class-name: net.sf.log4jdbc.sql.jdbcapi.DriverSpy
-      jdbc-url: jdbc:log4jdbc:mysql://localhost:3306/falldown_test?serverTimezone=UTC&characterEncoding=UTF-8
-      username: falldown_test
+      jdbc-url: jdbc:log4jdbc:mysql://localhost:3306/falldown?serverTimezone=UTC&characterEncoding=UTF-8
+      username: falldown
       password: Dnjsgml0202?
       pool-name: HikariPool

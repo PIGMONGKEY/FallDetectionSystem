@@ -31,7 +31,7 @@ public class ServiceTests {
 
     @Test
     public void removeUserInfoTest() {
-        userService.removeUserInfo(5);
+        userService.removeUserInfo(3);
     }
 
     @Test
