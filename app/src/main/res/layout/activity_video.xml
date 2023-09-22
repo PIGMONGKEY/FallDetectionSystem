@@ -10,7 +10,7 @@
 
     <ImageButton
         android:id="@+id/imageButton"
-        android:layout_width="78dp"
+        android:layout_width="63dp"
         android:layout_height="63dp"
         android:layout_gravity="top|left"
         app:srcCompat="?attr/actionModeCloseDrawable" />

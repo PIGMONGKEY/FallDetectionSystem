@@ -37,4 +37,5 @@
         android:text="마이페이지"
         android:textSize="30dp"
         android:layout_margin="10dp"/>
+
 </LinearLayout>
