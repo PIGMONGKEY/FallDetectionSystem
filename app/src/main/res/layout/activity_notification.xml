@@ -14,24 +14,8 @@
         android:layout_gravity="top|left"
         app:srcCompat="?attr/actionModeCloseDrawable" />
 
-    <FrameLayout
-        android:id="@+id/containers"
+    <ListView
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:layout_weight="1">
-
-        <ListView
-            android:layout_width="match_parent"
-            android:layout_height="match_parent" />
-    </FrameLayout>
-
-    <com.google.android.material.bottomnavigation.BottomNavigationView
-        android:id="@+id/bottomNavigationView"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_gravity="bottom"
-        app:itemBackground="@color/white"
-        app:labelVisibilityMode="labeled"
-        app:menu="@menu/bottom_menu" />
+        android:layout_height="match_parent" />
 
 </LinearLayout>

@@ -1,5 +1,4 @@
 <?xml version="1.0" encoding="utf-8"?>
-
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
@@ -23,39 +22,10 @@
         android:text="가이드"
         android:textSize="30sp" />
 
-    <FrameLayout
-        android:id="@+id/guideImageFrameLayout"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:layout_weight="1">
-
-        <ImageView
-            android:id="@+id/guideImageView"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            tools:srcCompat="@tools:sample/backgrounds/scenic" />
-
-        <ImageButton
-            android:id="@+id/imageButton5"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="right|center_vertical"
-            app:srcCompat="@android:drawable/ic_media_next" />
-
-        <ImageButton
-            android:id="@+id/imageButton6"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="left|center_vertical"
-            app:srcCompat="@android:drawable/ic_media_previous" />
-    </FrameLayout>
-
-    <com.google.android.material.bottomnavigation.BottomNavigationView
-        android:id="@+id/bottomNavigationView"
-        android:layout_width="match_parent"
+    <ImageView
+        android:id="@+id/guideImageView"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_gravity="bottom"
-        app:itemBackground="@color/white"
-        app:labelVisibilityMode="labeled"
-        app:menu="@menu/bottom_menu" />
+        tools:srcCompat="@tools:sample/backgrounds/scenic" />
+
 </LinearLayout>
