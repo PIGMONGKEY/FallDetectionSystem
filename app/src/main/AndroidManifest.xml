@@ -16,16 +16,7 @@
             android:name=".NotificationActivity"
             android:exported="false" />
         <activity
-            android:name=".MyPageActivity"
-            android:exported="false" />
-        <activity
             android:name=".GuideActivity"
-            android:exported="false" />
-        <activity
-            android:name=".VideoActivity"
-            android:exported="false" />
-        <activity
-            android:name=".HomeActivity"
             android:exported="false" />
         <activity
             android:name=".MainActivity"
