@@ -6,7 +6,7 @@
     android:layout_height="wrap_content"
     android:orientation="vertical"
     android:visibility="visible"
-    tools:context=".MyPage">
+    tools:context=".MyPageActivity">
 
     <ImageButton
         android:id="@+id/imageButton2"
@@ -24,7 +24,6 @@
         android:textSize="30sp" />
 
     <FrameLayout
-        android:id="@+id/containers"
         android:layout_width="match_parent"
         android:layout_height="100dp"
         android:layout_weight="1"></FrameLayout>
@@ -39,7 +38,6 @@
         tools:srcCompat="@tools:sample/avatars" />
 
     <FrameLayout
-        android:id="@+id/containers"
         android:layout_width="match_parent"
         android:layout_height="96dp"
         android:layout_weight="1"></FrameLayout>
@@ -52,7 +50,6 @@
         android:padding="20dp">
 
         <TextView
-            android:id="@+id/textView17"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center"
@@ -64,7 +61,7 @@
             android:textStyle="bold" />
 
         <EditText
-            android:id="@+id/editTextTextPostalAddress2"
+            android:id="@+id/cameraIdEditText"
             android:layout_width="145dp"
             android:layout_height="match_parent"
             android:layout_gravity="center"
@@ -83,7 +80,6 @@
         android:padding="20dp">
 
         <TextView
-            android:id="@+id/textView17"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center"
@@ -95,7 +91,7 @@
             android:textStyle="bold" />
 
         <EditText
-            android:id="@+id/editTextTextPostalAddress2"
+            android:id="@+id/passwordEditText"
             android:layout_width="145dp"
             android:layout_height="match_parent"
             android:layout_gravity="center"
@@ -114,7 +110,6 @@
         android:padding="20dp">
 
         <TextView
-            android:id="@+id/textView17"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center"
@@ -126,7 +121,7 @@
             android:textStyle="bold" />
 
         <EditText
-            android:id="@+id/editTextTextPostalAddress2"
+            android:id="@+id/addressEditText"
             android:layout_width="145dp"
             android:layout_height="match_parent"
             android:layout_gravity="center"
@@ -145,7 +140,6 @@
         android:padding="20dp">
 
         <TextView
-            android:id="@+id/textView17"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center"
@@ -157,7 +151,7 @@
             android:textStyle="bold" />
 
         <EditText
-            android:id="@+id/editTextTextPostalAddress2"
+            android:id="@+id/nokPhone_1_EditText"
             android:layout_width="145dp"
             android:layout_height="match_parent"
             android:layout_gravity="center"
@@ -176,7 +170,6 @@
         android:padding="20dp">
 
         <TextView
-            android:id="@+id/textView17"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center"
@@ -188,7 +181,7 @@
             android:textStyle="bold" />
 
         <EditText
-            android:id="@+id/editTextTextPostalAddress2"
+            android:id="@+id/nokPhone_2_EditText"
             android:layout_width="145dp"
             android:layout_height="match_parent"
             android:layout_gravity="center"
@@ -214,13 +207,12 @@
         android:text="개인정보수정" />
 
     <FrameLayout
-        android:id="@+id/containers"
         android:layout_width="match_parent"
         android:layout_height="124dp"
         android:layout_weight="1"></FrameLayout>
 
     <com.google.android.material.bottomnavigation.BottomNavigationView
-        android:id="@+id/bottom_navigationview"
+        android:id="@+id/bottomNavigationView"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_gravity="bottom"

@@ -6,10 +6,10 @@
     android:layout_height="match_parent"
     android:orientation="vertical"
     android:padding="25dp"
-    tools:context=".home">
+    tools:context=".HomeActivity">
 
     <Button
-        android:id="@+id/button"
+        android:id="@+id/toGuideButton"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_margin="10dp"
@@ -19,7 +19,7 @@
         android:textSize="30dp" />
 
     <Button
-        android:id="@+id/button2"
+        android:id="@+id/toVideoButton"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_weight="1"
@@ -29,7 +29,7 @@
         android:layout_margin="10dp"/>
 
     <Button
-        android:id="@+id/button4"
+        android:id="@+id/toMyPageButton"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_weight="1"
