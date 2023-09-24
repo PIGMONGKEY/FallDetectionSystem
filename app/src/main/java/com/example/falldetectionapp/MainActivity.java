@@ -58,18 +58,20 @@ public class MainActivity extends AppCompatActivity {
         Fragment newFragment = fragmentManager.findFragmentByTag(tag);
         if (newFragment == null) {
             if (id == R.id.home) {
-
+                newFragment = new HomeFragment();
             } else if (id == R.id.video) {
-
+                newFragment = new VideoFragment();
             } else if (id == R.id.myPage) {
-
-            } else {
-
+                newFragment = new MyPageFragment();
             }
 
             fragmentTransaction.add(R.id.frameLayout, newFragment, tag);
         } else {
             fragmentTransaction.show(newFragment);
         }
+
+        fragmentTransaction.setPrimaryNavigationFragment(newFragment);
+        fragmentTransaction.setReorderingAllowed(true);
+        fragmentTransaction.commitNow();
     }
 }
