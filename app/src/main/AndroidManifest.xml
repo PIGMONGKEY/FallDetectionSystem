@@ -22,10 +22,6 @@
             android:name=".GuideActivity"
             android:exported="false" />
         <activity
-            android:name=".menubar"
-            android:exported="false"
-            android:label="@string/title_activity_menubar" />
-        <activity
             android:name=".VideoActivity"
             android:exported="false" />
         <activity
