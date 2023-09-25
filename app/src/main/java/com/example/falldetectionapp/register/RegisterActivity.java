@@ -57,7 +57,7 @@ public class RegisterActivity extends AppCompatActivity {
 //                    Toast.makeText(getApplicationContext(), "등록되지 않은 카메라 아이디 입니다.", Toast.LENGTH_LONG).show();
 //                }
 
-                if (password == passwordCheck) {
+                if (password.equals(passwordCheck)) {
                     Intent intent = new Intent(RegisterActivity.this, InfoActivity.class);
                     startActivity(intent);
                 } else {
