@@ -11,6 +11,10 @@ import android.widget.Toast;
 
 import com.example.falldetectionapp.R;
 
+/**
+ * 회원가입 시, 주소를 입력하는 창입니다.
+ * activity_address.xml 과 연결됩니다.
+ */
 public class AddressActivity extends AppCompatActivity {
 
     private Button toNokPhone;
@@ -24,6 +28,7 @@ public class AddressActivity extends AppCompatActivity {
         init();
     }
 
+//    초기 설정을 넣으시면 됩니다.
     private void init() {
         setTitle("주소");
         setView();
@@ -37,6 +42,7 @@ public class AddressActivity extends AppCompatActivity {
         deepAddressEditText = findViewById(R.id.addressDeepEditText_register);
     }
 
+//    리스너는 여기에 모아주세요
     private void setListener() {
         toNokPhone.setOnClickListener(new View.OnClickListener() {
             @Override

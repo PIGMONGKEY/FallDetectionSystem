@@ -11,6 +11,10 @@ import android.widget.EditText;
 
 import com.example.falldetectionapp.R;
 
+/**
+ * 회원가입 시, 사용자 정보를 입력하는 창입니다.
+ * activity_info.xml과 연결됩니다.
+ */
 public class InfoActivity extends AppCompatActivity {
 
     private Button toAddressButton, phoneAuthButton;
@@ -24,6 +28,7 @@ public class InfoActivity extends AppCompatActivity {
         init();
     }
 
+//    초기설정을 넣어주세요
     private void init() {
         setTitle("개인정보");
         setView();
@@ -38,6 +43,7 @@ public class InfoActivity extends AppCompatActivity {
         phoneCheckEditText = findViewById(R.id.phoneAuthEditText_register);
     }
 
+//    리스너는 여기에 모아주세요
     private void setListener() {
         toAddressButton.setOnClickListener(new View.OnClickListener() {
             @Override

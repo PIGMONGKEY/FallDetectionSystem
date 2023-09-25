@@ -14,6 +14,10 @@ import android.widget.Toast;
 
 import com.example.falldetectionapp.register.RegisterActivity;
 
+/**
+ * 로그인 화면 입니다.
+ * activity_log_in.xml과 연결됩니다.
+ */
 public class LoginActivity extends AppCompatActivity {
 
     private Button registerButton, loginButton;
@@ -29,6 +33,7 @@ public class LoginActivity extends AppCompatActivity {
         init();
     }
 
+//    초기 설정을 넣어주세요
     private void init() {
         setView();
         setListener();
@@ -43,6 +48,7 @@ public class LoginActivity extends AppCompatActivity {
         forgetPasswordTextView = findViewById(R.id.forgetPasswordTextView_login);
     }
 
+//    리스너는 여기 모아주세요
     private void setListener() {
         registerButton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -80,6 +86,7 @@ public class LoginActivity extends AppCompatActivity {
             }
         });
 
+//        TextView에도 onClickListener를 달 수 있습니다.
         forgetPasswordTextView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {

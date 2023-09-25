@@ -12,6 +12,10 @@ import android.widget.Toast;
 
 import com.example.falldetectionapp.R;
 
+/**
+ * 회원가입 시, 카메라ID와 비밀번호를 입력하는 창입니다.
+ * activity_sign_up.xml과 연결됩니다.
+ */
 public class RegisterActivity extends AppCompatActivity {
 
     private Button toInfoButton;
@@ -25,6 +29,7 @@ public class RegisterActivity extends AppCompatActivity {
         init();
     }
 
+//    초기 설정을 넣어주세요
     private void init() {
         setTitle("회원가입");
         setView();
@@ -38,6 +43,7 @@ public class RegisterActivity extends AppCompatActivity {
         passwordCheckEditText = findViewById(R.id.passwordCheckEditText_register);
     }
 
+//    리스너는 여기 모아주세요
     private void setListener() {
         toInfoButton.setOnClickListener(new View.OnClickListener() {
             @Override

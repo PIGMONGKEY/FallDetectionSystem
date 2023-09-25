@@ -9,6 +9,10 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
 
+/**
+ * 공지사항 페이지 입니다.
+ * activity_notification.xml과 연결됩니다.
+ */
 public class NotificationActivity extends AppCompatActivity {
 
     @Override

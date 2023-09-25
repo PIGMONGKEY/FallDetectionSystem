@@ -15,14 +15,13 @@
         tools:context=".MyPageActivity">
 
         <ImageButton
-            android:id="@+id/imageButton2"
+            android:id="@+id/backButton_mypage"
             android:layout_width="63dp"
             android:layout_height="63dp"
             android:layout_gravity="top|left"
             app:srcCompat="?attr/actionModeCloseDrawable" />
 
         <TextView
-            android:id="@+id/textView4"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center"
@@ -58,7 +57,7 @@
                 android:textStyle="bold" />
 
             <EditText
-                android:id="@+id/cameraIdEditText"
+                android:id="@+id/cameraIdEditText_mypage"
                 android:layout_width="0dp"
                 android:layout_height="match_parent"
                 android:layout_gravity="center"
@@ -87,7 +86,7 @@
                 android:textStyle="bold" />
 
             <EditText
-                android:id="@+id/passwordEditText"
+                android:id="@+id/passwordEditText_mypage"
                 android:layout_width="0dp"
                 android:layout_height="match_parent"
                 android:layout_gravity="center"
@@ -117,7 +116,7 @@
                 android:textStyle="bold" />
 
             <EditText
-                android:id="@+id/addressEditText"
+                android:id="@+id/addressEditText_mypage"
                 android:layout_width="0dp"
                 android:layout_height="match_parent"
                 android:layout_gravity="center"
@@ -147,7 +146,7 @@
                 android:textStyle="bold" />
 
             <EditText
-                android:id="@+id/nokPhone_1_EditText"
+                android:id="@+id/nokPhone_1_EditText_mypage"
                 android:layout_width="0dp"
                 android:layout_height="match_parent"
                 android:layout_gravity="center"
@@ -176,7 +175,7 @@
                 android:textStyle="bold" />
 
             <EditText
-                android:id="@+id/nokPhone_2_EditText"
+                android:id="@+id/nokPhone_2_EditText_mypage"
                 android:layout_width="0dp"
                 android:layout_height="match_parent"
                 android:layout_gravity="center"
@@ -188,14 +187,14 @@
         </LinearLayout>
 
         <TextView
-            android:id="@+id/textView"
+            android:id="@+id/signOutTextView_mypage"
             android:layout_width="107dp"
             android:layout_height="wrap_content"
             android:layout_gravity="top"
             android:text="탈퇴하기" />
 
         <TextView
-            android:id="@+id/textView3"
+            android:id="@+id/modifyInfoTextView_mypage"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_gravity="top"

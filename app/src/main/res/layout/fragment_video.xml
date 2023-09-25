@@ -15,14 +15,14 @@
         tools:context=".VideoActivity">
 
         <ImageButton
-            android:id="@+id/imageButton"
+            android:id="@+id/backButton_video"
             android:layout_width="63dp"
             android:layout_height="63dp"
             android:layout_gravity="top|left"
             app:srcCompat="?attr/actionModeCloseDrawable" />
 
         <ImageView
-            android:id="@+id/imageView"
+            android:id="@+id/videoImageView"
             android:layout_width="411dp"
             android:layout_height="525dp"
             tools:srcCompat="@tools:sample/avatars" />

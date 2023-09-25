@@ -8,13 +8,14 @@
     tools:context=".NotificationActivity">
 
     <ImageButton
-        android:id="@+id/imageButton7"
+        android:id="@+id/backButton_notification"
         android:layout_width="63dp"
         android:layout_height="63dp"
         android:layout_gravity="top|left"
         app:srcCompat="?attr/actionModeCloseDrawable" />
 
     <ListView
+        android:id="@+id/notificationListView_notification"
         android:layout_width="match_parent"
         android:layout_height="match_parent" />
 

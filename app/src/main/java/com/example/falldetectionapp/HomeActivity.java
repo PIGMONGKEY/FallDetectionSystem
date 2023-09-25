@@ -19,13 +19,6 @@ public class HomeActivity extends AppCompatActivity {
 
     private BottomNavigationView bottomNavigationView;
 
-    /**
-     * 화면이 생성될 때 자동으로 실행하는 메소드
-     * @param savedInstanceState If the activity is being re-initialized after
-     *     previously being shut down then this Bundle contains the data it most
-     *     recently supplied in {@link #onSaveInstanceState}.  <b><i>Note: Otherwise it is null.</i></b>
-     *
-     */
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -34,24 +27,19 @@ public class HomeActivity extends AppCompatActivity {
         init();
     }
 
-    /**
-     * 화면이 생성될 때 실행시켜줌으로써, 초기 설정을 한다.
-     */
+
+//     화면이 생성될 때 실행시켜줌으로써, 초기 설정을 한다.
     private void init() {
         setViews();
         setBottomNavigationView();
     }
 
-    /**
-     * findViewById 메소드를 이용해서 멤버 변수와 View를 연결한다.
-     */
+//    findViewById 메소드를 이용해서 멤버 변수와 View를 연결한다.
     private void setViews() {
         bottomNavigationView = findViewById(R.id.bottomNavigationView);
     }
 
-    /**
-     * 하단 네비게이션 바 아이템 클릭 리스너 설정
-     */
+//     하단 네비게이션 바 아이템 클릭 리스너 설정
     private void setBottomNavigationView() {
         bottomNavigationView.setOnItemSelectedListener(new NavigationBarView.OnItemSelectedListener() {
             @Override
@@ -101,6 +89,7 @@ public class HomeActivity extends AppCompatActivity {
 //        네비게이션 바에서 선택된 항목을  설정한다.
         fragmentTransaction.setPrimaryNavigationFragment(newFragment);
         fragmentTransaction.setReorderingAllowed(true);
+//        변경한 내용을 반영한다.
         fragmentTransaction.commitNow();
     }
 }
