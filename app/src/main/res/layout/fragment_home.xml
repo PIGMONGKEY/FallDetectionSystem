@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".fragments.HomeFragment">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical"
+        android:padding="25dp"
+        tools:context=".HomeActivity">
+
+        <Button
+            android:id="@+id/toGuideButton"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_margin="10dp"
+            android:layout_weight="1"
+            android:backgroundTint="#888888"
+            android:text="사용가이드"
+            android:textSize="30dp" />
+
+        <Button
+            android:id="@+id/toVideoButton"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:backgroundTint="#888888"
+            android:text="영상재생"
+            android:textSize="30dp"
+            android:layout_margin="10dp"/>
+
+        <Button
+            android:id="@+id/toMyPageButton"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:backgroundTint="#888888"
+            android:text="마이페이지"
+            android:textSize="30dp"
+            android:layout_margin="10dp"/>
+
+    </LinearLayout>
+
+</FrameLayout>
