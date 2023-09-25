@@ -19,19 +19,19 @@
             android:name=".GuideActivity"
             android:exported="false" />
         <activity
-            android:name=".sign_up"
+            android:name=".register.RegisterActivity"
             android:exported="false" />
         <activity
-            android:name=".emergency_phone"
+            android:name=".register.NokPhoneActivity"
             android:exported="false" />
         <activity
-            android:name=".address"
+            android:name=".register.AddressActivity"
             android:exported="false" />
         <activity
-            android:name=".log_in"
+            android:name=".LoginActivity"
             android:exported="false" />
         <activity
-            android:name=".MainActivity"
+            android:name=".HomeActivity"
             android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />

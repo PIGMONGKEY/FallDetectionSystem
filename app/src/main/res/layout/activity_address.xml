@@ -6,7 +6,7 @@
     android:layout_height="match_parent"
     android:foregroundTint="#FEFEFE"
     android:orientation="vertical"
-    tools:context=".address">
+    tools:context=".register.AddressActivity">
 
     <TextView
         android:layout_width="match_parent"

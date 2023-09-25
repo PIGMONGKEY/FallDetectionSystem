@@ -1,14 +1,16 @@
-package com.example.falldetectionapp;
+package com.example.falldetectionapp.register;
 
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.os.Bundle;
 
-public class log_in extends AppCompatActivity {
+import com.example.falldetectionapp.R;
+
+public class AddressActivity extends AppCompatActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_log_in);
+        setContentView(R.layout.activity_address);
     }
 }

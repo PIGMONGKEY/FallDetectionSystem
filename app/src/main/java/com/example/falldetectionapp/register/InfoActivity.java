@@ -1,10 +1,12 @@
-package com.example.falldetectionapp;
+package com.example.falldetectionapp.register;
 
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.os.Bundle;
 
-public class info extends AppCompatActivity {
+import com.example.falldetectionapp.R;
+
+public class InfoActivity extends AppCompatActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {

@@ -6,7 +6,7 @@
     android:layout_height="match_parent"
     android:foregroundTint="#FEFEFE"
     android:orientation="vertical"
-    tools:context=".info">
+    tools:context=".register.InfoActivity">
 
     <TextView
         android:layout_width="match_parent"

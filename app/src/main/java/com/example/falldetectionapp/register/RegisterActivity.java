@@ -1,14 +1,16 @@
-package com.example.falldetectionapp;
+package com.example.falldetectionapp.register;
 
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.os.Bundle;
 
-public class emergency_phone extends AppCompatActivity {
+import com.example.falldetectionapp.R;
+
+public class RegisterActivity extends AppCompatActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_emergency_phone);
+        setContentView(R.layout.activity_sign_up);
     }
 }
