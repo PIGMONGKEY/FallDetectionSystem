@@ -9,13 +9,11 @@
     tools:context=".address">
 
     <TextView
-        android:id="@+id/textView"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_gravity="center"
-        android:gravity="bottom|center"
-        android:paddingTop="150dp"
-        android:paddingBottom="30dp"
+        android:layout_marginTop="150dp"
+        android:layout_marginBottom="30dp"
         android:text="주소 입력"
         android:textAlignment="center"
         android:textSize="30sp"
@@ -29,26 +27,23 @@
         android:padding="20dp">
 
         <TextView
-            android:id="@+id/textView17"
-            android:layout_width="wrap_content"
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:layout_gravity="center"
-            android:paddingLeft="60dp"
-            android:paddingRight="10dp"
+            android:layout_weight="0.6"
             android:text="우편번호"
-            android:textAlignment="center"
-            android:textSize="16sp"
+            android:textAlignment="viewEnd"
+            android:textSize="20sp"
             android:textStyle="bold" />
 
         <EditText
-            android:id="@+id/editTextTextPostalAddress2"
-            android:layout_width="190dp"
-            android:layout_height="match_parent"
+            android:id="@+id/zipCodeEditText_register"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
             android:layout_gravity="center"
+            android:layout_weight="1"
             android:ems="10"
             android:inputType="textPostalAddress"
-            android:paddingLeft="10dp"
-            android:paddingRight="60dp" />
+            android:textSize="20sp" />
 
     </LinearLayout>
 
@@ -59,26 +54,23 @@
         android:padding="20dp">
 
         <TextView
-            android:id="@+id/textView18"
-            android:layout_width="wrap_content"
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:layout_gravity="center"
-            android:paddingLeft="60dp"
-            android:paddingRight="10dp"
+            android:layout_weight="0.6"
             android:text="주소입력"
-            android:textAlignment="center"
-            android:textSize="16sp"
+            android:textAlignment="viewEnd"
+            android:textSize="20sp"
             android:textStyle="bold" />
 
         <EditText
-            android:id="@+id/editTextTextPostalAddress3"
-            android:layout_width="190dp"
-            android:layout_height="match_parent"
+            android:id="@+id/addressEditText_register"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
             android:layout_gravity="center"
+            android:layout_weight="1"
             android:ems="10"
             android:inputType="textPostalAddress"
-            android:paddingLeft="10dp"
-            android:paddingRight="60dp" />
+            android:textSize="20sp" />
     </LinearLayout>
 
     <LinearLayout
@@ -88,33 +80,30 @@
         android:padding="20dp">
 
         <TextView
-            android:id="@+id/textView19"
-            android:layout_width="wrap_content"
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:layout_gravity="center"
-            android:paddingLeft="60dp"
-            android:paddingRight="10dp"
+            android:layout_weight="0.6"
             android:text="상세주소"
-            android:textAlignment="center"
-            android:textSize="16sp"
+            android:textAlignment="viewEnd"
+            android:textSize="20sp"
             android:textStyle="bold" />
 
         <EditText
-            android:id="@+id/editTextTextPostalAddress4"
-            android:layout_width="190dp"
-            android:layout_height="match_parent"
+            android:id="@+id/addressDeepEditText_register"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
             android:layout_gravity="center"
+            android:layout_weight="1"
             android:ems="10"
             android:inputType="textPostalAddress"
-            android:paddingLeft="10dp"
-            android:paddingRight="60dp" />
+            android:textSize="20sp" />
 
     </LinearLayout>
 
     <Button
-        android:id="@+id/button7"
+        android:id="@+id/continueToEP"
         android:layout_width="250dp"
-        android:layout_height="40dp"
+        android:layout_height="wrap_content"
         android:layout_gravity="center"
         android:layout_marginTop="40dp"
         android:background="#808080"

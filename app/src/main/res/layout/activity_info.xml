@@ -9,13 +9,11 @@
     tools:context=".info">
 
     <TextView
-        android:id="@+id/textView"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_gravity="center"
-        android:gravity="bottom|center"
-        android:paddingTop="150dp"
-        android:paddingBottom="30dp"
+        android:layout_marginTop="150dp"
+        android:layout_marginBottom="30dp"
         android:text="개인정보"
         android:textAlignment="center"
         android:textSize="30sp"
@@ -29,26 +27,22 @@
         android:padding="20dp">
 
         <TextView
-            android:id="@+id/textView17"
-            android:layout_width="wrap_content"
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:layout_gravity="center"
-            android:paddingLeft="60dp"
-            android:paddingRight="10dp"
+            android:layout_weight="0.6"
             android:text="이름"
             android:textAlignment="center"
-            android:textSize="16sp"
+            android:textSize="20sp"
             android:textStyle="bold" />
 
         <EditText
-            android:id="@+id/editTextTextPostalAddress2"
-            android:layout_width="190dp"
-            android:layout_height="match_parent"
+            android:id="@+id/nameEditText_register"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
             android:layout_gravity="center"
-            android:ems="10"
-            android:inputType="textPostalAddress"
-            android:paddingLeft="10dp"
-            android:paddingRight="60dp" />
+            android:layout_weight="1"
+            android:inputType="text"
+            android:textSize="20sp" />
 
     </LinearLayout>
 
@@ -59,26 +53,22 @@
         android:padding="20dp">
 
         <TextView
-            android:id="@+id/textView18"
-            android:layout_width="wrap_content"
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:layout_gravity="center"
-            android:paddingLeft="60dp"
-            android:paddingRight="10dp"
+            android:layout_weight="0.6"
             android:text="전화번호"
             android:textAlignment="center"
-            android:textSize="16sp"
+            android:textSize="20sp"
             android:textStyle="bold" />
 
         <EditText
-            android:id="@+id/editTextTextPostalAddress3"
-            android:layout_width="190dp"
-            android:layout_height="match_parent"
+            android:id="@+id/phoneEditText_register"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
             android:layout_gravity="center"
-            android:ems="10"
-            android:inputType="textPostalAddress"
-            android:paddingLeft="10dp"
-            android:paddingRight="60dp" />
+            android:layout_weight="1"
+            android:inputType="phone"
+            android:textSize="20sp" />
     </LinearLayout>
 
     <LinearLayout
@@ -88,58 +78,49 @@
         android:padding="20dp">
 
         <TextView
-            android:id="@+id/textView19"
-            android:layout_width="wrap_content"
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:layout_gravity="center"
-            android:paddingLeft="60dp"
-            android:paddingRight="10dp"
+            android:layout_weight="0.6"
             android:text="인증번호"
             android:textAlignment="center"
-            android:textSize="16sp"
+            android:textSize="20sp"
             android:textStyle="bold" />
 
-        <EditText
-            android:id="@+id/editTextTextPostalAddress4"
-            android:layout_width="100dp"
-            android:layout_height="match_parent"
-            android:layout_gravity="center"
-            android:ems="10"
-            android:inputType="textPostalAddress"
-            android:paddingLeft="10dp"
-            android:paddingRight="60dp" />
+        <LinearLayout
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1">
 
-        <Button
-            android:id="@+id/button2"
-            android:layout_width="50dp"
-            android:layout_height="match_parent"
-            android:layout_marginRight="5dp"
-            android:background="#808080"
-            android:gravity="center"
-            android:text="인증 버튼"
-            android:textAlignment="center"
-            android:textColor="#FFFFFF"
-            android:textSize="10sp"
-            android:textStyle="bold" />
+            <EditText
+                android:id="@+id/phoneAuthEditText_register"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:layout_gravity="center"
+                android:inputType="number"
+                android:textSize="20sp" />
 
-        <Button
-            android:id="@+id/button3"
-            android:layout_width="50dp"
-            android:layout_height="match_parent"
-            android:background="#808080"
-            android:gravity="center"
-            android:text="확인"
-            android:textAlignment="center"
-            android:textColor="#FFFFFF"
-            android:textSize="10sp"
-            android:textStyle="bold" />
+            <Button
+                android:id="@+id/phoneAutoButton_register"
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="0.5"
+                android:background="#808080"
+                android:gravity="center"
+                android:text="전송"
+                android:textAlignment="center"
+                android:textColor="#FFFFFF"
+                android:textSize="15sp" />
+
+        </LinearLayout>
+
 
     </LinearLayout>
 
     <Button
-        android:id="@+id/button7"
+        android:id="@+id/continueToAddressButton"
         android:layout_width="250dp"
-        android:layout_height="30dp"
+        android:layout_height="wrap_content"
         android:layout_gravity="center"
         android:layout_marginTop="40dp"
         android:background="#808080"
@@ -147,8 +128,6 @@
         android:gravity="center"
         android:text="확인"
         android:textColor="#FFFFFF"
-        android:textSize="16sp"
-        android:textStyle="bold" />
-
+        android:textSize="20sp" />
 
 </LinearLayout>
