@@ -19,6 +19,18 @@
             android:name=".GuideActivity"
             android:exported="false" />
         <activity
+            android:name=".sign_up"
+            android:exported="false" />
+        <activity
+            android:name=".emergency_phone"
+            android:exported="false" />
+        <activity
+            android:name=".address"
+            android:exported="false" />
+        <activity
+            android:name=".log_in"
+            android:exported="false" />
+        <activity
             android:name=".MainActivity"
             android:exported="true">
             <intent-filter>
