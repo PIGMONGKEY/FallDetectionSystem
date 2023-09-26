@@ -57,39 +57,19 @@ public class HomeActivity extends AppCompatActivity {
      * @param id 선택된 항목의 아이디를 파라미터로 받는다. ex) R.id.home
      */
     private void setFrame(int id) {
-//        int 형의 아이디에서 문자열 값을 가져와 tag 생성
-        String tag = String.valueOf(id);
-        FragmentManager fragmentManager = getSupportFragmentManager();
-        FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
-        Fragment currentFragment = fragmentManager.getPrimaryNavigationFragment();
-
-//        현제 표시된 Fragment가 있다면, 숨긴다.
-        if (currentFragment != null) {
-            fragmentTransaction.hide(currentFragment);
-        }
-
-//        tag로 fragment를 찾는다.
-        Fragment newFragment = fragmentManager.findFragmentByTag(tag);
-//        이전에 열어보지 않은 fragment라면, 새로 생성하여 fragmentTransaction에 추가해준다.
-        if (newFragment == null) {
-            if (id == R.id.home) {
-                newFragment = new HomeFragment();
-            } else if (id == R.id.video) {
-                newFragment = new VideoFragment();
-            } else if (id == R.id.myPage) {
-                newFragment = new MyPageFragment();
-            }
-
-            fragmentTransaction.add(R.id.frameLayout, newFragment, tag);
+        Fragment newFragment;
+        if (id == R.id.home) {
+            newFragment = new HomeFragment();
+        } else if (id == R.id.video) {
+            newFragment = new VideoFragment();
         } else {
-//            이전에 추가한 fragment라면, 보여주기만 한다.
-            fragmentTransaction.show(newFragment);
+            newFragment = new MyPageFragment();
         }
 
-//        네비게이션 바에서 선택된 항목을  설정한다.
-        fragmentTransaction.setPrimaryNavigationFragment(newFragment);
-        fragmentTransaction.setReorderingAllowed(true);
-//        변경한 내용을 반영한다.
-        fragmentTransaction.commitNow();
+        FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
+        transaction.replace(R.id.frameLayout, newFragment);
+        transaction.addToBackStack(null);
+
+        transaction.commit();
     }
 }

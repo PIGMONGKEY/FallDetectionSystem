@@ -57,8 +57,21 @@ public class VideoFragment extends Fragment {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+    }
 
-        init();
+    @Override
+    public void onResume() {
+        super.onResume();
+
+//        비디오 출력은 주석 처리해놓겠습니다.
+//        init();
+    }
+
+    @Override
+    public void onPause() {
+        super.onPause();
+
+        socket.close(1000, "close");
     }
 
     @Override
