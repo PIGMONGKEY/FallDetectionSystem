@@ -11,7 +11,6 @@ import org.springframework.web.socket.TextMessage;
 import org.springframework.web.socket.WebSocketSession;
 import org.springframework.web.socket.handler.TextWebSocketHandler;
 
-import java.io.IOException;
 import java.util.*;
 
 @Component
@@ -39,15 +38,17 @@ public class VideoWebSocketHandler extends TextWebSocketHandler {
         try {
             JSONObject object = (JSONObject) jsonParser.parse(message.getPayload());
             String identifier = object.get("identifier").toString();
+            String cameraId = object.get("camera_id").toString();
+
             //        보내는 쪽일 때 - senderSessions에 put
             if (identifier.equals("sender")) {
-                senderSessions.put(object.get("camera_id").toString(), session.getId());
+                senderSessions.put(cameraId, session.getId());
                 sessions.put(session.getId(), session);
                 log.info("sender connected");
 
             //        받는 쪽일 때 - receiverSessions에 put
             } else if (identifier.equals("receiver")) {
-                receiverSessions.put(object.get("camera_id").toString(), session.getId());
+                receiverSessions.put(cameraId, session.getId());
                 sessions.put(session.getId(), session);
                 log.info("receiver connected");
 
@@ -57,6 +58,7 @@ public class VideoWebSocketHandler extends TextWebSocketHandler {
                 session.close();
             }
         } catch (Exception e) {
+            e.printStackTrace();
             session.close();
         }
     }
@@ -65,20 +67,36 @@ public class VideoWebSocketHandler extends TextWebSocketHandler {
     @Override
     protected void handleBinaryMessage(WebSocketSession session, BinaryMessage message) {
         try {
-            String caid = session.getHandshakeHeaders().get("camera_id").get(0);
-            WebSocketSession temp_session = sessions.get(receiverSessions.get(caid));
+            String cameraId = session.getHandshakeHeaders().get("camera_id").get(0);
+            WebSocketSession temp_session = sessions.get(receiverSessions.get(cameraId));
             temp_session.sendMessage(message);
-        } catch (IOException e) {
-//
-        } catch (NullPointerException e) {
-//
+        } catch (Exception e) {
+            e.printStackTrace();
         }
     }
 
 //    연결이 끊겼을 때
     @Override
     public void afterConnectionClosed(WebSocketSession session, CloseStatus status) throws Exception {
+//        HashMap<세션ID, 세션> 에서 삭제
         sessions.remove(session.getId());
-//        작업 필요
+
+//        receiver 세션 모음에 있으면 삭제 후 메소드 종료
+        for (Map.Entry<String, String> set : receiverSessions.entrySet()) {
+            if (set.getValue().equals(session.getId())) {
+                receiverSessions.remove(set.getKey());
+                log.info("receiver disconnected");
+                return;
+            }
+        }
+
+//        sender 세션 모음에 있으면 삭제 후 메소드 종료
+        for (Map.Entry<String, String> set : senderSessions.entrySet()) {
+            if (set.getValue().equals(session.getId())) {
+                senderSessions.remove(set.getKey());
+                log.info("sender disconnected");
+                return;
+            }
+        }
     }
 }

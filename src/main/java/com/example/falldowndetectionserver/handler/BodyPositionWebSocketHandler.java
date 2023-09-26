@@ -16,7 +16,7 @@ import java.util.Queue;
 @Slf4j
 @Component
 @RequiredArgsConstructor
-public class PythonWebSocketHandler extends TextWebSocketHandler {
+public class BodyPositionWebSocketHandler extends TextWebSocketHandler {
     private final ObjectMapper objectMapper;
     private Queue<PositionVO> positionVOQueue = new LinkedList<>();
 
