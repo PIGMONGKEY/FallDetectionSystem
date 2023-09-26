@@ -28,18 +28,18 @@ public class HomeActivity extends AppCompatActivity {
     }
 
 
-//     화면이 생성될 때 실행시켜줌으로써, 초기 설정을 한다.
+    //     화면이 생성될 때 실행시켜줌으로써, 초기 설정을 한다.
     private void init() {
         setViews();
         setBottomNavigationView();
     }
 
-//    findViewById 메소드를 이용해서 멤버 변수와 View를 연결한다.
+    //    findViewById 메소드를 이용해서 멤버 변수와 View를 연결한다.
     private void setViews() {
         bottomNavigationView = findViewById(R.id.bottomNavigationView);
     }
 
-//     하단 네비게이션 바 아이템 클릭 리스너 설정
+    //     하단 네비게이션 바 아이템 클릭 리스너 설정
     private void setBottomNavigationView() {
         bottomNavigationView.setOnItemSelectedListener(new NavigationBarView.OnItemSelectedListener() {
             @Override
