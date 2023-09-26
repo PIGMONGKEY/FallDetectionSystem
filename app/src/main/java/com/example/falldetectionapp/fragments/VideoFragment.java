@@ -48,7 +48,10 @@ public class VideoFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_video, container, false);
+        View view = inflater.inflate(R.layout.fragment_video, container, false);
+        setView(view);
+
+        return view;
     }
 
     @Override
@@ -66,8 +69,6 @@ public class VideoFragment extends Fragment {
     }
 
     private void init() {
-        setView();
-
         try {
             videoReceive();
         } catch (Exception e) {
@@ -75,8 +76,8 @@ public class VideoFragment extends Fragment {
         }
     }
 
-    private void setView() {
-        videoImageView = getActivity().findViewById(R.id.videoImageView);
+    private void setView(View view) {
+        videoImageView = view.findViewById(R.id.videoImageView);
     }
 
     private void videoReceive() throws InterruptedException {
