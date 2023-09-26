@@ -64,21 +64,25 @@ public class VideoFragment extends Fragment {
         super.onResume();
 
 //        비디오 출력은 주석 처리해놓겠습니다.
-//        init();
+        init();
     }
 
     @Override
     public void onPause() {
         super.onPause();
 
-        socket.close(1000, "close");
+        if (socket != null) {
+            socket.close(1000, "close");
+        }
     }
 
     @Override
     public void onDestroy() {
         super.onDestroy();
 
-        socket.close(1000, "close");
+        if (socket != null) {
+            socket.close(1000, "close");
+        }
     }
 
     private void init() {
