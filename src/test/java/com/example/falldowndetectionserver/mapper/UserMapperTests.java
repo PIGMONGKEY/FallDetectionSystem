@@ -19,24 +19,24 @@ public class UserMapperTests {
         userVO.setUserPassword("Dnjsgml0202?");
         userVO.setUserAddress("경기도 의정부시 호원동 현대아이파크 201-1201");
         userVO.setUserPhone("010-5729-2701");
-        userVO.setCameraId("cam02");
+        userVO.setCameraId("cam01");
 
         userMapper.insert(userVO);
     }
 
     @Test
     public void selectTest() {
-        log.info(userMapper.select(5).toString());
+        log.info(userMapper.select("cam01").toString());
     }
 
     @Test
     public void deleteTest() {
-        userMapper.delete(3);
+        userMapper.delete("cam01");
     }
 
     @Test
     public void updateTest() {
-        UserVO userVO = userMapper.select(5);
+        UserVO userVO = userMapper.select("cam01");
         userVO.setUserName("modified");
         userVO.setUserPassword("Dnjsgml0202?");
         userVO.setUserAddress("경기도 의정부시 호원동 현대아이파크 201-1201");

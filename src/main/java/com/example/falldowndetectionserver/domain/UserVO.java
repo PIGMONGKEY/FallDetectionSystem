@@ -6,7 +6,6 @@ import org.springframework.stereotype.Component;
 @Data
 @Component
 public class UserVO {
-    private int uno;
     private String cameraId;
     private String userName;
     private String userPassword;

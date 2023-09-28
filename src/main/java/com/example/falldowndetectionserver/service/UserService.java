@@ -5,7 +5,7 @@ import com.example.falldowndetectionserver.domain.UserVO;
 
 public interface UserService {
     public void registerUserInfo(UserDTO userDTO);
-    public UserDTO getUserInfo(int uno);
-    public void removeUserInfo(int uno);
+    public UserDTO getUserInfo(String cameraId);
+    public void removeUserInfo(String cameraId);
     public void modifyUserInfo(UserDTO userDTO);
 }

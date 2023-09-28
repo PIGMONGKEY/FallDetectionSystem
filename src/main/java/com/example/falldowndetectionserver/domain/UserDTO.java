@@ -8,7 +8,6 @@ import java.util.List;
 @Data
 @Component
 public class UserDTO {
-    private int uno;
     private String cameraId;
     private String userName;
     private String userPassword;

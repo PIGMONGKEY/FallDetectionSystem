@@ -35,12 +35,12 @@ public class ServiceTests {
 
     @Test
     public void getUserInfoTest() {
-        log.info(userService.getUserInfo(4).toString());
+        log.info(userService.getUserInfo("cam01").toString());
     }
 
     @Test
     public void removeUserInfoTest() {
-        userService.removeUserInfo(3);
+        userService.removeUserInfo("cam01");
     }
 
     @Test
@@ -49,7 +49,7 @@ public class ServiceTests {
         phones.add("010-6-12345436543");
         phones.add("010-2345-234654334565");
 
-        UserDTO userDTO = userService.getUserInfo(8);
+        UserDTO userDTO = userService.getUserInfo("cam01");
         userDTO.setUserPassword("Vkfkdshfkd12?");
         userDTO.setUserAddress("경기도 의정부시 호원동 현대아이파크 201-1201");
         userDTO.setUserPhone("010-5729-2701");

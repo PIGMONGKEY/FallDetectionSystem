@@ -7,19 +7,19 @@
     </insert>
 
     <select id="select" resultType="userVO">
-        SELECT UNO, CAMERA_ID, USER_NAME, USER_PASSWORD, USER_PHONE, USER_ADDRESS, REGDATE, UPDATEDATE
+        SELECT CAMERA_ID, USER_NAME, USER_PASSWORD, USER_PHONE, USER_ADDRESS, REGDATE, UPDATEDATE
         FROM TBL_USER
-        WHERE UNO = #{uno};
+        WHERE CAMERA_ID = #{cameraId};
     </select>
 
     <delete id="delete">
         DELETE FROM TBL_USER
-        WHERE UNO = #{uno};
+        WHERE CAMERA_ID = #{cameraId};
     </delete>
 
     <update id="update">
         UPDATE TBL_USER
         SET USER_NAME = #{userName}, USER_PASSWORD = #{userPassword}, USER_PHONE = #{userPhone}, USER_ADDRESS = #{userAddress}, UPDATEDATE = NOW()
-        WHERE UNO = #{uno};
+        WHERE CAMERA_ID = #{cameraId};
     </update>
 </mapper>

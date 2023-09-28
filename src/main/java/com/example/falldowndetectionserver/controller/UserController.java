@@ -14,12 +14,12 @@ public class UserController {
 
     /**
      * 사용자 정보를 받아옴
-     * @param uno PK인 UNO를 전달해준다
+     * @param cameraId PK인 UNO를 전달해준다
      * @return 결과 UserVO를 JSON 형태로 리턴한다.
      */
     @GetMapping("info")
-    public UserDTO getUserInfo(int uno) {
-        return userService.getUserInfo(uno);
+    public UserDTO getUserInfo(String cameraId) {
+        return userService.getUserInfo(cameraId);
     }
 
     /**
@@ -33,11 +33,11 @@ public class UserController {
 
     /**
      * 등록된 사용자 삭제
-     * @param uno PK인 UNO를 전달하면 삭제함
+     * @param cameraId PK인 UNO를 전달하면 삭제함
      */
     @DeleteMapping("remove")
-    public void removeUserInfo(int uno) {
-        userService.removeUserInfo(uno);
+    public void removeUserInfo(String cameraId) {
+        userService.removeUserInfo(cameraId);
     }
 
     /**

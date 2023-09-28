@@ -35,11 +35,10 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public UserDTO getUserInfo(int uno) {
-        UserVO userVO = userDao.select(uno);
+    public UserDTO getUserInfo(String cameraId) {
+        UserVO userVO = userDao.select(cameraId);
         UserDTO userDTO = new UserDTO();
 
-        userDTO.setUno(uno);
         userDTO.setCameraId(userVO.getCameraId());
         userDTO.setUserPassword(userVO.getUserPassword());
         userDTO.setUserName(userVO.getUserName());
@@ -53,8 +52,8 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public void removeUserInfo(int uno) {
-        userDao.delete(uno);
+    public void removeUserInfo(String cameraId) {
+        userDao.delete(cameraId);
     }
 
     @Override
@@ -62,7 +61,6 @@ public class UserServiceImpl implements UserService {
         UserVO userVO = new UserVO();
         NokPhoneVO nokPhoneVO = new NokPhoneVO();
 
-        userVO.setUno(userDTO.getUno());
         userVO.setCameraId(userDTO.getCameraId());
         userVO.setUserPassword(userDTO.getUserPassword());
         userVO.setUserName(userDTO.getUserName());

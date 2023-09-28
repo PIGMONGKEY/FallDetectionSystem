@@ -26,12 +26,12 @@ public class UserDaoTests {
 
     @Test
     public void selectTest() {
-        userDao.select(3);
+        userDao.select("cam01");
     }
 
     @Test
     public void deleteTest() {
-        userDao.delete(4);
+        userDao.delete("cam01");
     }
 
     @Test

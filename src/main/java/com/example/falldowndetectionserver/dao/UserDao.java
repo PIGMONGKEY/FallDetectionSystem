@@ -14,12 +14,12 @@ public class UserDao {
         userMapper.insert(userVO);
     }
 
-    public UserVO select(int uno) {
-        return userMapper.select(uno);
+    public UserVO select(String cameraId) {
+        return userMapper.select(cameraId);
     }
 
-    public void delete(int uno) {
-        userMapper.delete(uno);
+    public void delete(String cameraId) {
+        userMapper.delete(cameraId);
     }
 
     public void update(UserVO userVO) {
