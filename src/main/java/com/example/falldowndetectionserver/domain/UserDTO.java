@@ -16,6 +16,5 @@ public class UserDTO {
     private String userAddress;
     private String regdate;
     private String updatedate;
-
     private List<String> nokPhones;
 }
