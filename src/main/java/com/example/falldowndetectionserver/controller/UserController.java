@@ -1,5 +1,6 @@
 package com.example.falldowndetectionserver.controller;
 
+import com.example.falldowndetectionserver.domain.UserDTO;
 import com.example.falldowndetectionserver.domain.UserVO;
 import com.example.falldowndetectionserver.service.UserService;
 import lombok.RequiredArgsConstructor;
@@ -17,7 +18,7 @@ public class UserController {
      * @return 결과 UserVO를 JSON 형태로 리턴한다.
      */
     @GetMapping("info")
-    public UserVO getUserInfo(int uno) {
+    public UserDTO getUserInfo(int uno) {
         return userService.getUserInfo(uno);
     }
 

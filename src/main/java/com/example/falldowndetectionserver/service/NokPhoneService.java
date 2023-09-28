@@ -9,5 +9,5 @@ import java.util.List;
 public interface NokPhoneService {
     public void registerNokPhone(NokPhoneVO nokPhoneVO);
     public void removeNokPhone(int uno);
-    public List<NokPhoneVO> getAllNokPhone(int uno);
+    public List<String> getAllNokPhone(int uno);
 }

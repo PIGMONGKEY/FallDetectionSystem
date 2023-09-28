@@ -26,7 +26,7 @@ public class ServiceTests {
 
     @Test
     public void getUserInfoTest() {
-        userService.getUserInfo(3);
+        log.info(userService.getUserInfo(4).toString());
     }
 
     @Test
@@ -34,15 +34,15 @@ public class ServiceTests {
         userService.removeUserInfo(3);
     }
 
-    @Test
-    public void modifyUserInfoTest() {
-        UserVO userVO = userService.getUserInfo(3);
-        userVO.setUserName("이원희희");
-        userVO.setUserPassword("Vkfkdshfkd12?");
-        userVO.setUserAddress("경기도 의정부시 호원동 현대아이파크 201-1201");
-        userVO.setUserPhone("010-5729-2701");
-        userVO.setCameraId("cam02");
-
-        userService.modifyUserInfo(userVO);
-    }
+//    @Test
+//    public void modifyUserInfoTest() {
+//        UserVO userVO = userService.getUserInfo(3);
+//        userVO.setUserName("이원희희");
+//        userVO.setUserPassword("Vkfkdshfkd12?");
+//        userVO.setUserAddress("경기도 의정부시 호원동 현대아이파크 201-1201");
+//        userVO.setUserPhone("010-5729-2701");
+//        userVO.setCameraId("cam02");
+//
+//        userService.modifyUserInfo(userVO);
+//    }
 }

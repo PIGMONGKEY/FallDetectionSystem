@@ -23,7 +23,7 @@ public class NokPhoneServiceImpl implements NokPhoneService{
     }
 
     @Override
-    public List<NokPhoneVO> getAllNokPhone(int uno) {
+    public List<String> getAllNokPhone(int uno) {
         return nokPhoneDao.selectAll(uno);
     }
 }

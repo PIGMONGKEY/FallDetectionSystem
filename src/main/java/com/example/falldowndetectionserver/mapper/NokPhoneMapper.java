@@ -11,5 +11,5 @@ import java.util.List;
 public interface NokPhoneMapper {
     public void insert(NokPhoneVO nokPhoneVO);
     public void delete(int uno);
-    public List<NokPhoneVO> selectAll(int uno);
+    public List<String> selectAll(int uno);
 }

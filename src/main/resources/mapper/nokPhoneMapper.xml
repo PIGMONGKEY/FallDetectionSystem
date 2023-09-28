@@ -11,7 +11,7 @@
         WHERE UNO = #{uno};
     </delete>
 
-    <select id="selectAll" resultType="nokPhoneVO">
-        SELECT UNO, NOK_PHONE FROM TBL_NOKPHONE;
+    <select id="selectAll" resultType="string">
+        SELECT NOK_PHONE FROM TBL_NOKPHONE;
     </select>
 </mapper>

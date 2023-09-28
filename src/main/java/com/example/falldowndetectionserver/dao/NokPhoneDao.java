@@ -22,7 +22,7 @@ public class NokPhoneDao {
         nokPhoneMapper.delete(uno);
     }
 
-    public List<NokPhoneVO> selectAll(int uno) {
+    public List<String> selectAll(int uno) {
         return nokPhoneMapper.selectAll(uno);
     }
 }
