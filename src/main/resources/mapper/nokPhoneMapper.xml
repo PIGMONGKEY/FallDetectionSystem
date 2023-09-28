@@ -2,16 +2,17 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0/EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.example.falldowndetectionserver.mapper.NokPhoneMapper">
     <insert id="insert">
-        INSERT TBL_NOKPHONE (UNO, NOK_PHONE)
-               VALUES (#{uno}, #{nokPhone});
+        INSERT TBL_NOKPHONE (CAMERA_ID, NOK_PHONE)
+               VALUES (#{cameraId}, #{nokPhone});
     </insert>
 
     <delete id="delete">
         DELETE FROM TBL_NOKPHONE
-        WHERE UNO = #{uno};
+        WHERE CAMERA_ID = #{cameraId};
     </delete>
 
     <select id="selectAll" resultType="string">
-        SELECT NOK_PHONE FROM TBL_NOKPHONE;
+        SELECT NOK_PHONE FROM TBL_NOKPHONE
+        WHERE CAMERA_ID = #{cameraId};
     </select>
 </mapper>

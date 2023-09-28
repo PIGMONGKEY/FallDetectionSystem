@@ -6,6 +6,6 @@ import org.springframework.stereotype.Component;
 @Data
 @Component
 public class NokPhoneVO {
-    private int uno;
+    private String cameraId;
     private String nokPhone;
 }

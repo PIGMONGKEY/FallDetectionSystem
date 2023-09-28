@@ -16,18 +16,18 @@ public class NokPhoneMapperTests {
     public void insertTest() {
         NokPhoneVO nokPhoneVO = new NokPhoneVO();
         nokPhoneVO.setNokPhone("010-1234-1234");
-        nokPhoneVO.setUno(4);
+        nokPhoneVO.setCameraId("cam01");
 
         nokPhoneMapper.insert(nokPhoneVO);
     }
 
     @Test
     public void selectTest() {
-        nokPhoneMapper.selectAll(4);
+        nokPhoneMapper.selectAll("cam01");
     }
 
     @Test
     public void deleteTest() {
-        nokPhoneMapper.delete(4);
+        nokPhoneMapper.delete("cam01");
     }
 }

@@ -16,18 +16,18 @@ public class NokPhoneDaoTests {
     public void insertTest() {
         NokPhoneVO nokPhoneVO = new NokPhoneVO();
         nokPhoneVO.setNokPhone("010-1234-1234");
-        nokPhoneVO.setUno(4);
+        nokPhoneVO.setCameraId("cam01");
 
         nokPhoneDao.insert(nokPhoneVO);
     }
 
     @Test
     public void selectAllTest() {
-        nokPhoneDao.selectAll(4);
+        nokPhoneDao.selectAll("cam01");
     }
 
     @Test
     public void deleteTest() {
-        nokPhoneDao.delete(4);
+        nokPhoneDao.delete("cam01");
     }
 }

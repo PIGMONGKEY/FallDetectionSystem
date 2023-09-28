@@ -18,11 +18,11 @@ public class NokPhoneDao {
         nokPhoneMapper.insert(nokPhoneVO);
     }
 
-    public void delete(int uno) {
-        nokPhoneMapper.delete(uno);
+    public void delete(String cameraId) {
+        nokPhoneMapper.delete(cameraId);
     }
 
-    public List<String> selectAll(int uno) {
-        return nokPhoneMapper.selectAll(uno);
+    public List<String> selectAll(String cameraId) {
+        return nokPhoneMapper.selectAll(cameraId);
     }
 }

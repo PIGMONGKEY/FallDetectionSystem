@@ -24,14 +24,14 @@ public class UserServiceImpl implements UserService {
         UserDTO userDTO = new UserDTO();
 
         userDTO.setUno(uno);
-        userDTO.setUserName(userVO.getUserName());
+        userDTO.setCameraId(userVO.getCameraId());
         userDTO.setUserPassword(userVO.getUserPassword());
+        userDTO.setUserName(userVO.getUserName());
         userDTO.setUserAddress(userVO.getUserAddress());
         userDTO.setUserPhone(userVO.getUserPhone());
         userDTO.setRegdate(userVO.getRegdate());
         userDTO.setUpdatedate(userVO.getUpdatedate());
-        userDTO.setCameraId(userVO.getCameraId());
-        userDTO.setNokPhones(nokPhoneDao.selectAll(uno));
+        userDTO.setNokPhones(nokPhoneDao.selectAll(userVO.getCameraId()));
 
         return userDTO;
     }
