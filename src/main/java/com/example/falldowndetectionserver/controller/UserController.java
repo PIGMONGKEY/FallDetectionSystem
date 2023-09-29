@@ -27,8 +27,15 @@ public class UserController {
      * @param userDTO UserVO 형태로 삽입할 데이터를 받아와야 함
      */
     @PostMapping("register")
-    public void registerNewUser(@RequestBody UserDTO userDTO) {
-        userService.registerUserInfo(userDTO);
+    public String registerNewUser(@RequestBody UserDTO userDTO) {
+        int code = userService.registerUserInfo(userDTO);
+        if (code == 1) {
+            return "success";
+        } else if (code == -1) {
+            return "user fail";
+        } else {
+            return "nokphone fail";
+        }
     }
 
     /**
@@ -36,8 +43,12 @@ public class UserController {
      * @param cameraId PK인 UNO를 전달하면 삭제함
      */
     @DeleteMapping("remove")
-    public void removeUserInfo(String cameraId) {
-        userService.removeUserInfo(cameraId);
+    public String removeUserInfo(String cameraId) {
+        if (userService.removeUserInfo(cameraId) == 1) {
+            return "success";
+        } else {
+            return "fail";
+        }
     }
 
     /**
@@ -45,7 +56,14 @@ public class UserController {
      * @param userDTO UserVO 형태로 받아와야 하며, 모든 멤버를 다 체워야 한다.
      */
     @PutMapping("modify")
-    public void modifyUserInfo(@RequestBody UserDTO userDTO) {
-        userService.modifyUserInfo(userDTO);
+    public String modifyUserInfo(@RequestBody UserDTO userDTO) {
+        int code = userService.modifyUserInfo(userDTO);
+        if (code == 1) {
+            return "success";
+        } else if (code == -1) {
+            return "user fail";
+        } else {
+            return "nokphone fail";
+        }
     }
 }

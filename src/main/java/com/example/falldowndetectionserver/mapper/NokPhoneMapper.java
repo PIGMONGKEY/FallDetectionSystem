@@ -9,7 +9,7 @@ import java.util.List;
 @Mapper
 @Component
 public interface NokPhoneMapper {
-    public void insert(NokPhoneVO nokPhoneVO);
-    public void delete(String cameraId);
+    public int insert(NokPhoneVO nokPhoneVO);
+    public int delete(String cameraId);
     public List<String> selectAll(String cameraId);
 }

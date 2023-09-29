@@ -10,19 +10,31 @@ import org.springframework.stereotype.Repository;
 public class UserDao {
     private final UserMapper userMapper;
 
-    public void insert(UserVO userVO) {
-        userMapper.insert(userVO);
+    public int insert(UserVO userVO) {
+        try {
+            return userMapper.insert(userVO);
+        } catch (Exception e) {
+            return -1;
+        }
     }
 
     public UserVO select(String cameraId) {
         return userMapper.select(cameraId);
     }
 
-    public void delete(String cameraId) {
-        userMapper.delete(cameraId);
+    public int delete(String cameraId) {
+        try {
+            return userMapper.delete(cameraId);
+        } catch (Exception e) {
+            return -1;
+        }
     }
 
-    public void update(UserVO userVO) {
-        userMapper.update(userVO);
+    public int update(UserVO userVO) {
+        try {
+            return userMapper.update(userVO);
+        } catch (Exception e) {
+            return -1;
+        }
     }
 }

@@ -14,12 +14,20 @@ import java.util.List;
 public class NokPhoneDao {
     private final NokPhoneMapper nokPhoneMapper;
 
-    public void insert(NokPhoneVO nokPhoneVO) {
-        nokPhoneMapper.insert(nokPhoneVO);
+    public int insert(NokPhoneVO nokPhoneVO) {
+        try {
+            return nokPhoneMapper.insert(nokPhoneVO);
+        } catch (Exception e) {
+            return -1;
+        }
     }
 
-    public void delete(String cameraId) {
-        nokPhoneMapper.delete(cameraId);
+    public int delete(String cameraId) {
+        try {
+            return nokPhoneMapper.delete(cameraId);
+        } catch (Exception e) {
+            return -1;
+        }
     }
 
     public List<String> selectAll(String cameraId) {
