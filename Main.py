@@ -22,7 +22,7 @@ cap = cv2.VideoCapture(0)
 
 
 # WebSocket을 통해 서버로 연결하고, Opencv를 이용해 웹캠으로 찍은 영상을 프레임 단위로 전송
-async def send_position():
+async def main():
     # localhost:10000/video 로 연결한 WebSocket을 websocket이라는 이름으로 사용
     async with websockets.connect("ws://localhost:10000/position", extra_headers=EXTRA_HEADER) as position_socket:
         async with websockets.connect("ws://localhost:10000/video", extra_headers=EXTRA_HEADER) as video_socket:
@@ -85,4 +85,4 @@ async def encode_image_and_send(frame, video_socket):
 
 
 if __name__ == "__main__":
-    asyncio.get_event_loop().run_until_complete(send_position())
+    asyncio.get_event_loop().run_until_complete(main())
