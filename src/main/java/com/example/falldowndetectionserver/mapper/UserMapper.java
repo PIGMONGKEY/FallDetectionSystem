@@ -15,14 +15,14 @@ public interface UserMapper {
 
     /**
      *
-     * @param uno primary key인 uno만 넘겨주면 됨
+     * @param cameraId primary key인 uno만 넘겨주면 됨
      * @return UserVO형태로 리턴함
      */
     public UserVO select(String cameraId);
 
     /**
      *
-     * @param uno primary key인 uno만 넘겨주면 됨
+     * @param cameraId primary key인 uno만 넘겨주면 됨
      */
     public void delete(String cameraId);
 
