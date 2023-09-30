@@ -18,12 +18,12 @@ import java.util.*;
 @RequiredArgsConstructor
 public class VideoWebSocketHandler extends TextWebSocketHandler {
     private final JSONParser jsonParser = new JSONParser();
-//    카메라ID, 세션ID
-    private final HashMap<String, String> senderSessions = new HashMap<>();
-//    카메라ID, 세션ID
-    private final HashMap<String, String> receiverSessions = new HashMap<>();
-//    세션ID, 세션
-    private final HashMap<String, WebSocketSession> sessions = new HashMap<>();
+
+//    카메라ID, 세션(receiver)
+    private final HashMap<String, WebSocketSession> receiverSessions = new HashMap<>();
+
+//    세션ID(sender), 카메라ID
+    private final HashMap<String, String> senderCameraIDs = new HashMap<>();
 
 //    연결 되었을 때
     @Override
@@ -39,23 +39,23 @@ public class VideoWebSocketHandler extends TextWebSocketHandler {
             JSONObject object = (JSONObject) jsonParser.parse(message.getPayload());
             String identifier = object.get("identifier").toString();
             String cameraId = object.get("camera_id").toString();
+            String sessionId = session.getId();
 
             //        보내는 쪽일 때 - senderSessions에 put
             if (identifier.equals("sender")) {
-                senderSessions.put(cameraId, session.getId());
-                sessions.put(session.getId(), session);
-                log.info("sender connected");
+                senderCameraIDs.put(sessionId, cameraId);
+                log.info("sender connected - " + cameraId);
 
             //        받는 쪽일 때 - receiverSessions에 put
             } else if (identifier.equals("receiver")) {
-                receiverSessions.put(cameraId, session.getId());
-                sessions.put(session.getId(), session);
-                log.info("receiver connected");
+                receiverSessions.put(cameraId, session);
+                log.info("receiver connected - " + cameraId);
 
             //        이상한 놈일 때 - 연결 종료
             //        TextMessage로 JSON이 아닌 메시지를 보내면 연결이 끊기게 되어 있음
             } else {
                 session.close();
+                log.info("stranger");
             }
         } catch (Exception e) {
             e.printStackTrace();
@@ -69,8 +69,9 @@ public class VideoWebSocketHandler extends TextWebSocketHandler {
         try {
             String cameraId = session.getHandshakeHeaders().get("camera_id").get(0);
             if (receiverSessions.containsKey(cameraId)) {
-                WebSocketSession temp_session = sessions.get(receiverSessions.get(cameraId));
-                temp_session.sendMessage(message);
+                receiverSessions
+                        .get(cameraId)
+                        .sendMessage(message);
             }
         } catch (Exception e) {
             e.printStackTrace();
@@ -80,25 +81,17 @@ public class VideoWebSocketHandler extends TextWebSocketHandler {
 //    연결이 끊겼을 때
     @Override
     public void afterConnectionClosed(WebSocketSession session, CloseStatus status) throws Exception {
-//        HashMap<세션ID, 세션> 에서 삭제
-        sessions.remove(session.getId());
-
-//        receiver 세션 모음에 있으면 삭제 후 메소드 종료
-        for (Map.Entry<String, String> set : receiverSessions.entrySet()) {
-            if (set.getValue().equals(session.getId())) {
-                receiverSessions.remove(set.getKey());
-                log.info("receiver disconnected");
-                return;
+        if (senderCameraIDs.getOrDefault(session.getId(), "none").equals("none")) {
+            for (Map.Entry<String, WebSocketSession> hash : receiverSessions.entrySet()) {
+                if (hash.getValue().equals(session)) {
+                    receiverSessions.remove(hash.getKey());
+                    log.info("receiver disconnected - " + hash.getKey());
+                    return;
+                }
             }
-        }
-
-//        sender 세션 모음에 있으면 삭제 후 메소드 종료
-        for (Map.Entry<String, String> set : senderSessions.entrySet()) {
-            if (set.getValue().equals(session.getId())) {
-                senderSessions.remove(set.getKey());
-                log.info("sender disconnected");
-                return;
-            }
+        } else {
+            log.info("sender disconnected - " + senderCameraIDs.get(session.getId()));
+            senderCameraIDs.remove(session.getId());
         }
     }
 }
