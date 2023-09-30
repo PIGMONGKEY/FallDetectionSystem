@@ -20,7 +20,7 @@ public class UserServiceImpl implements UserService {
      * @return 모두 성공하면 1, User실패는 -1, NokPhone 실패는 -2를 리턴한다.
      */
     @Override
-    public int registerUserInfo(UserDTO userDTO) {
+    public String signup(UserDTO userDTO) {
         UserVO userVO = new UserVO();
 
         userVO.setCameraId(userDTO.getCameraId());
@@ -30,7 +30,7 @@ public class UserServiceImpl implements UserService {
         userVO.setUserAddress(userDTO.getUserAddress());
 
         if (userDao.insert(userVO) != 1) {
-            return -1;
+            return "User Fail";
         }
 
         NokPhoneVO nokPhoneVO = new NokPhoneVO();
@@ -38,11 +38,11 @@ public class UserServiceImpl implements UserService {
         for (String nokPhone : userDTO.getNokPhones()) {
             nokPhoneVO.setNokPhone(nokPhone);
             if (nokPhoneDao.insert(nokPhoneVO) != 1) {
-                return -2;
+                return "NokPhone Fail";
             }
         }
 
-        return 1;
+        return "Success";
     }
 
     /**

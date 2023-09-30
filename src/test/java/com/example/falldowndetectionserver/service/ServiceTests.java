@@ -1,7 +1,6 @@
 package com.example.falldowndetectionserver.service;
 
 import com.example.falldowndetectionserver.domain.UserDTO;
-import com.example.falldowndetectionserver.domain.UserVO;
 import lombok.extern.slf4j.Slf4j;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -30,7 +29,7 @@ public class ServiceTests {
         userDTO.setCameraId("cam03");
         userDTO.setNokPhones(phones);
 
-        userService.registerUserInfo(userDTO);
+        userService.signup(userDTO);
     }
 
     @Test

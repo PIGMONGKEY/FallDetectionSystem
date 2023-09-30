@@ -4,16 +4,20 @@ import com.example.falldowndetectionserver.jwt.JwtAccessDeniedHandler;
 import com.example.falldowndetectionserver.jwt.JwtAuthenticationEntryPoint;
 import com.example.falldowndetectionserver.jwt.JwtFilter;
 import com.example.falldowndetectionserver.jwt.TokenProvider;
+
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.boot.autoconfigure.security.servlet.PathRequest;
+
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
+
 import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
+
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 
@@ -55,11 +59,9 @@ public class WebSecurityConfig {
 
                 .and()
                 .authorizeHttpRequests() // HttpServletRequest를 사용하는 요청들에 대한 접근제한을 설정하겠다.
-                .requestMatchers("/user/").permitAll() // 로그인 api
-                .requestMatchers("/api/signup").permitAll() // 회원가입 api
-                .requestMatchers(PathRequest.toH2Console()).permitAll()// h2-console, favicon.ico 요청 인증 무시
-                .requestMatchers("/favicon.ico").permitAll()
-                .anyRequest().authenticated() // 그 외 인증 없이 접근X
+                .antMatchers("/user/register").permitAll()
+                .antMatchers("/user/login").permitAll()
+                .anyRequest().authenticated()
 
                 .and()
                 .addFilterBefore(new JwtFilter(tokenProvider), UsernamePasswordAuthenticationFilter.class)

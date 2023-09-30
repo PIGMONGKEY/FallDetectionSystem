@@ -1,16 +1,29 @@
 package com.example.falldowndetectionserver.controller;
 
+import com.example.falldowndetectionserver.domain.LoginDTO;
+import com.example.falldowndetectionserver.domain.TokenDTO;
 import com.example.falldowndetectionserver.domain.UserDTO;
-import com.example.falldowndetectionserver.domain.UserVO;
+import com.example.falldowndetectionserver.jwt.JwtFilter;
+import com.example.falldowndetectionserver.jwt.TokenProvider;
 import com.example.falldowndetectionserver.service.UserService;
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.HttpHeaders;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.*;
+
 
 @RestController
 @RequiredArgsConstructor
 @RequestMapping("/user/")
 public class UserController {
     private final UserService userService;
+    private final TokenProvider tokenProvider;
+    private final AuthenticationManagerBuilder authenticationManagerBuilder;
 
     /**
      * 사용자 정보를 받아옴
@@ -23,19 +36,31 @@ public class UserController {
     }
 
     /**
-     * 새로운 사용자 등록
+     * 회원가입
      * @param userDTO UserVO 형태로 삽입할 데이터를 받아와야 함
+     * @return 성공 시 OK 보내줌
      */
     @PostMapping("register")
-    public String registerNewUser(@RequestBody UserDTO userDTO) {
-        int code = userService.registerUserInfo(userDTO);
-        if (code == 1) {
-            return "success";
-        } else if (code == -1) {
-            return "user fail";
-        } else {
-            return "nokphone fail";
-        }
+    public ResponseEntity<String> signup(@RequestBody UserDTO userDTO) {
+        return ResponseEntity.ok(userService.signup(userDTO));
+    }
+
+    @PostMapping("login")
+    public ResponseEntity<TokenDTO> login(@RequestBody LoginDTO loginDTO) {
+        UsernamePasswordAuthenticationToken authenticationToken =
+                new UsernamePasswordAuthenticationToken(loginDTO.getCamearId(), loginDTO.getPassword());
+
+        Authentication authentication = authenticationManagerBuilder
+                .getObject()
+                .authenticate(authenticationToken);
+
+        SecurityContextHolder.getContext().setAuthentication(authentication);
+        String jwt = tokenProvider.createToken(authentication);
+
+        HttpHeaders httpHeaders = new HttpHeaders();
+        httpHeaders.add(JwtFilter.AUTHORIZATION_HEADER, "Bearer " + jwt);
+
+        return new ResponseEntity<>(new TokenDTO(jwt), httpHeaders, HttpStatus.OK);
     }
 
     /**
