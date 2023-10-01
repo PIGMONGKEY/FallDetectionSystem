@@ -1,8 +1,10 @@
 package com.example.falldowndetectionserver.mapper;
 
-import com.example.falldowndetectionserver.domain.UserVO;
+import com.example.falldowndetectionserver.domain.vo.UserVO;
 import org.apache.ibatis.annotations.Mapper;
 import org.springframework.stereotype.Component;
+
+import java.util.Optional;
 
 @Mapper
 @Component
@@ -18,7 +20,7 @@ public interface UserMapper {
      * @param cameraId primary key인 uno만 넘겨주면 됨
      * @return UserVO형태로 리턴함
      */
-    public UserVO select(String cameraId);
+    public Optional<UserVO> select(String cameraId);
 
     /**
      *

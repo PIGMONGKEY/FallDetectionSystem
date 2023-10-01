@@ -1,4 +1,4 @@
-package com.example.falldowndetectionserver.domain;
+package com.example.falldowndetectionserver.domain.vo;
 
 import lombok.Data;
 import org.springframework.stereotype.Component;
@@ -13,4 +13,5 @@ public class UserVO {
     private String userAddress;
     private String regdate;
     private String updatedate;
+    private String userRole;
 }

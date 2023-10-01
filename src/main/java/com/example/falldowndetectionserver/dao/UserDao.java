@@ -1,9 +1,11 @@
 package com.example.falldowndetectionserver.dao;
 
-import com.example.falldowndetectionserver.domain.UserVO;
+import com.example.falldowndetectionserver.domain.vo.UserVO;
 import com.example.falldowndetectionserver.mapper.UserMapper;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Repository;
+
+import java.util.Optional;
 
 @Repository
 @RequiredArgsConstructor
@@ -18,7 +20,7 @@ public class UserDao {
         }
     }
 
-    public UserVO select(String cameraId) {
+    public Optional<UserVO> select(String cameraId) {
         return userMapper.select(cameraId);
     }
 

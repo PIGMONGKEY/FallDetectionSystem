@@ -2,9 +2,9 @@ package com.example.falldowndetectionserver.service;
 
 import com.example.falldowndetectionserver.dao.NokPhoneDao;
 import com.example.falldowndetectionserver.dao.UserDao;
-import com.example.falldowndetectionserver.domain.NokPhoneVO;
-import com.example.falldowndetectionserver.domain.UserDTO;
-import com.example.falldowndetectionserver.domain.UserVO;
+import com.example.falldowndetectionserver.domain.vo.NokPhoneVO;
+import com.example.falldowndetectionserver.domain.dto.UserDTO;
+import com.example.falldowndetectionserver.domain.vo.UserVO;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -52,17 +52,23 @@ public class UserServiceImpl implements UserService {
      */
     @Override
     public UserDTO getUserInfo(String cameraId) {
-        UserVO userVO = userDao.select(cameraId);
+        UserVO userVO = userDao.select(cameraId).orElse(null);
         UserDTO userDTO = new UserDTO();
 
-        userDTO.setCameraId(userVO.getCameraId());
-        userDTO.setUserPassword(userVO.getUserPassword());
-        userDTO.setUserName(userVO.getUserName());
-        userDTO.setUserAddress(userVO.getUserAddress());
-        userDTO.setUserPhone(userVO.getUserPhone());
-        userDTO.setRegdate(userVO.getRegdate());
-        userDTO.setUpdatedate(userVO.getUpdatedate());
-        userDTO.setNokPhones(nokPhoneDao.selectAll(userVO.getCameraId()));
+        if (userVO != null) {
+            userDTO.setCameraId(userVO.getCameraId());
+            userDTO.setUserPassword(userVO.getUserPassword());
+            userDTO.setUserName(userVO.getUserName());
+            userDTO.setUserAddress(userVO.getUserAddress());
+            userDTO.setUserPhone(userVO.getUserPhone());
+            userDTO.setRegdate(userVO.getRegdate());
+            userDTO.setUpdatedate(userVO.getUpdatedate());
+            userDTO.setUserRole(userVO.getUserRole());
+            userDTO.setNokPhones(nokPhoneDao.selectAll(userVO.getCameraId()));
+            userDTO.setRequestSuccess(true);
+        } else {
+            userDTO.setRequestSuccess(false);
+        }
 
         return userDTO;
     }

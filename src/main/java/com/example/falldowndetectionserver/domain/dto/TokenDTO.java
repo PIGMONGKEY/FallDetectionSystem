@@ -1,4 +1,4 @@
-package com.example.falldowndetectionserver.domain;
+package com.example.falldowndetectionserver.domain.dto;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;

@@ -1,6 +1,6 @@
 package com.example.falldowndetectionserver.mapper;
 
-import com.example.falldowndetectionserver.domain.NokPhoneVO;
+import com.example.falldowndetectionserver.domain.vo.NokPhoneVO;
 import org.apache.ibatis.annotations.Mapper;
 import org.springframework.stereotype.Component;
 

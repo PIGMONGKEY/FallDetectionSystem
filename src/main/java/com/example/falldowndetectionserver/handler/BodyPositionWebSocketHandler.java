@@ -1,6 +1,6 @@
 package com.example.falldowndetectionserver.handler;
 
-import com.example.falldowndetectionserver.domain.PositionVO;
+import com.example.falldowndetectionserver.domain.vo.PositionVO;
 import com.example.falldowndetectionserver.fallDownDetect.FallDownDetector;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.RequiredArgsConstructor;

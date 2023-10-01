@@ -1,6 +1,6 @@
 package com.example.falldowndetectionserver.dao;
 
-import com.example.falldowndetectionserver.domain.NokPhoneVO;
+import com.example.falldowndetectionserver.domain.vo.NokPhoneVO;
 import com.example.falldowndetectionserver.mapper.NokPhoneMapper;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;

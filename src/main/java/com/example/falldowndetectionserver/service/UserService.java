@@ -1,6 +1,6 @@
 package com.example.falldowndetectionserver.service;
 
-import com.example.falldowndetectionserver.domain.UserDTO;
+import com.example.falldowndetectionserver.domain.dto.UserDTO;
 
 public interface UserService {
     public String signup(UserDTO userDTO);

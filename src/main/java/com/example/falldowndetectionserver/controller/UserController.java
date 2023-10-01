@@ -1,20 +1,23 @@
 package com.example.falldowndetectionserver.controller;
 
-import com.example.falldowndetectionserver.domain.LoginDTO;
-import com.example.falldowndetectionserver.domain.TokenDTO;
-import com.example.falldowndetectionserver.domain.UserDTO;
+import com.example.falldowndetectionserver.domain.dto.LoginDTO;
+import com.example.falldowndetectionserver.domain.dto.TokenDTO;
+import com.example.falldowndetectionserver.domain.dto.UserDTO;
 import com.example.falldowndetectionserver.jwt.JwtFilter;
 import com.example.falldowndetectionserver.jwt.TokenProvider;
 import com.example.falldowndetectionserver.service.UserService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.*;
+
+import java.nio.charset.Charset;
 
 
 @RestController
@@ -31,8 +34,12 @@ public class UserController {
      * @return 결과 UserVO를 JSON 형태로 리턴한다.
      */
     @GetMapping("info")
-    public UserDTO getUserInfo(String cameraId) {
-        return userService.getUserInfo(cameraId);
+    public ResponseEntity<UserDTO> getUserInfo(String cameraId) {
+        UserDTO userDTO = userService.getUserInfo(cameraId);
+        HttpHeaders httpHeaders = new HttpHeaders();
+        httpHeaders.setContentType(new MediaType("application", "json", Charset.forName("UTF-8")));
+
+        return new ResponseEntity<>(userDTO, httpHeaders, HttpStatus.OK);
     }
 
     /**
@@ -40,7 +47,7 @@ public class UserController {
      * @param userDTO UserVO 형태로 삽입할 데이터를 받아와야 함
      * @return 성공 시 OK 보내줌
      */
-    @PostMapping("register")
+    @PostMapping("signup")
     public ResponseEntity<String> signup(@RequestBody UserDTO userDTO) {
         return ResponseEntity.ok(userService.signup(userDTO));
     }
@@ -48,7 +55,7 @@ public class UserController {
     @PostMapping("login")
     public ResponseEntity<TokenDTO> login(@RequestBody LoginDTO loginDTO) {
         UsernamePasswordAuthenticationToken authenticationToken =
-                new UsernamePasswordAuthenticationToken(loginDTO.getCamearId(), loginDTO.getPassword());
+                new UsernamePasswordAuthenticationToken(loginDTO.getCameraId(), loginDTO.getPassword());
 
         Authentication authentication = authenticationManagerBuilder
                 .getObject()

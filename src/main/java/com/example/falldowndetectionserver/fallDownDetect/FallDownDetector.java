@@ -1,7 +1,6 @@
 package com.example.falldowndetectionserver.fallDownDetect;
 
-import com.example.falldowndetectionserver.domain.PositionVO;
-import lombok.Data;
+import com.example.falldowndetectionserver.domain.vo.PositionVO;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.extern.slf4j.Slf4j;

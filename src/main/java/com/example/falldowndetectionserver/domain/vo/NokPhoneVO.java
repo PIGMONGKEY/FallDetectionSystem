@@ -1,4 +1,4 @@
-package com.example.falldowndetectionserver.domain;
+package com.example.falldowndetectionserver.domain.vo;
 
 import lombok.Data;
 import org.springframework.stereotype.Component;
