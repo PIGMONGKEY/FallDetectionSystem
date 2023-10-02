@@ -6,6 +6,6 @@ import lombok.Data;
 @Data
 @Builder
 public class LoginDTO {
-    private String cameraId;
-    private String password;
+    private final String cameraId;
+    private final String password;
 }

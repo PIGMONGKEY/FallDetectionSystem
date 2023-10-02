@@ -10,6 +10,7 @@ import com.example.falldowndetectionserver.domain.vo.UserVO;
 import com.example.falldowndetectionserver.jwt.JwtFilter;
 import com.example.falldowndetectionserver.jwt.TokenProvider;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -23,6 +24,7 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.concurrent.TimeUnit;
 
 @Service
 @RequiredArgsConstructor
@@ -32,6 +34,7 @@ public class UserServiceImpl implements UserService {
     private final PasswordEncoder passwordEncoder;
     private final TokenProvider tokenProvider;
     private final AuthenticationManagerBuilder authenticationManagerBuilder;
+    private final RedisTemplate<String, Object> redisTemplate;
 
     /**
      * 새로운 사용자를 등록하는 서비스
@@ -85,11 +88,22 @@ public class UserServiceImpl implements UserService {
             return TokenDTO.builder()
                     .token(jwt)
                     .build();
+//            TokenDTO tokenDTO = new TokenDTO();
+//            tokenDTO.setToken(jwt);
+//            return tokenDTO;
         } catch (BadCredentialsException e) {
             return TokenDTO.builder()
                     .token("fail")
                     .build();
+//            TokenDTO tokenDTO = new TokenDTO();
+//            tokenDTO.setToken("fail");
+//            return tokenDTO;
         }
+    }
+
+    @Override
+    public void logout(TokenDTO tokenDTO) {
+        redisTemplate.opsForValue().set(tokenDTO.getToken(), "logout", tokenProvider.getExpiration(tokenDTO.getToken()), TimeUnit.MILLISECONDS);
     }
 
     /**

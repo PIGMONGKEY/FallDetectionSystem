@@ -9,14 +9,14 @@ import java.util.List;
 @Data
 @Builder
 public class UserDTO {
-    private Boolean requestSuccess;
-    private String cameraId;
-    private String userName;
-    private String userPassword;
-    private String userPhone;
-    private String userAddress;
-    private String regdate;
-    private String updatedate;
-    private String userRole;
-    private List<String> nokPhones;
+    private final Boolean requestSuccess;
+    private final String cameraId;
+    private final String userName;
+    private final String userPassword;
+    private final String userPhone;
+    private final String userAddress;
+    private final String regdate;
+    private final String updatedate;
+    private final String userRole;
+    private final List<String> nokPhones;
 }

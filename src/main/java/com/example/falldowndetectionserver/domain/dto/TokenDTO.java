@@ -1,12 +1,12 @@
 package com.example.falldowndetectionserver.domain.dto;
 
-import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
+import lombok.extern.jackson.Jacksonized;
 
 @Data
 @Builder
-@AllArgsConstructor
+@Jacksonized
 public class TokenDTO {
-    private String token;
+    private final String token;
 }
