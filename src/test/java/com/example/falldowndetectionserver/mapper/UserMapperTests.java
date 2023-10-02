@@ -36,7 +36,7 @@ public class UserMapperTests {
 
     @Test
     public void updateTest() {
-        UserVO userVO = userMapper.select("cam01");
+        UserVO userVO = userMapper.select("cam01").get();
         userVO.setUserName("modified");
         userVO.setUserPassword("Dnjsgml0202?");
         userVO.setUserAddress("경기도 의정부시 호원동 현대아이파크 201-1201");

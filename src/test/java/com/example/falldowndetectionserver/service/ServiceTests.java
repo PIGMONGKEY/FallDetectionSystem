@@ -17,17 +17,19 @@ public class ServiceTests {
 
     @Test
     public void registerTest() {
-        UserDTO userDTO = new UserDTO();
+        UserDTO userDTO;
         List<String> phones = new ArrayList<>();
         phones.add("010-1234-1234");
         phones.add("010-2345-2345");
 
-        userDTO.setUserName("이원희");
-        userDTO.setUserPassword("Dnjsgml0202?");
-        userDTO.setUserAddress("경기도 의정부시 호원동 현대아이파크 201-1201");
-        userDTO.setUserPhone("010-5729-2701");
-        userDTO.setCameraId("cam03");
-        userDTO.setNokPhones(phones);
+        userDTO = UserDTO.builder()
+                .userName("이원희")
+                .userPassword("Dnjsgml0202?")
+                .userAddress("경기도 의정부시 호원동 현대아이파크 201-1201")
+                .userPhone("010-5729-2701")
+                .cameraId("cam03")
+                .nokPhones(phones)
+                .build();
 
         userService.signup(userDTO);
     }
