@@ -60,7 +60,7 @@ public class WebSecurityConfig {
                 .and()
                 .authorizeHttpRequests() // HttpServletRequest를 사용하는 요청들에 대한 접근제한을 설정하겠다.
                 .antMatchers("/user/signup").permitAll()
-                .antMatchers("/user/login").permitAll()
+                .antMatchers("/auth/login").permitAll()
                 .anyRequest().authenticated()
 
                 .and()

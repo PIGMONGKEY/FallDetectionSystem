@@ -32,8 +32,12 @@ public class UserServiceImpl implements UserService {
         userVO.setUserPhone(userDTO.getUserPhone());
         userVO.setUserAddress(userDTO.getUserAddress());
 
+        if (userDao.select(userVO.getCameraId()).orElseGet(null) != null) {
+            return "Registered CameraId";
+        }
+
         if (userDao.insert(userVO) != 1) {
-            return "User Fail";
+            return "User Register Error";
         }
 
         NokPhoneVO nokPhoneVO = new NokPhoneVO();
@@ -41,7 +45,7 @@ public class UserServiceImpl implements UserService {
         for (String nokPhone : userDTO.getNokPhones()) {
             nokPhoneVO.setNokPhone(nokPhone);
             if (nokPhoneDao.insert(nokPhoneVO) != 1) {
-                return "NokPhone Fail";
+                return "NokPhone Register Error";
             }
         }
 

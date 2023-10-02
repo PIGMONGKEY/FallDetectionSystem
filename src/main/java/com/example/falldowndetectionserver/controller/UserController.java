@@ -12,6 +12,7 @@ import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
@@ -19,8 +20,7 @@ import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.*;
 
-import java.nio.charset.Charset;
-
+import java.nio.charset.StandardCharsets;
 
 @RestController
 @RequiredArgsConstructor
@@ -28,22 +28,6 @@ import java.nio.charset.Charset;
 @Slf4j
 public class UserController {
     private final UserService userService;
-    private final TokenProvider tokenProvider;
-    private final AuthenticationManagerBuilder authenticationManagerBuilder;
-
-    /**
-     * 사용자 정보를 받아옴
-     * @param cameraId PK인 UNO를 전달해준다
-     * @return 결과 UserVO를 JSON 형태로 리턴한다.
-     */
-    @GetMapping("info")
-    public ResponseEntity<UserDTO> getUserInfo(String cameraId) {
-        UserDTO userDTO = userService.getUserInfo(cameraId);
-        HttpHeaders httpHeaders = new HttpHeaders();
-        httpHeaders.setContentType(new MediaType("application", "json", Charset.forName("UTF-8")));
-
-        return new ResponseEntity<>(userDTO, httpHeaders, HttpStatus.OK);
-    }
 
     /**
      * 회원가입
@@ -55,26 +39,19 @@ public class UserController {
         return ResponseEntity.ok(userService.signup(userDTO));
     }
 
-    @PostMapping("login")
-    public ResponseEntity<TokenDTO> login(@RequestBody LoginDTO loginDTO) {
-        UsernamePasswordAuthenticationToken authenticationToken =
-                new UsernamePasswordAuthenticationToken(loginDTO.getCameraId(), loginDTO.getPassword());
-        try {
-            Authentication authentication = authenticationManagerBuilder
-                    .getObject()
-                    .authenticate(authenticationToken);
+    /**
+     * 사용자 정보를 받아옴
+     * @param cameraId PK인 UNO를 전달해준다
+     * @return 결과 UserVO를 JSON 형태로 리턴한다.
+     */
+    @GetMapping("info")
+    @PreAuthorize("hasAnyRole('USER', 'ADMIN')")
+    public ResponseEntity<UserDTO> getUserInfo(String cameraId) {
+        UserDTO userDTO = userService.getUserInfo(cameraId);
+        HttpHeaders httpHeaders = new HttpHeaders();
+        httpHeaders.setContentType(new MediaType("application", "json", StandardCharsets.UTF_8));
 
-            SecurityContextHolder.getContext().setAuthentication(authentication);
-            String jwt = tokenProvider.createToken(authentication);
-
-            HttpHeaders httpHeaders = new HttpHeaders();
-            httpHeaders.add(JwtFilter.AUTHORIZATION_HEADER, "Bearer " + jwt);
-
-            return new ResponseEntity<>(new TokenDTO(jwt), httpHeaders, HttpStatus.OK);
-        } catch (BadCredentialsException e) {
-            e.printStackTrace();
-            return ResponseEntity.ok(new TokenDTO("fail"));
-        }
+        return new ResponseEntity<>(userDTO, httpHeaders, HttpStatus.OK);
     }
 
     /**
@@ -82,11 +59,12 @@ public class UserController {
      * @param cameraId PK인 UNO를 전달하면 삭제함
      */
     @DeleteMapping("remove")
-    public String removeUserInfo(String cameraId) {
+    @PreAuthorize("hasAnyRole('USER', 'ADMIN')")
+    public ResponseEntity<String> removeUserInfo(String cameraId) {
         if (userService.removeUserInfo(cameraId) == 1) {
-            return "success";
+            return ResponseEntity.ok("Success");
         } else {
-            return "fail";
+            return ResponseEntity.ok("Fail");
         }
     }
 
@@ -95,14 +73,15 @@ public class UserController {
      * @param userDTO UserVO 형태로 받아와야 하며, 모든 멤버를 다 체워야 한다.
      */
     @PutMapping("modify")
-    public String modifyUserInfo(@RequestBody UserDTO userDTO) {
+    @PreAuthorize("hasAnyRole('USER', 'ADMIN')")
+    public ResponseEntity<String> modifyUserInfo(@RequestBody UserDTO userDTO) {
         int code = userService.modifyUserInfo(userDTO);
         if (code == 1) {
-            return "success";
+            return ResponseEntity.ok("Success");
         } else if (code == -1) {
-            return "user fail";
+            return ResponseEntity.ok("User Fail");
         } else {
-            return "nokphone fail";
+            return ResponseEntity.ok("NokPhone Fail");
         }
     }
 }
