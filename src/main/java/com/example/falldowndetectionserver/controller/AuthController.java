@@ -3,6 +3,7 @@ package com.example.falldowndetectionserver.controller;
 import com.example.falldowndetectionserver.domain.dto.LoginDTO;
 import com.example.falldowndetectionserver.domain.dto.TokenDTO;
 import com.example.falldowndetectionserver.jwt.JwtFilter;
+import com.example.falldowndetectionserver.jwt.TokenProvider;
 import com.example.falldowndetectionserver.service.UserService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -21,6 +22,7 @@ import org.springframework.web.bind.annotation.RestController;
 @Slf4j
 public class AuthController {
     private final UserService userService;
+    private final TokenProvider tokenProvider;
 
     /**
      * 로그인하는 메소드
@@ -41,7 +43,6 @@ public class AuthController {
     @PostMapping("logout")
     @PreAuthorize("hasAnyRole('USER', 'ADMIN')")
     public ResponseEntity<String> logout(@RequestBody TokenDTO tokenDTO) {
-        log.info(tokenDTO.getToken());
         userService.logout(tokenDTO);
         return ResponseEntity.ok("Success");
     }

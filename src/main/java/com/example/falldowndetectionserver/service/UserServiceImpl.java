@@ -23,6 +23,7 @@ import org.springframework.security.core.userdetails.User;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
+import java.util.Date;
 import java.util.List;
 import java.util.concurrent.TimeUnit;
 
@@ -103,7 +104,7 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public void logout(TokenDTO tokenDTO) {
-        redisTemplate.opsForValue().set(tokenDTO.getToken(), "logout", tokenProvider.getExpiration(tokenDTO.getToken()), TimeUnit.MILLISECONDS);
+        redisTemplate.opsForValue().set(tokenDTO.getToken(), "logout", tokenProvider.getExpiration(tokenDTO.getToken()) - new Date().getTime(), TimeUnit.MILLISECONDS);
     }
 
     /**
