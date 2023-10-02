@@ -48,6 +48,9 @@ public class UserController {
     @PreAuthorize("hasAnyRole('USER', 'ADMIN')")
     public ResponseEntity<UserDTO> getUserInfo(String cameraId) {
         UserDTO userDTO = userService.getUserInfo(cameraId);
+        if (userDTO == null) {
+
+        }
         HttpHeaders httpHeaders = new HttpHeaders();
         httpHeaders.setContentType(new MediaType("application", "json", StandardCharsets.UTF_8));
 
@@ -61,11 +64,7 @@ public class UserController {
     @DeleteMapping("remove")
     @PreAuthorize("hasAnyRole('USER', 'ADMIN')")
     public ResponseEntity<String> removeUserInfo(String cameraId) {
-        if (userService.removeUserInfo(cameraId) == 1) {
-            return ResponseEntity.ok("Success");
-        } else {
-            return ResponseEntity.ok("Fail");
-        }
+        return ResponseEntity.ok(userService.removeUserInfo(cameraId));
     }
 
     /**
@@ -75,13 +74,6 @@ public class UserController {
     @PutMapping("modify")
     @PreAuthorize("hasAnyRole('USER', 'ADMIN')")
     public ResponseEntity<String> modifyUserInfo(@RequestBody UserDTO userDTO) {
-        int code = userService.modifyUserInfo(userDTO);
-        if (code == 1) {
-            return ResponseEntity.ok("Success");
-        } else if (code == -1) {
-            return ResponseEntity.ok("User Fail");
-        } else {
-            return ResponseEntity.ok("NokPhone Fail");
-        }
+        return ResponseEntity.ok(userService.modifyUserInfo(userDTO));
     }
 }

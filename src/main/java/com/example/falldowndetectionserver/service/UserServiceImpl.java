@@ -10,6 +10,8 @@ import org.springframework.security.core.userdetails.User;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
+
 @Service
 @RequiredArgsConstructor
 public class UserServiceImpl implements UserService {
@@ -54,15 +56,17 @@ public class UserServiceImpl implements UserService {
 
     /**
      * 사용자 정보를 불러오는 서비스
-     * @param cameraId 카메라 아이디로 불러온다.
+     * @param cameraId 카메라 아이디로 UserDao.select와 NokPhoneDao.selectAll을 호출한다.
      * @return 불러온 정보를 UserDTO 형태로 리턴한다.
+     * userVO 또는 nokPhones가 null일 경우, UserDTO의 requestSuccess를 false로 설정하여 리턴한다.
      */
     @Override
     public UserDTO getUserInfo(String cameraId) {
         UserVO userVO = userDao.select(cameraId).orElse(null);
+        List<String> nokPhones = nokPhoneDao.selectAll(cameraId);
         UserDTO userDTO;
 
-        if (userVO != null) {
+        if (userVO != null && !nokPhones.isEmpty()) {
             userDTO = UserDTO.builder()
                     .requestSuccess(true)
                     .cameraId(userVO.getCameraId())
@@ -73,7 +77,7 @@ public class UserServiceImpl implements UserService {
                     .userRole(userVO.getUserRole())
                     .regdate(userVO.getRegdate())
                     .updatedate(userVO.getUpdatedate())
-                    .nokPhones(nokPhoneDao.selectAll(cameraId))
+                    .nokPhones(nokPhones)
                     .build();
         } else {
             userDTO = UserDTO.builder()
@@ -90,8 +94,12 @@ public class UserServiceImpl implements UserService {
      * @return 삭제 성공 시엔 1을 리턴한다.
      */
     @Override
-    public int removeUserInfo(String cameraId) {
-        return userDao.delete(cameraId);
+    public String removeUserInfo(String cameraId) {
+        if (userDao.delete(cameraId) != 1) {
+            return "Fail";
+        } else {
+            return "Success";
+        }
     }
 
     /**
@@ -100,7 +108,7 @@ public class UserServiceImpl implements UserService {
      * @return 삭제 성공시 1, User 실패시 -1, NokPhone 실패시 -2 리턴한다.
      */
     @Override
-    public int modifyUserInfo(UserDTO userDTO) {
+    public String modifyUserInfo(UserDTO userDTO) {
         UserVO userVO = new UserVO();
         NokPhoneVO nokPhoneVO = new NokPhoneVO();
 
@@ -111,7 +119,7 @@ public class UserServiceImpl implements UserService {
         userVO.setUserAddress(userDTO.getUserAddress());
 
         if (userDao.update(userVO) != 1) {
-            return -1;
+            return "User Update Fail";
         }
 
         nokPhoneDao.delete(userDTO.getCameraId());
@@ -119,10 +127,10 @@ public class UserServiceImpl implements UserService {
         for (String nokPhone : userDTO.getNokPhones()) {
             nokPhoneVO.setNokPhone(nokPhone);
             if (nokPhoneDao.insert(nokPhoneVO) != 1) {
-                return -2;
+                return "NokPhone Update Fail";
             }
         }
 
-        return 1;
+        return "Success";
     }
 }
