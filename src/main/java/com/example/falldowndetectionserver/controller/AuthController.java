@@ -24,8 +24,7 @@ import org.springframework.web.bind.annotation.RestController;
 @RequiredArgsConstructor
 @RequestMapping("/auth/")
 public class AuthController {
-    private final TokenProvider tokenProvider;
-    private final AuthenticationManagerBuilder authenticationManagerBuilder;
+    private final UserService userService;
 
     /**
      * 로그인하는 메소드
@@ -35,22 +34,11 @@ public class AuthController {
      */
     @PostMapping("login")
     public ResponseEntity<TokenDTO> login(@RequestBody LoginDTO loginDTO) {
-        UsernamePasswordAuthenticationToken authenticationToken =
-                new UsernamePasswordAuthenticationToken(loginDTO.getCameraId(), loginDTO.getPassword());
-        try {
-            Authentication authentication = authenticationManagerBuilder
-                    .getObject()
-                    .authenticate(authenticationToken);
+        TokenDTO tokenDTO = userService.login(loginDTO);
 
-            SecurityContextHolder.getContext().setAuthentication(authentication);
-            String jwt = tokenProvider.createToken(authentication);
+        HttpHeaders httpHeaders = new HttpHeaders();
+        httpHeaders.add(JwtFilter.AUTHORIZATION_HEADER, "Bearer " + tokenDTO.getToken());
 
-            HttpHeaders httpHeaders = new HttpHeaders();
-            httpHeaders.add(JwtFilter.AUTHORIZATION_HEADER, "Bearer " + jwt);
-
-            return new ResponseEntity<>(new TokenDTO(jwt), httpHeaders, HttpStatus.OK);
-        } catch (BadCredentialsException e) {
-            return ResponseEntity.ok(new TokenDTO("fail"));
-        }
+        return new ResponseEntity<>(tokenDTO, httpHeaders, HttpStatus.OK);
     }
 }

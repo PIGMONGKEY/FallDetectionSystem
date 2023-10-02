@@ -2,10 +2,22 @@ package com.example.falldowndetectionserver.service;
 
 import com.example.falldowndetectionserver.dao.NokPhoneDao;
 import com.example.falldowndetectionserver.dao.UserDao;
+import com.example.falldowndetectionserver.domain.dto.LoginDTO;
+import com.example.falldowndetectionserver.domain.dto.TokenDTO;
 import com.example.falldowndetectionserver.domain.vo.NokPhoneVO;
 import com.example.falldowndetectionserver.domain.dto.UserDTO;
 import com.example.falldowndetectionserver.domain.vo.UserVO;
+import com.example.falldowndetectionserver.jwt.JwtFilter;
+import com.example.falldowndetectionserver.jwt.TokenProvider;
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.HttpHeaders;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
+import org.springframework.security.authentication.BadCredentialsException;
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.User;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
@@ -18,6 +30,8 @@ public class UserServiceImpl implements UserService {
     private final UserDao userDao;
     private final NokPhoneDao nokPhoneDao;
     private final PasswordEncoder passwordEncoder;
+    private final TokenProvider tokenProvider;
+    private final AuthenticationManagerBuilder authenticationManagerBuilder;
 
     /**
      * 새로운 사용자를 등록하는 서비스
@@ -54,6 +68,28 @@ public class UserServiceImpl implements UserService {
         }
 
         return "Success";
+    }
+
+    @Override
+    public TokenDTO login(LoginDTO loginDTO) {
+        UsernamePasswordAuthenticationToken authenticationToken =
+                new UsernamePasswordAuthenticationToken(loginDTO.getCameraId(), loginDTO.getPassword());
+        try {
+            Authentication authentication = authenticationManagerBuilder
+                    .getObject()
+                    .authenticate(authenticationToken);
+
+            SecurityContextHolder.getContext().setAuthentication(authentication);
+            String jwt = tokenProvider.createToken(authentication);
+
+            return TokenDTO.builder()
+                    .token(jwt)
+                    .build();
+        } catch (BadCredentialsException e) {
+            return TokenDTO.builder()
+                    .token("fail")
+                    .build();
+        }
     }
 
     /**
