@@ -6,6 +6,8 @@ import com.example.falldowndetectionserver.domain.vo.NokPhoneVO;
 import com.example.falldowndetectionserver.domain.dto.UserDTO;
 import com.example.falldowndetectionserver.domain.vo.UserVO;
 import lombok.RequiredArgsConstructor;
+import org.springframework.security.core.userdetails.User;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 @Service
@@ -13,6 +15,7 @@ import org.springframework.stereotype.Service;
 public class UserServiceImpl implements UserService {
     private final UserDao userDao;
     private final NokPhoneDao nokPhoneDao;
+    private final PasswordEncoder passwordEncoder;
 
     /**
      * 새로운 사용자를 등록하는 서비스
@@ -24,7 +27,7 @@ public class UserServiceImpl implements UserService {
         UserVO userVO = new UserVO();
 
         userVO.setCameraId(userDTO.getCameraId());
-        userVO.setUserPassword(userDTO.getUserPassword());
+        userVO.setUserPassword(passwordEncoder.encode(userDTO.getUserPassword()));
         userVO.setUserName(userDTO.getUserName());
         userVO.setUserPhone(userDTO.getUserPhone());
         userVO.setUserAddress(userDTO.getUserAddress());
@@ -53,21 +56,25 @@ public class UserServiceImpl implements UserService {
     @Override
     public UserDTO getUserInfo(String cameraId) {
         UserVO userVO = userDao.select(cameraId).orElse(null);
-        UserDTO userDTO = new UserDTO();
+        UserDTO userDTO;
 
         if (userVO != null) {
-            userDTO.setCameraId(userVO.getCameraId());
-            userDTO.setUserPassword(userVO.getUserPassword());
-            userDTO.setUserName(userVO.getUserName());
-            userDTO.setUserAddress(userVO.getUserAddress());
-            userDTO.setUserPhone(userVO.getUserPhone());
-            userDTO.setRegdate(userVO.getRegdate());
-            userDTO.setUpdatedate(userVO.getUpdatedate());
-            userDTO.setUserRole(userVO.getUserRole());
-            userDTO.setNokPhones(nokPhoneDao.selectAll(userVO.getCameraId()));
-            userDTO.setRequestSuccess(true);
+            userDTO = UserDTO.builder()
+                    .requestSuccess(true)
+                    .cameraId(userVO.getCameraId())
+                    .userPassword(userVO.getUserPassword())
+                    .userName(userVO.getUserName())
+                    .userAddress(userVO.getUserAddress())
+                    .userPhone(userVO.getUserPhone())
+                    .userRole(userVO.getUserRole())
+                    .regdate(userVO.getRegdate())
+                    .updatedate(userVO.getUpdatedate())
+                    .nokPhones(nokPhoneDao.selectAll(cameraId))
+                    .build();
         } else {
-            userDTO.setRequestSuccess(false);
+            userDTO = UserDTO.builder()
+                    .requestSuccess(false)
+                    .build();
         }
 
         return userDTO;

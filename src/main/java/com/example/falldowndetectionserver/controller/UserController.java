@@ -7,10 +7,12 @@ import com.example.falldowndetectionserver.jwt.JwtFilter;
 import com.example.falldowndetectionserver.jwt.TokenProvider;
 import com.example.falldowndetectionserver.service.UserService;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.core.Authentication;
@@ -23,6 +25,7 @@ import java.nio.charset.Charset;
 @RestController
 @RequiredArgsConstructor
 @RequestMapping("/user/")
+@Slf4j
 public class UserController {
     private final UserService userService;
     private final TokenProvider tokenProvider;
@@ -56,18 +59,22 @@ public class UserController {
     public ResponseEntity<TokenDTO> login(@RequestBody LoginDTO loginDTO) {
         UsernamePasswordAuthenticationToken authenticationToken =
                 new UsernamePasswordAuthenticationToken(loginDTO.getCameraId(), loginDTO.getPassword());
+        try {
+            Authentication authentication = authenticationManagerBuilder
+                    .getObject()
+                    .authenticate(authenticationToken);
 
-        Authentication authentication = authenticationManagerBuilder
-                .getObject()
-                .authenticate(authenticationToken);
+            SecurityContextHolder.getContext().setAuthentication(authentication);
+            String jwt = tokenProvider.createToken(authentication);
 
-        SecurityContextHolder.getContext().setAuthentication(authentication);
-        String jwt = tokenProvider.createToken(authentication);
+            HttpHeaders httpHeaders = new HttpHeaders();
+            httpHeaders.add(JwtFilter.AUTHORIZATION_HEADER, "Bearer " + jwt);
 
-        HttpHeaders httpHeaders = new HttpHeaders();
-        httpHeaders.add(JwtFilter.AUTHORIZATION_HEADER, "Bearer " + jwt);
-
-        return new ResponseEntity<>(new TokenDTO(jwt), httpHeaders, HttpStatus.OK);
+            return new ResponseEntity<>(new TokenDTO(jwt), httpHeaders, HttpStatus.OK);
+        } catch (BadCredentialsException e) {
+            e.printStackTrace();
+            return ResponseEntity.ok(new TokenDTO("fail"));
+        }
     }
 
     /**
