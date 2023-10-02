@@ -26,24 +26,26 @@ public class UserServiceImpl implements UserService {
      */
     @Override
     public String signup(UserDTO userDTO) {
-        UserVO userVO = new UserVO();
-
-        userVO.setCameraId(userDTO.getCameraId());
-        userVO.setUserPassword(passwordEncoder.encode(userDTO.getUserPassword()));
-        userVO.setUserName(userDTO.getUserName());
-        userVO.setUserPhone(userDTO.getUserPhone());
-        userVO.setUserAddress(userDTO.getUserAddress());
-
-        if (userDao.select(userVO.getCameraId()).orElseGet(null) != null) {
+        if (!userDao.select(userDTO.getCameraId()).isEmpty()) {
             return "Registered CameraId";
         }
+
+        UserVO userVO = UserVO.builder()
+                .cameraId(userDTO.getCameraId())
+                .userPassword(passwordEncoder.encode(userDTO.getUserPassword()))
+                .userName(userDTO.getUserName())
+                .userAddress(userDTO.getUserAddress())
+                .userPhone(userDTO.getUserPhone())
+                .build();
 
         if (userDao.insert(userVO) != 1) {
             return "User Register Error";
         }
 
-        NokPhoneVO nokPhoneVO = new NokPhoneVO();
-        nokPhoneVO.setCameraId(userDTO.getCameraId());
+        NokPhoneVO nokPhoneVO = NokPhoneVO.builder()
+                .cameraId(userDTO.getCameraId())
+                .build();
+
         for (String nokPhone : userDTO.getNokPhones()) {
             nokPhoneVO.setNokPhone(nokPhone);
             if (nokPhoneDao.insert(nokPhoneVO) != 1) {
@@ -109,21 +111,21 @@ public class UserServiceImpl implements UserService {
      */
     @Override
     public String modifyUserInfo(UserDTO userDTO) {
-        UserVO userVO = new UserVO();
-        NokPhoneVO nokPhoneVO = new NokPhoneVO();
-
-        userVO.setCameraId(userDTO.getCameraId());
-        userVO.setUserPassword(userDTO.getUserPassword());
-        userVO.setUserName(userDTO.getUserName());
-        userVO.setUserPhone(userDTO.getUserPhone());
-        userVO.setUserAddress(userDTO.getUserAddress());
+        UserVO userVO = UserVO.builder()
+                .cameraId(userDTO.getCameraId())
+                .userPassword(passwordEncoder.encode(userDTO.getUserPassword()))
+                .userName(userDTO.getUserName())
+                .userAddress(userDTO.getUserAddress())
+                .userPhone(userDTO.getUserPhone())
+                .build();
 
         if (userDao.update(userVO) != 1) {
             return "User Update Fail";
         }
 
         nokPhoneDao.delete(userDTO.getCameraId());
-        nokPhoneVO.setCameraId(userDTO.getCameraId());
+        NokPhoneVO nokPhoneVO = NokPhoneVO.builder().cameraId(userDTO.getCameraId()).build();
+
         for (String nokPhone : userDTO.getNokPhones()) {
             nokPhoneVO.setNokPhone(nokPhone);
             if (nokPhoneDao.insert(nokPhoneVO) != 1) {
