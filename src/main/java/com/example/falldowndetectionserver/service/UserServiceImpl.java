@@ -33,9 +33,6 @@ public class UserServiceImpl implements UserService {
     private final UserDao userDao;
     private final NokPhoneDao nokPhoneDao;
     private final PasswordEncoder passwordEncoder;
-    private final TokenProvider tokenProvider;
-    private final AuthenticationManagerBuilder authenticationManagerBuilder;
-    private final RedisTemplate<String, Object> redisTemplate;
 
     /**
      * 새로운 사용자를 등록하는 서비스
@@ -72,33 +69,6 @@ public class UserServiceImpl implements UserService {
         }
 
         return "Success";
-    }
-
-    @Override
-    public TokenDTO login(LoginDTO loginDTO) {
-        UsernamePasswordAuthenticationToken authenticationToken =
-                new UsernamePasswordAuthenticationToken(loginDTO.getCameraId(), loginDTO.getPassword());
-        try {
-            Authentication authentication = authenticationManagerBuilder
-                    .getObject()
-                    .authenticate(authenticationToken);
-
-            SecurityContextHolder.getContext().setAuthentication(authentication);
-            String jwt = tokenProvider.createToken(authentication);
-
-            return TokenDTO.builder()
-                    .token(jwt)
-                    .build();
-        } catch (BadCredentialsException e) {
-            return TokenDTO.builder()
-                    .token("fail")
-                    .build();
-        }
-    }
-
-    @Override
-    public void logout(TokenDTO tokenDTO) {
-        redisTemplate.opsForValue().set(tokenDTO.getToken(), "logout", tokenProvider.getExpiration(tokenDTO.getToken()) - new Date().getTime(), TimeUnit.MILLISECONDS);
     }
 
     /**

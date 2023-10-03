@@ -4,6 +4,7 @@ import com.example.falldowndetectionserver.domain.dto.LoginDTO;
 import com.example.falldowndetectionserver.domain.dto.TokenDTO;
 import com.example.falldowndetectionserver.jwt.JwtFilter;
 import com.example.falldowndetectionserver.jwt.TokenProvider;
+import com.example.falldowndetectionserver.service.AuthService;
 import com.example.falldowndetectionserver.service.UserService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -21,8 +22,7 @@ import org.springframework.web.bind.annotation.RestController;
 @RequestMapping("/auth/")
 @Slf4j
 public class AuthController {
-    private final UserService userService;
-    private final TokenProvider tokenProvider;
+    private final AuthService authService;
 
     /**
      * 로그인하는 메소드
@@ -32,7 +32,7 @@ public class AuthController {
      */
     @PostMapping("login")
     public ResponseEntity<TokenDTO> login(@RequestBody LoginDTO loginDTO) {
-        TokenDTO tokenDTO = userService.login(loginDTO);
+        TokenDTO tokenDTO = authService.login(loginDTO);
 
         HttpHeaders httpHeaders = new HttpHeaders();
         httpHeaders.add(JwtFilter.AUTHORIZATION_HEADER, "Bearer " + tokenDTO.getToken());
@@ -48,7 +48,7 @@ public class AuthController {
     @PostMapping("logout")
     @PreAuthorize("hasAnyRole('USER', 'ADMIN')")
     public ResponseEntity<String> logout(@RequestBody TokenDTO tokenDTO) {
-        userService.logout(tokenDTO);
+        authService.logout(tokenDTO);
         return ResponseEntity.ok("Success");
     }
 
