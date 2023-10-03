@@ -115,7 +115,7 @@ public class UserServiceImpl implements UserService {
 
         if (userVO != null && !nokPhones.isEmpty()) {
             userDTO = UserDTO.builder()
-                    .requestSuccess(true)
+                    .requestSuccess("Success")
                     .cameraId(userVO.getCameraId())
                     .userPassword(userVO.getUserPassword())
                     .userName(userVO.getUserName())
@@ -128,7 +128,7 @@ public class UserServiceImpl implements UserService {
                     .build();
         } else {
             userDTO = UserDTO.builder()
-                    .requestSuccess(false)
+                    .requestSuccess("Fail")
                     .build();
         }
 

@@ -9,7 +9,7 @@ import java.util.List;
 @Data
 @Builder
 public class UserDTO {
-    private final Boolean requestSuccess;
+    private final String requestSuccess;
     private final String cameraId;
     private final String userName;
     private final String userPassword;

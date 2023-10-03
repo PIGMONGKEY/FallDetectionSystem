@@ -57,6 +57,7 @@ public class TokenProvider implements InitializingBean {
                 .claim(AUTHORITIES_KEY, authorities) // 정보 저장
                 .signWith(key, SignatureAlgorithm.HS512) // 사용할 암호화 알고리즘과 , signature 에 들어갈 secret값 세팅
                 .setExpiration(validity) // set Expire Time 해당 옵션 안넣으면 expire안함
+                .setAudience(authentication.getName())
                 .compact();
     }
 
@@ -88,6 +89,16 @@ public class TokenProvider implements InitializingBean {
                 .getBody()
                 .getExpiration()
                 .getTime();
+    }
+
+    public String getAudience(String token) {
+        return Jwts
+                .parserBuilder()
+                .setSigningKey(key)
+                .build()
+                .parseClaimsJws(token)
+                .getBody()
+                .getAudience();
     }
 
     // 토큰의 유효성 검증을 수행
