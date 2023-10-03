@@ -40,6 +40,11 @@ public class AuthController {
         return new ResponseEntity<>(tokenDTO, httpHeaders, HttpStatus.OK);
     }
 
+    /**
+     * 로그아웃하는 메소드
+     * @param tokenDTO 토큰을 넘겨주면 redis에 토큰을 저장하고, 이후 이 토큰과 함께 들어오는 토큰은 무시함
+     * @return
+     */
     @PostMapping("logout")
     @PreAuthorize("hasAnyRole('USER', 'ADMIN')")
     public ResponseEntity<String> logout(@RequestBody TokenDTO tokenDTO) {

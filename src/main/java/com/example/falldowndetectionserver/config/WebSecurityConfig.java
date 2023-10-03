@@ -48,7 +48,6 @@ public class WebSecurityConfig {
                 .authenticationEntryPoint(jwtAuthenticationEntryPoint)
                 .accessDeniedHandler(jwtAccessDeniedHandler)
 
-                // enable h2-console
                 .and()
                 .headers()
                 .frameOptions()

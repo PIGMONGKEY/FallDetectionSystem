@@ -89,16 +89,10 @@ public class UserServiceImpl implements UserService {
             return TokenDTO.builder()
                     .token(jwt)
                     .build();
-//            TokenDTO tokenDTO = new TokenDTO();
-//            tokenDTO.setToken(jwt);
-//            return tokenDTO;
         } catch (BadCredentialsException e) {
             return TokenDTO.builder()
                     .token("fail")
                     .build();
-//            TokenDTO tokenDTO = new TokenDTO();
-//            tokenDTO.setToken("fail");
-//            return tokenDTO;
         }
     }
 
