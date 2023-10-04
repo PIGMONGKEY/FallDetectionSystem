@@ -23,9 +23,9 @@ public class AuthServiceImpl implements AuthService{
     private final RedisTemplate<String, Object> redisTemplate;
 
     /**
-     *
-     * @param loginDTO
-     * @return
+     * 로그인 서비스를 담당하는 메소드
+     * @param loginDTO cameraId와 password로 이루어진 LoginDTO를 파라미터로 받는다.
+     * @return 로그인에 성공하면 token을 리턴하고, 실패하면 fail 문자열을 반환한다.
      */
     @Override
     public TokenDTO login(LoginDTO loginDTO) {
@@ -49,6 +49,10 @@ public class AuthServiceImpl implements AuthService{
         }
     }
 
+    /**
+     * 로그아웃 서비스를 담당하는 서비스
+     * @param tokenDTO token으로 이루어진 TokenDTO를 파라미터로 받는다.
+     */
     @Override
     public void logout(TokenDTO tokenDTO) {
         redisTemplate.opsForValue().set(tokenDTO.getToken(), "logout", tokenProvider.getExpiration(tokenDTO.getToken()) - new Date().getTime(), TimeUnit.MILLISECONDS);
