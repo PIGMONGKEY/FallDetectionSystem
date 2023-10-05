@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "361856084305",
+    "project_id": "falldowndetection",
+    "storage_bucket": "falldowndetection.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:361856084305:android:fb496b3b8324485b640b70",
+        "android_client_info": {
+          "package_name": "com.example.falldetectionapp"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAqjDvxzKCAd85b2nWB6Ajxp4Q2wkLVPWk"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

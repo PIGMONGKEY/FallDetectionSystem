@@ -6,6 +6,7 @@
         android:name="android.permission.POST_NOTIFICATIONS" />
     <uses-permission
         android:name="android.permission.USE_FULL_SCREEN_INTENT "/>
+    <uses-permission android:name="android.permission.INTERNET" />
 
     <application
         android:allowBackup="true"
@@ -17,6 +18,12 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.FallDetectionApp"
         tools:targetApi="31">
+        <service android:name=".services.MyFirebaseMessageService"
+            android:exported="false">
+            <intent-filter>
+                <action android:name="com.google.firebase.MESSAGING_EVENT"/>
+            </intent-filter>
+        </service>
         <activity
             android:name=".notification.ImportantActivity"
             android:exported="false" />
