@@ -1,7 +1,6 @@
 package com.example.falldowndetectionserver.controller;
 
-import com.example.falldowndetectionserver.domain.dto.FcmMessageDTO;
-import com.example.falldowndetectionserver.domain.dto.RequestDTO;
+import com.example.falldowndetectionserver.domain.dto.FCMTestRequestDTO;
 import com.example.falldowndetectionserver.service.FirebaseMessageService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -21,7 +20,7 @@ public class MessageController {
     private final FirebaseMessageService firebaseMessageService;
 
     @PostMapping("test")
-    public ResponseEntity pushMessage(@RequestBody RequestDTO requestDTO) throws IOException {
+    public ResponseEntity pushTest(@RequestBody FCMTestRequestDTO requestDTO) throws IOException {
         firebaseMessageService.sendMessageTo(
                 requestDTO.getToken(),
                 requestDTO.getTitle(),

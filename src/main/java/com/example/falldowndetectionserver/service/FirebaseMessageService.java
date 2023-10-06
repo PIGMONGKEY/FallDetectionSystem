@@ -20,12 +20,22 @@ public class FirebaseMessageService {
     private final String API_URL = "https://fcm.googleapis.com/v1/projects/falldowndetection/messages:send";
     private final ObjectMapper objectMapper;
 
+    /**
+     * 전송할 목적지 토큰, 제목, 내용을 받아서, push알림을 발송하는 메소드
+     * @param targetToken 목적지 token을 받는다. - Android에서 발행할 수 있다.
+     * @param title 제목
+     * @param body 내용
+     * @throws IOException
+     */
     public void sendMessageTo(String targetToken, String title, String body) throws IOException {
+        // JSON 형식의 메시지 생성
         String message = makeMessage(targetToken, title, body);
 
         OkHttpClient client = new OkHttpClient();
+        // 요청 바다 생성
         RequestBody requestBody = RequestBody.create(message,
                 MediaType.get("application/json; charset=utf-8"));
+        // Request 객체 생성
         Request request = new Request.Builder()
                 .url(API_URL)
                 .post(requestBody)
@@ -33,11 +43,19 @@ public class FirebaseMessageService {
                 .addHeader(HttpHeaders.CONTENT_TYPE, "application/json; UTF-8")
                 .build();
 
-        Response response = client.newCall(request).execute();
-
-        System.out.println(response.body().string());
+        // Push 알림 발송 요청
+        client.newCall(request).execute();
     }
 
+    /**
+     * 목적지 token, 제목, 내용을 받아서 FcmMessageDTO 형태로 만든 후, JSON 형태의 문자열로 리턴한다.
+     * @param targetToken 목적지 token
+     * @param title 제목
+     * @param body 내용
+     * @return JSON 형태의 FcmMessageDTO
+     * @throws JsonParseException
+     * @throws JsonProcessingException
+     */
     private String makeMessage(String targetToken, String title, String body) throws JsonParseException, JsonProcessingException {
         FcmMessageDTO fcmMessage = FcmMessageDTO.builder()
                 .message(FcmMessageDTO.Message.builder()
@@ -52,6 +70,11 @@ public class FirebaseMessageService {
         return objectMapper.writeValueAsString(fcmMessage);
     }
 
+    /**
+     * fcm에서 발급받은 admin sdk json 파일에서 정보를 가져와서 AccessToken을 발급받는다.
+     * @return String 형태의 토큰을 리턴한다.
+     * @throws IOException
+     */
     private String getAccessToken() throws IOException {
         String firebaseConfigPath = "firebase/falldowndetection-firebase-adminsdk-cr3o0-e6df32b69f.json";
 

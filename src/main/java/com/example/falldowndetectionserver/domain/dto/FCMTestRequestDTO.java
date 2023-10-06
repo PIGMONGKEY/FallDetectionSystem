@@ -5,7 +5,7 @@ import lombok.Data;
 
 @Builder
 @Data
-public class RequestDTO {
+public class FCMTestRequestDTO {
     private final String token;
     private final String title;
     private final String body;
