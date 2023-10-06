@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0/EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.example.falldowndetectionserver.mapper.UPTokenMapper">
+    <insert id="insert">
+        INSERT INTO TBL_UPTOKEN (CAMERA_ID, TOKEN)
+        VALUES (#{cameraId}, #{token});
+    </insert>
+
+    <select id="select" resultType="string">
+        SELECT TOKEN FROM TBL_UPTOKEN
+        WHERE CAMERA_ID = #{cameraId};
+    </select>
+
+    <delete id="delete">
+        DELETE FROM TBL_UPTOKEN
+        WHERE CAMERA_ID = #{cameraId};
+    </delete>
+</mapper>

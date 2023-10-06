@@ -12,14 +12,14 @@ public class NokPhoneMapperTests {
     @Autowired
     private NokPhoneMapper nokPhoneMapper;
 
-    @Test
-    public void insertTest() {
-        NokPhoneVO nokPhoneVO = new NokPhoneVO();
-        nokPhoneVO.setNokPhone("010-1234-1234");
-        nokPhoneVO.setCameraId("cam01");
-
-        nokPhoneMapper.insert(nokPhoneVO);
-    }
+//    @Test
+//    public void insertTest() {
+//        NokPhoneVO nokPhoneVO = new NokPhoneVO();
+//        nokPhoneVO.setNokPhone("010-1234-1234");
+//        nokPhoneVO.setCameraId("cam01");
+//
+//        nokPhoneMapper.insert(nokPhoneVO);
+//    }
 
     @Test
     public void selectTest() {

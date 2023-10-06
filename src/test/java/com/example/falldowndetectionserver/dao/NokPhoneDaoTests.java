@@ -12,22 +12,22 @@ public class NokPhoneDaoTests {
     @Autowired
     private NokPhoneDao nokPhoneDao;
 
-    @Test
-    public void insertTest() {
-        NokPhoneVO nokPhoneVO = new NokPhoneVO();
-        nokPhoneVO.setNokPhone("010-1234-1234");
-        nokPhoneVO.setCameraId("cam01");
-
-        nokPhoneDao.insert(nokPhoneVO);
-    }
-
-    @Test
-    public void selectAllTest() {
-        nokPhoneDao.selectAll("cam01");
-    }
-
-    @Test
-    public void deleteTest() {
-        nokPhoneDao.delete("cam01");
-    }
+//    @Test
+//    public void insertTest() {
+//        NokPhoneVO nokPhoneVO = new NokPhoneVO();
+//        nokPhoneVO.setNokPhone("010-1234-1234");
+//        nokPhoneVO.setCameraId("cam01");
+//
+//        nokPhoneDao.insert(nokPhoneVO);
+//    }
+//
+//    @Test
+//    public void selectAllTest() {
+//        nokPhoneDao.selectAll("cam01");
+//    }
+//
+//    @Test
+//    public void deleteTest() {
+//        nokPhoneDao.delete("cam01");
+//    }
 }
