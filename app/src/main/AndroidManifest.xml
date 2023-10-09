@@ -5,7 +5,9 @@
     <uses-permission
         android:name="android.permission.POST_NOTIFICATIONS" />
     <uses-permission
-        android:name="android.permission.USE_FULL_SCREEN_INTENT "/>
+        android:name="android.permission.DISABLE_KEYGUARD" />
+    <uses-permission
+        android:name="android.permission.USE_FULL_SCREEN_INTENT"/>
     <uses-permission android:name="android.permission.INTERNET" />
 
     <application
@@ -26,7 +28,9 @@
         </service>
         <activity
             android:name=".notification.ImportantActivity"
-            android:exported="false" />
+            android:launchMode="singleTask"
+            android:taskAffinity=""
+            android:excludeFromRecents="true" />
         <activity
             android:name=".notification.NotificationTestActivity"
             android:exported="true">

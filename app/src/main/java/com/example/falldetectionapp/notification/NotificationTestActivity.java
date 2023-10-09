@@ -6,12 +6,14 @@ import androidx.appcompat.app.AppCompatActivity;
 import android.app.KeyguardManager;
 import android.os.Build;
 import android.os.Bundle;
+import android.os.PowerManager;
 import android.util.Log;
 import android.view.View;
 import android.view.WindowManager;
 import android.widget.Button;
 
 import com.example.falldetectionapp.R;
+import com.google.firebase.iid.FirebaseInstanceIdReceiver;
 
 public class NotificationTestActivity extends AppCompatActivity {
 
@@ -25,7 +27,8 @@ public class NotificationTestActivity extends AppCompatActivity {
             public void onClick(View v) {
                 try {
                     sleep(6000);
-                    turnScreenOnAndKeyguardOff();
+//                    turnScreenOnAndKeyguardOff();
+                    turnScreenOn();
                     Log.d("TEST", "Screen Turn ON ");
                 } catch (InterruptedException e) {
                     throw new RuntimeException(e);
@@ -53,7 +56,22 @@ public class NotificationTestActivity extends AppCompatActivity {
 
         KeyguardManager keyguardManager = (KeyguardManager) getSystemService(KEYGUARD_SERVICE);
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+            Log.d("TEST", "Keyguard disable");
             keyguardManager.requestDismissKeyguard(this, null);
         }
+    }
+
+    private void turnScreenOn() {
+        PowerManager pm = (PowerManager) getSystemService(POWER_SERVICE);
+        PowerManager.WakeLock wakeLock = pm.newWakeLock(PowerManager.SCREEN_BRIGHT_WAKE_LOCK |
+                PowerManager.ACQUIRE_CAUSES_WAKEUP |
+                PowerManager.ON_AFTER_RELEASE, "FallDetection:detection");
+        wakeLock.acquire();
+        try {
+            Thread.sleep(3000);
+        } catch (Exception e) {
+            Log.d("FCM Log", "error");
+        }
+        wakeLock.release();
     }
 }
