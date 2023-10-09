@@ -14,6 +14,7 @@ import android.widget.Button;
 
 import com.example.falldetectionapp.R;
 import com.google.firebase.iid.FirebaseInstanceIdReceiver;
+import com.google.firebase.messaging.FirebaseMessaging;
 
 public class NotificationTestActivity extends AppCompatActivity {
 

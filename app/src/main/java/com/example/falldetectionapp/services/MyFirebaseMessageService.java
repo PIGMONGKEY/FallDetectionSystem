@@ -22,6 +22,7 @@ import com.example.falldetectionapp.notification.ImportantActivity;
 import com.example.falldetectionapp.notification.NotificationTestActivity;
 import com.google.firebase.iid.FirebaseInstanceIdReceiver;
 import com.google.firebase.iid.internal.FirebaseInstanceIdInternal;
+import com.google.firebase.messaging.FirebaseMessaging;
 import com.google.firebase.messaging.FirebaseMessagingService;
 import com.google.firebase.messaging.RemoteMessage;
 
@@ -29,36 +30,38 @@ public class MyFirebaseMessageService extends FirebaseMessagingService {
     @Override
     public void onNewToken(@NonNull String token) {
         Log.d("FCM Log", "token : " + token);
-//        360 : eLbK4HItS5aPXgNef4TyIs:APA91bF8oS_PZ6dWI7hivFRtKbe9u9wjJ3KR24FbZHLUquoFOQmOe3RXjV0w4l5z-0SovJyQ3auc_a-J1dKIiE6TzL25LljTQoBurpRd78UkR6ShrMdLPKeVX9CtSRegBgGrcbrqt301
+//        dIabE-11SbKI67SSQ9tdBd:APA91bHsAQKfT5fkaBPIMqP_POjDtf4AJpAsyIZUIs9pY9XjTknSq-hhqEVSzfEwylQ24GBz4necTzzoZ9qeL_oqpeDD2zxqr6iqox0-d6lk6AU95NfeFhrGP3l8st1_PysibmnDZB5J
     }
 
     @Override
     public void onMessageReceived(@NonNull RemoteMessage message) {
         Log.d("FCM Log", "onMessageReceived");
-        turnScreenOn();
+        System.out.println("MessageReceived");
+//        turnScreenOn();
         createNotificationChannel();
-        showNotification(message.getNotification().getTitle(), message.getNotification().getBody());
+        showNotification(message.getData().get("title"), message.getData().get("body"));
     }
 
     private void showNotification(String title, String body) {
-        Intent notiIntent = new Intent(this, ImportantActivity.class);
+        Intent notiIntent = new Intent(getApplicationContext(), ImportantActivity.class);
         notiIntent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK
                           | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+
         PendingIntent pendingIntent = PendingIntent.getActivity(
-                                    this,
+                                    getApplicationContext(),
                                 0,
                                             notiIntent,
-                                            PendingIntent.FLAG_UPDATE_CURRENT);
+                                            PendingIntent.FLAG_UPDATE_CURRENT | PendingIntent.FLAG_MUTABLE);
 
-        NotificationCompat.Builder builder = new NotificationCompat.Builder(this, "Detection_Channel")
+        NotificationCompat.Builder builder = new NotificationCompat.Builder(getApplicationContext(), "Detection_Channel")
                 .setContentTitle(title)
                 .setContentText(body)
                 .setSmallIcon(R.drawable.ic_home)
                 .setPriority(NotificationCompat.PRIORITY_HIGH | NotificationCompat.FLAG_HIGH_PRIORITY)
                 .setContentIntent(pendingIntent);
 
-        NotificationManagerCompat notificationManagerCompat = NotificationManagerCompat.from(this);
-        if (ActivityCompat.checkSelfPermission(this, Manifest.permission.POST_NOTIFICATIONS) != PackageManager.PERMISSION_GRANTED) {
+        NotificationManagerCompat notificationManagerCompat = NotificationManagerCompat.from(getApplicationContext());
+        if (ActivityCompat.checkSelfPermission(getApplicationContext(), Manifest.permission.POST_NOTIFICATIONS) != PackageManager.PERMISSION_GRANTED) {
             Log.d("FCM Log", "NO PERMISSION");
             return;
         }
