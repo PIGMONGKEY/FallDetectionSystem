@@ -37,9 +37,9 @@ public class MyFirebaseMessageService extends FirebaseMessagingService {
     public void onMessageReceived(@NonNull RemoteMessage message) {
         Log.d("FCM Log", "onMessageReceived");
         System.out.println("MessageReceived");
-//        turnScreenOn();
-        createNotificationChannel();
-        showNotification(message.getData().get("title"), message.getData().get("body"));
+        turnScreenOn();
+//        createNotificationChannel();
+//        showNotification(message.getData().get("title"), message.getData().get("body"));
     }
 
     private void showNotification(String title, String body) {
@@ -58,7 +58,8 @@ public class MyFirebaseMessageService extends FirebaseMessagingService {
                 .setContentText(body)
                 .setSmallIcon(R.drawable.ic_home)
                 .setPriority(NotificationCompat.PRIORITY_HIGH | NotificationCompat.FLAG_HIGH_PRIORITY)
-                .setContentIntent(pendingIntent);
+                .setContentIntent(pendingIntent)
+                .setFullScreenIntent(pendingIntent, true);
 
         NotificationManagerCompat notificationManagerCompat = NotificationManagerCompat.from(getApplicationContext());
         if (ActivityCompat.checkSelfPermission(getApplicationContext(), Manifest.permission.POST_NOTIFICATIONS) != PackageManager.PERMISSION_GRANTED) {
@@ -83,11 +84,8 @@ public class MyFirebaseMessageService extends FirebaseMessagingService {
                 PowerManager.ACQUIRE_CAUSES_WAKEUP |
                 PowerManager.ON_AFTER_RELEASE, "FallDetection:detection");
         wakeLock.acquire();
-        try {
-            Thread.sleep(3000);
-        } catch (Exception e) {
-
-        }
+        createNotificationChannel();
+        showNotification("title", "body");
         wakeLock.release();
     }
 }
