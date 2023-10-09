@@ -62,7 +62,7 @@ public class FirebaseMessageService {
         FcmMessageDTO fcmMessage = FcmMessageDTO.builder()
                 .message(FcmMessageDTO.Message.builder()
                         .token(targetToken)
-                        .notification(FcmMessageDTO.Notification.builder()
+                        .data(FcmMessageDTO.Data.builder()
                                 .title(title)
                                 .body(body)
                                 .image(null)
