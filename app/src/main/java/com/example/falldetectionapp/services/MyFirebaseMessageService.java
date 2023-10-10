@@ -1,11 +1,9 @@
 package com.example.falldetectionapp.services;
 
 import android.Manifest;
-import android.app.Notification;
 import android.app.NotificationChannel;
 import android.app.NotificationManager;
 import android.app.PendingIntent;
-import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.os.PowerManager;
@@ -16,13 +14,8 @@ import androidx.core.app.ActivityCompat;
 import androidx.core.app.NotificationCompat;
 import androidx.core.app.NotificationManagerCompat;
 
-import com.example.falldetectionapp.LoginActivity;
 import com.example.falldetectionapp.R;
 import com.example.falldetectionapp.notification.ImportantActivity;
-import com.example.falldetectionapp.notification.NotificationTestActivity;
-import com.google.firebase.iid.FirebaseInstanceIdReceiver;
-import com.google.firebase.iid.internal.FirebaseInstanceIdInternal;
-import com.google.firebase.messaging.FirebaseMessaging;
 import com.google.firebase.messaging.FirebaseMessagingService;
 import com.google.firebase.messaging.RemoteMessage;
 
@@ -37,9 +30,9 @@ public class MyFirebaseMessageService extends FirebaseMessagingService {
     public void onMessageReceived(@NonNull RemoteMessage message) {
         Log.d("FCM Log", "onMessageReceived");
         System.out.println("MessageReceived");
-        turnScreenOn();
-//        createNotificationChannel();
-//        showNotification(message.getData().get("title"), message.getData().get("body"));
+//        turnScreenOn();
+        createNotificationChannel();
+        showNotification(message.getData().get("title"), message.getData().get("body"));
     }
 
     private void showNotification(String title, String body) {

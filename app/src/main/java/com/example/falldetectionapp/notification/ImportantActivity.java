@@ -3,7 +3,6 @@ package com.example.falldetectionapp.notification;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.app.KeyguardManager;
-import android.content.Context;
 import android.os.Build;
 import android.os.Bundle;
 import android.util.Log;
