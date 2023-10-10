@@ -17,11 +17,12 @@ public class ImportantActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_important);
-
+        Log.d("FCM Log", "onCreate------------------------------------------");
         turnScreenOnAndKeyguardOff();
     }
 
     private void turnScreenOnAndKeyguardOff() {
+        Log.d("FCM Log", "turnScreenOnAndKeyguardOff------------------------------------------");
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O_MR1) {
             setShowWhenLocked(true);
             setTurnScreenOn(true);

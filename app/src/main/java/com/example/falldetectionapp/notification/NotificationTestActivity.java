@@ -23,6 +23,8 @@ public class NotificationTestActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_notification_test);
 
+        Log.d("FCM Log", "onCreate--Main------------------------------------------");
+
         findViewById(R.id.button_noti).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {

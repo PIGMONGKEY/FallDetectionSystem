@@ -58,7 +58,7 @@ public class MyFirebaseMessageService extends FirebaseMessagingService {
                 .setContentText(body)
                 .setSmallIcon(R.drawable.ic_home)
                 .setPriority(NotificationCompat.PRIORITY_HIGH | NotificationCompat.FLAG_HIGH_PRIORITY)
-                .setContentIntent(pendingIntent)
+//                .setContentIntent(pendingIntent)
                 .setFullScreenIntent(pendingIntent, true);
 
         NotificationManagerCompat notificationManagerCompat = NotificationManagerCompat.from(getApplicationContext());
@@ -67,7 +67,6 @@ public class MyFirebaseMessageService extends FirebaseMessagingService {
             return;
         }
         notificationManagerCompat.notify(0, builder.build());
-
     }
 
     private void createNotificationChannel() {
