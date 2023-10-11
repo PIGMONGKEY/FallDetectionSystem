@@ -63,6 +63,8 @@ public class WebSecurityConfig {
                 .antMatchers("/user/signup").permitAll()
                 .antMatchers("/auth/login").permitAll()
                 .antMatchers("/fcm/test").permitAll()
+                .antMatchers("/video").permitAll()
+                .antMatchers("/position").permitAll()
                 .anyRequest().authenticated()
 
                 .and()
