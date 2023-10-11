@@ -1,6 +1,6 @@
 package com.example.falldowndetectionserver.dao;
 
-import com.example.falldowndetectionserver.domain.vo.UPTokenVO;
+import com.example.falldowndetectionserver.domain.vo.UserPhoneTokenVO;
 import com.example.falldowndetectionserver.mapper.UPTokenMapper;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
@@ -14,7 +14,7 @@ import java.util.Optional;
 public class UPTokenDao {
     private final UPTokenMapper uPTokenMapper;
 
-    public int insert(UPTokenVO uPTokenVO) {
+    public int insert(UserPhoneTokenVO uPTokenVO) {
         try {
             return uPTokenMapper.insert(uPTokenVO);
         } catch (Exception e) {

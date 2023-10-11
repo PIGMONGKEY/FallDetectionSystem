@@ -1,56 +1,43 @@
 package com.example.falldowndetectionserver.service;
 
 import com.example.falldowndetectionserver.dao.NokPhoneDao;
+import com.example.falldowndetectionserver.dao.UPTokenDao;
 import com.example.falldowndetectionserver.dao.UserDao;
-import com.example.falldowndetectionserver.domain.dto.LoginDTO;
-import com.example.falldowndetectionserver.domain.dto.TokenDTO;
+import com.example.falldowndetectionserver.domain.dto.SignUpDTO;
 import com.example.falldowndetectionserver.domain.vo.NokPhoneVO;
 import com.example.falldowndetectionserver.domain.dto.UserDTO;
 import com.example.falldowndetectionserver.domain.vo.UserVO;
-import com.example.falldowndetectionserver.jwt.JwtFilter;
-import com.example.falldowndetectionserver.jwt.TokenProvider;
 import lombok.RequiredArgsConstructor;
-import org.springframework.data.redis.core.RedisTemplate;
-import org.springframework.http.HttpHeaders;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
-import org.springframework.security.authentication.BadCredentialsException;
-import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
-import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
-import org.springframework.security.core.Authentication;
-import org.springframework.security.core.context.SecurityContextHolder;
-import org.springframework.security.core.userdetails.User;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
-import java.util.Date;
 import java.util.List;
-import java.util.concurrent.TimeUnit;
 
 @Service
 @RequiredArgsConstructor
 public class UserServiceImpl implements UserService {
     private final UserDao userDao;
     private final NokPhoneDao nokPhoneDao;
+    private final UPTokenDao uPTokenDao;
     private final PasswordEncoder passwordEncoder;
 
     /**
      * 새로운 사용자를 등록하는 서비스
-     * @param userDTO userDTO 형태로 사용자 정보와 보호자 핸드폰 번호 까지 받는다.
+     * @param signUpDTO signUpDTO 형태로 사용자 정보와 보호자 핸드폰 번호 까지 받는다.
      * @return 모두 성공하면 1, User실패는 -1, NokPhone 실패는 -2를 리턴한다.
      */
     @Override
-    public String signup(UserDTO userDTO) {
-        if (!userDao.select(userDTO.getCameraId()).isEmpty()) {
+    public String signup(SignUpDTO signUpDTO) {
+        if (!userDao.select(signUpDTO.getUserInfo().getCameraId()).isEmpty()) {
             return "Registered CameraId";
         }
 
         UserVO userVO = UserVO.builder()
-                .cameraId(userDTO.getCameraId())
-                .userPassword(passwordEncoder.encode(userDTO.getUserPassword()))
-                .userName(userDTO.getUserName())
-                .userAddress(userDTO.getUserAddress())
-                .userPhone(userDTO.getUserPhone())
+                .cameraId(signUpDTO.getUserInfo().getCameraId())
+                .userPassword(passwordEncoder.encode(signUpDTO.getUserInfo().getUserPassword()))
+                .userName(signUpDTO.getUserInfo().getUserName())
+                .userAddress(signUpDTO.getUserInfo().getUserAddress())
+                .userPhone(signUpDTO.getUserInfo().getUserPhone())
                 .build();
 
         if (userDao.insert(userVO) != 1) {
@@ -58,14 +45,18 @@ public class UserServiceImpl implements UserService {
         }
 
         NokPhoneVO nokPhoneVO = NokPhoneVO.builder()
-                .cameraId(userDTO.getCameraId())
+                .cameraId(signUpDTO.getUserInfo().getCameraId())
                 .build();
 
-        for (String nokPhone : userDTO.getNokPhones()) {
+        for (String nokPhone : signUpDTO.getUserInfo().getNokPhones()) {
             nokPhoneVO.setNokPhone(nokPhone);
             if (nokPhoneDao.insert(nokPhoneVO) != 1) {
                 return "NokPhone Register Error";
             }
+        }
+
+        if (uPTokenDao.insert(signUpDTO.getPhoneToken()) != 1) {
+            return "UPToken Register Error";
         }
 
         return "Success";

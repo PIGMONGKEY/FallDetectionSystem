@@ -1,6 +1,6 @@
 package com.example.falldowndetectionserver.mapper;
 
-import com.example.falldowndetectionserver.domain.vo.UPTokenVO;
+import com.example.falldowndetectionserver.domain.vo.UserPhoneTokenVO;
 import lombok.extern.slf4j.Slf4j;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -14,7 +14,7 @@ public class UPTokenMapperTests {
 
     @Test
     public void insertTest() {
-        uPTokenMapper.insert(UPTokenVO.builder().cameraId("cam01").token("testToken").build());
+        uPTokenMapper.insert(UserPhoneTokenVO.builder().cameraId("cam01").token("testToken").build());
     }
 
 //    @Test

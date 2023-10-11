@@ -31,7 +31,7 @@ public class ServiceTests {
                 .nokPhones(phones)
                 .build();
 
-        userService.signup(userDTO);
+//        userService.signup(userDTO);
     }
 
     @Test

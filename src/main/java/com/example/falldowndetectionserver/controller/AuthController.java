@@ -1,11 +1,9 @@
 package com.example.falldowndetectionserver.controller;
 
 import com.example.falldowndetectionserver.domain.dto.LoginDTO;
-import com.example.falldowndetectionserver.domain.dto.TokenDTO;
+import com.example.falldowndetectionserver.domain.dto.AuthTokenDTO;
 import com.example.falldowndetectionserver.jwt.JwtFilter;
-import com.example.falldowndetectionserver.jwt.TokenProvider;
 import com.example.falldowndetectionserver.service.AuthService;
-import com.example.falldowndetectionserver.service.UserService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpHeaders;
@@ -31,24 +29,24 @@ public class AuthController {
      * @return
      */
     @PostMapping("login")
-    public ResponseEntity<TokenDTO> login(@RequestBody LoginDTO loginDTO) {
-        TokenDTO tokenDTO = authService.login(loginDTO);
+    public ResponseEntity<AuthTokenDTO> login(@RequestBody LoginDTO loginDTO) {
+        AuthTokenDTO authTokenDTO = authService.login(loginDTO);
 
         HttpHeaders httpHeaders = new HttpHeaders();
-        httpHeaders.add(JwtFilter.AUTHORIZATION_HEADER, "Bearer " + tokenDTO.getToken());
+        httpHeaders.add(JwtFilter.AUTHORIZATION_HEADER, "Bearer " + authTokenDTO.getToken());
 
-        return new ResponseEntity<>(tokenDTO, httpHeaders, HttpStatus.OK);
+        return new ResponseEntity<>(authTokenDTO, httpHeaders, HttpStatus.OK);
     }
 
     /**
      * 로그아웃하는 메소드
-     * @param tokenDTO 토큰을 넘겨주면 redis에 토큰을 저장하고, 이후 이 토큰과 함께 들어오는 토큰은 무시함
+     * @param authTokenDTO 토큰을 넘겨주면 redis에 토큰을 저장하고, 이후 이 토큰과 함께 들어오는 토큰은 무시함
      * @return
      */
     @PostMapping("logout")
     @PreAuthorize("hasAnyRole('USER', 'ADMIN')")
-    public ResponseEntity<String> logout(@RequestBody TokenDTO tokenDTO) {
-        authService.logout(tokenDTO);
+    public ResponseEntity<String> logout(@RequestBody AuthTokenDTO authTokenDTO) {
+        authService.logout(authTokenDTO);
         return ResponseEntity.ok("Success");
     }
 

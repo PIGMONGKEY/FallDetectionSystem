@@ -4,6 +4,6 @@
     <typeAliases>
         <typeAlias type="com.example.falldowndetectionserver.domain.vo.UserVO" alias="userVO" />
         <typeAlias type="com.example.falldowndetectionserver.domain.vo.NokPhoneVO" alias="nokPhoneVO" />
-        <typeAlias type="com.example.falldowndetectionserver.domain.vo.UPTokenVO" alias="upTokenVO" />
+        <typeAlias type="com.example.falldowndetectionserver.domain.vo.UserPhoneTokenVO" alias="userPhoneTokenVO" />
     </typeAliases>
 </configuration>

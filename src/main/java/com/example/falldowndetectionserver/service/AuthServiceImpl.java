@@ -1,7 +1,7 @@
 package com.example.falldowndetectionserver.service;
 
 import com.example.falldowndetectionserver.domain.dto.LoginDTO;
-import com.example.falldowndetectionserver.domain.dto.TokenDTO;
+import com.example.falldowndetectionserver.domain.dto.AuthTokenDTO;
 import com.example.falldowndetectionserver.jwt.TokenProvider;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.redis.core.RedisTemplate;
@@ -28,7 +28,7 @@ public class AuthServiceImpl implements AuthService{
      * @return 로그인에 성공하면 token을 리턴하고, 실패하면 fail 문자열을 반환한다.
      */
     @Override
-    public TokenDTO login(LoginDTO loginDTO) {
+    public AuthTokenDTO login(LoginDTO loginDTO) {
         UsernamePasswordAuthenticationToken authenticationToken =
                 new UsernamePasswordAuthenticationToken(loginDTO.getCameraId(), loginDTO.getPassword());
         try {
@@ -39,11 +39,11 @@ public class AuthServiceImpl implements AuthService{
             SecurityContextHolder.getContext().setAuthentication(authentication);
             String jwt = tokenProvider.createToken(authentication);
 
-            return TokenDTO.builder()
+            return AuthTokenDTO.builder()
                     .token(jwt)
                     .build();
         } catch (BadCredentialsException e) {
-            return TokenDTO.builder()
+            return AuthTokenDTO.builder()
                     .token("fail")
                     .build();
         }
@@ -51,10 +51,10 @@ public class AuthServiceImpl implements AuthService{
 
     /**
      * 로그아웃 서비스를 담당하는 서비스
-     * @param tokenDTO token으로 이루어진 TokenDTO를 파라미터로 받는다.
+     * @param authTokenDTO token으로 이루어진 TokenDTO를 파라미터로 받는다.
      */
     @Override
-    public void logout(TokenDTO tokenDTO) {
-        redisTemplate.opsForValue().set(tokenDTO.getToken(), "logout", tokenProvider.getExpiration(tokenDTO.getToken()) - new Date().getTime(), TimeUnit.MILLISECONDS);
+    public void logout(AuthTokenDTO authTokenDTO) {
+        redisTemplate.opsForValue().set(authTokenDTO.getToken(), "logout", tokenProvider.getExpiration(authTokenDTO.getToken()) - new Date().getTime(), TimeUnit.MILLISECONDS);
     }
 }

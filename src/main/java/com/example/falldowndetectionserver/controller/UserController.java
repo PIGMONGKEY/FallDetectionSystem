@@ -1,5 +1,6 @@
 package com.example.falldowndetectionserver.controller;
 
+import com.example.falldowndetectionserver.domain.dto.SignUpDTO;
 import com.example.falldowndetectionserver.domain.dto.UserDTO;
 import com.example.falldowndetectionserver.jwt.TokenProvider;
 import com.example.falldowndetectionserver.service.UserService;
@@ -25,12 +26,13 @@ public class UserController {
 
     /**
      * 회원가입
-     * @param userDTO UserVO 형태로 삽입할 데이터를 받아와야 함
+     * @param signUpDTO UserVO 형태로 삽입할 데이터를 받아와야 함
      * @return 성공 시 OK 보내줌
      */
     @PostMapping("signup")
-    public ResponseEntity<String> signup(@RequestBody UserDTO userDTO) {
-        return ResponseEntity.ok(userService.signup(userDTO));
+    public ResponseEntity<String> signup(@RequestBody SignUpDTO signUpDTO) {
+        log.info(signUpDTO.toString());
+        return ResponseEntity.ok(userService.signup(signUpDTO));
     }
 
     /**

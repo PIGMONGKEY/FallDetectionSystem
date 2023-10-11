@@ -7,6 +7,6 @@ import lombok.extern.jackson.Jacksonized;
 @Data
 @Builder
 @Jacksonized
-public class TokenDTO {
+public class AuthTokenDTO {
     private final String token;
 }
