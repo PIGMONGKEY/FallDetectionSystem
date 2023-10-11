@@ -20,6 +20,8 @@ public class EmergencyAlertNotificationActivity extends AppCompatActivity {
         turnScreenOnAndKeyguardOff();
     }
 
+    // TODO: 소리 재생, 및 끄기 동작 구현 / 알림 끄면 서버에 알려주는 기능 구현
+
     private void turnScreenOnAndKeyguardOff() {
         Log.d("FCM Log", "turnScreenOnAndKeyguardOff------------------------------------------");
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O_MR1) {
