@@ -17,6 +17,7 @@ import java.util.List;
 @Service
 @RequiredArgsConstructor
 public class FirebaseMessageService {
+    private final String firebaseConfigPath = "firebase/falldetectionsystem-d2da0-firebase-adminsdk-cm9z5-78dd1e3a95.json";
     private final String API_URL = "https://fcm.googleapis.com/v1/projects/falldetectionsystem-d2da0/messages:send";
     private final ObjectMapper objectMapper;
 
@@ -78,8 +79,6 @@ public class FirebaseMessageService {
      * @throws IOException
      */
     private String getAccessToken() throws IOException {
-        String firebaseConfigPath = "firebase/falldetectionsystem-d2da0-firebase-adminsdk-cm9z5-78dd1e3a95.json";
-
         GoogleCredentials googleCredentials = GoogleCredentials
                 .fromStream(new ClassPathResource(firebaseConfigPath).getInputStream())
                 .createScoped(List.of("https://www.googleapis.com/auth/cloud-platform"));
