@@ -31,7 +31,6 @@ public class UserController {
      */
     @PostMapping("signup")
     public ResponseEntity<String> signup(@RequestBody SignUpDTO signUpDTO) {
-        log.info(signUpDTO.toString());
         return ResponseEntity.ok(userService.signup(signUpDTO));
     }
 
@@ -48,6 +47,7 @@ public class UserController {
 
         UserDTO userDTO;
 
+        // 토큰 속에 있는 CameraId와 요청 CameraId가 다르면 서비스 거부
         if (!tokenProvider.getAudience(token.substring(7)).equals(cameraId)) {
             userDTO = UserDTO.builder()
                     .requestSuccess("NOT ALLOWED")
@@ -67,9 +67,11 @@ public class UserController {
     @DeleteMapping("remove")
     @PreAuthorize("hasAnyRole('USER', 'ADMIN')")
     public ResponseEntity<String> removeUserInfo(String cameraId, @RequestHeader("Authorization") String token) {
+        // 토큰 속에 있는 CameraId와 요청 CameraId가 다르면 서비스 거부
         if (!tokenProvider.getAudience(token.substring(7)).equals(cameraId)) {
             return ResponseEntity.ok("NOT ALLOWED");
         }
+
         return ResponseEntity.ok(userService.removeUserInfo(cameraId));
     }
 
@@ -80,9 +82,11 @@ public class UserController {
     @PutMapping("modify")
     @PreAuthorize("hasAnyRole('USER', 'ADMIN')")
     public ResponseEntity<String> modifyUserInfo(@RequestBody UserDTO userDTO, @RequestHeader("Authorization") String token) {
+        // 토큰 속에 있는 CameraId와 요청 CameraId가 다르면 서비스 거부
         if (!tokenProvider.getAudience(token.substring(7)).equals(userDTO.getCameraId())) {
             return ResponseEntity.ok("NOT ALLOWED");
         }
+
         return ResponseEntity.ok(userService.modifyUserInfo(userDTO));
     }
 }
