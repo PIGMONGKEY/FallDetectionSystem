@@ -1,61 +1,52 @@
 package com.example.falldowndetectionserver.fallDownDetect;
 
+import com.example.falldowndetectionserver.dao.UPTokenDao;
 import com.example.falldowndetectionserver.domain.vo.PositionVO;
-import lombok.Getter;
-import lombok.Setter;
+import com.example.falldowndetectionserver.service.FirebaseMessageService;
+import lombok.*;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.stereotype.Component;
 
-import java.util.LinkedList;
+import java.io.IOException;
+import java.util.HashMap;
 import java.util.Queue;
 
 @Getter
-@Setter
+@RequiredArgsConstructor
+@Component
 @Slf4j
 public class FallDownDetector {
-    private String cameraId;
-    private Queue<PositionVO> positionVOQueue;
-    private final int FALL_DOWN = 1;
-    private final int NORMAL = 0;
-    private final int ERROR = -1;
+    private final FirebaseMessageService firebaseMessageService;
+    private final UPTokenDao uPTokenDao;
 
-    public static FallDownDetector getNewDetector(String cameraId) {
-        FallDownDetector detector = new FallDownDetector();
-        detector.setCameraId(cameraId);
-        detector.setPositionVOQueue(new LinkedList<>());
+    private final HashMap<String, Queue<PositionVO>> positionHash = new HashMap<>();
 
-        return detector;
-    }
-
-    public void pushPosition(PositionVO positionVO) {
-        int checkCode = checkFallDown(positionVO);
-        if (checkCode == NORMAL) {
-            if (this.positionVOQueue.size() >= 60) {
-                this.positionVOQueue.remove();
-                this.positionVOQueue.add(positionVO);
+    public void checkFallDown(String cameraId, PositionVO positionVO) {
+        float ratio;
+        try {
+            ratio = (float) (positionVO.getMax_x() - positionVO.getMin_x()) / (positionVO.getMax_y() - positionVO.getMin_y());
+            if (ratio >= 1.0) {
+                log.info("Body radio : " + ratio + "fall down");
+                checkEmergency(cameraId, positionVO);
             } else {
-                this.positionVOQueue.add(positionVO);
+                log.info("Body radio : " + ratio);
+                positionHash.get(cameraId).clear();
             }
-            log.info("normal");
-        } else if (checkCode == FALL_DOWN){
-            // 넘어졌다고 인식한 경우임 ---------------------------------------------------------------
-            log.info("fall down");
-        } else {
-            // 한 개의 Keypoint만 인식해서 0으로 나눗셈을 실행하는 에러가 뜨는 경우
-            log.info("not enough detected keypoints");
+        } catch (ArithmeticException e) {
+            e.printStackTrace();
         }
     }
 
-    private int checkFallDown(PositionVO positionVO) {
-        float ratio;
-        try {
-            ratio = (positionVO.getMax_x() - positionVO.getMin_x()) / (positionVO.getMax_y() - positionVO.getMin_y());
-            if (ratio >= 1.0) {
-                return FALL_DOWN;
-            } else {
-                return NORMAL;
+    private void checkEmergency(String cameraId, PositionVO positionVO) {
+        positionHash.get(cameraId).add(positionVO);
+
+        // 25 프레임 정도 나옴
+        if (positionHash.get(cameraId).size() == 180) {
+            try {
+                firebaseMessageService.sendMessageTo(uPTokenDao.select(cameraId).get(), cameraId, "dangerous");
+            } catch (IOException e) {
+                e.printStackTrace();
             }
-        } catch (ArithmeticException e) {
-            return ERROR;
         }
     }
 }

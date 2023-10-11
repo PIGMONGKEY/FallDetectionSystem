@@ -12,15 +12,14 @@ import org.springframework.web.socket.WebSocketSession;
 import org.springframework.web.socket.handler.TextWebSocketHandler;
 
 import java.util.HashMap;
+import java.util.LinkedList;
 
 @Slf4j
 @Component
 @RequiredArgsConstructor
 public class BodyPositionWebSocketHandler extends TextWebSocketHandler {
     private final ObjectMapper objectMapper;
-
-//    <cameraId / FallDownDetector>
-    private final HashMap<String, FallDownDetector> detectorHashMap = new HashMap<>();
+    private final FallDownDetector fallDownDetector;
 
 //    <sessionId / cameraId>
     private final HashMap<String, String> sessions = new HashMap<>();
@@ -37,7 +36,7 @@ public class BodyPositionWebSocketHandler extends TextWebSocketHandler {
         String sessionId = session.getId();
         String cameraId = session.getHandshakeHeaders().get("camera_id").get(0).toString();
         sessions.put(sessionId, cameraId);
-        detectorHashMap.put(cameraId, FallDownDetector.getNewDetector(cameraId));
+        fallDownDetector.getPositionHash().put(cameraId, new LinkedList<>());
 
         log.info(cameraId + "'s detector connected");
     }
@@ -45,16 +44,12 @@ public class BodyPositionWebSocketHandler extends TextWebSocketHandler {
     @Override
     protected void handleTextMessage(WebSocketSession session, TextMessage message) throws Exception {
         PositionVO positionVO = objectMapper.readValue(message.getPayload(), PositionVO.class);
-        String sessionId = session.getId();
-        detectorHashMap
-                .get(sessions.get(sessionId))
-                .pushPosition(positionVO);
+        fallDownDetector.checkFallDown(sessions.get(session.getId()), positionVO);
     }
 
     @Override
     public void afterConnectionClosed(WebSocketSession session, CloseStatus status) throws Exception {
         log.info(sessions.get(session.getId()) + "'s detector disconnected");
-        detectorHashMap.remove(sessions.get(session.getId()));
         sessions.remove(session.getId());
     }
 }
