@@ -25,7 +25,6 @@ public class MyFirebaseMessageService extends FirebaseMessagingService {
     public void onNewToken(@NonNull String token) {
         Log.d("FCM Log", "token : " + token);
         FirebaseCloudMessageToken.setToken(token);
-//        dIabE-11SbKI67SSQ9tdBd:APA91bHsAQKfT5fkaBPIMqP_POjDtf4AJpAsyIZUIs9pY9XjTknSq-hhqEVSzfEwylQ24GBz4necTzzoZ9qeL_oqpeDD2zxqr6iqox0-d6lk6AU95NfeFhrGP3l8st1_PysibmnDZB5J
     }
 
     @Override
@@ -51,6 +50,7 @@ public class MyFirebaseMessageService extends FirebaseMessagingService {
                 .setContentText(body)
                 .setSmallIcon(R.drawable.ic_home)
                 .setPriority(NotificationCompat.PRIORITY_HIGH | NotificationCompat.FLAG_HIGH_PRIORITY)
+                .setAutoCancel(true)
                 .setFullScreenIntent(pendingIntent, true);
 
         NotificationManagerCompat notificationManagerCompat = NotificationManagerCompat.from(getApplicationContext());
