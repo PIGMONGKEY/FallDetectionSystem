@@ -10,12 +10,12 @@ import android.view.WindowManager;
 
 import com.example.falldetectionapp.R;
 
-public class ImportantActivity extends AppCompatActivity {
+public class EmergencyAlertNotificationActivity extends AppCompatActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_important);
+        setContentView(R.layout.activity_emergency_alert_notification);
         Log.d("FCM Log", "onCreate------------------------------------------");
         turnScreenOnAndKeyguardOff();
     }

@@ -8,7 +8,6 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 
-import com.example.falldetectionapp.GuideActivity;
 import com.example.falldetectionapp.HomeActivity;
 import com.example.falldetectionapp.R;
 
@@ -24,7 +23,7 @@ public class NokPhoneActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_emergency_phone);
+        setContentView(R.layout.activity_nokphone);
 
         init();
     }

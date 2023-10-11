@@ -15,7 +15,8 @@ import androidx.core.app.NotificationCompat;
 import androidx.core.app.NotificationManagerCompat;
 
 import com.example.falldetectionapp.R;
-import com.example.falldetectionapp.notification.ImportantActivity;
+import com.example.falldetectionapp.notification.FirebaseCloudMessageToken;
+import com.example.falldetectionapp.notification.EmergencyAlertNotificationActivity;
 import com.google.firebase.messaging.FirebaseMessagingService;
 import com.google.firebase.messaging.RemoteMessage;
 
@@ -23,20 +24,19 @@ public class MyFirebaseMessageService extends FirebaseMessagingService {
     @Override
     public void onNewToken(@NonNull String token) {
         Log.d("FCM Log", "token : " + token);
+        FirebaseCloudMessageToken.setToken(token);
 //        dIabE-11SbKI67SSQ9tdBd:APA91bHsAQKfT5fkaBPIMqP_POjDtf4AJpAsyIZUIs9pY9XjTknSq-hhqEVSzfEwylQ24GBz4necTzzoZ9qeL_oqpeDD2zxqr6iqox0-d6lk6AU95NfeFhrGP3l8st1_PysibmnDZB5J
     }
 
     @Override
     public void onMessageReceived(@NonNull RemoteMessage message) {
         Log.d("FCM Log", "onMessageReceived");
-        System.out.println("MessageReceived");
-//        turnScreenOn();
         createNotificationChannel();
         showNotification(message.getData().get("title"), message.getData().get("body"));
     }
 
     private void showNotification(String title, String body) {
-        Intent notiIntent = new Intent(getApplicationContext(), ImportantActivity.class);
+        Intent notiIntent = new Intent(getApplicationContext(), EmergencyAlertNotificationActivity.class);
         notiIntent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK
                           | Intent.FLAG_ACTIVITY_CLEAR_TASK);
 
@@ -51,10 +51,10 @@ public class MyFirebaseMessageService extends FirebaseMessagingService {
                 .setContentText(body)
                 .setSmallIcon(R.drawable.ic_home)
                 .setPriority(NotificationCompat.PRIORITY_HIGH | NotificationCompat.FLAG_HIGH_PRIORITY)
-//                .setContentIntent(pendingIntent)
                 .setFullScreenIntent(pendingIntent, true);
 
         NotificationManagerCompat notificationManagerCompat = NotificationManagerCompat.from(getApplicationContext());
+
         if (ActivityCompat.checkSelfPermission(getApplicationContext(), Manifest.permission.POST_NOTIFICATIONS) != PackageManager.PERMISSION_GRANTED) {
             Log.d("FCM Log", "NO PERMISSION");
             return;
