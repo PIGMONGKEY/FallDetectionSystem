@@ -1,4 +1,4 @@
-package com.example.falldetectionapp.services;
+package com.example.falldetectionapp.notification;
 
 import android.Manifest;
 import android.app.NotificationChannel;
