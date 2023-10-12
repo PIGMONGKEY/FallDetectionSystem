@@ -4,13 +4,18 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.Toast;
 
-import com.example.falldetectionapp.GuideActivity;
+import com.example.falldetectionapp.DTO.UserInfoDTO;
 import com.example.falldetectionapp.HomeActivity;
 import com.example.falldetectionapp.R;
+
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * 회원가입 시, 보호자 핸드폰 번호를 입력하는 창입니다
@@ -21,19 +26,27 @@ public class NokPhoneActivity extends AppCompatActivity {
     private Button registerDone;
     private EditText nokPhoneEditText_1, nokPhoneEditText_2;
 
+    private UserInfoDTO userInfoDTO;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_emergency_phone);
+        setContentView(R.layout.activity_nokphone);
 
         init();
     }
 
 //    초기 설정을 넣어주세요
     private void init() {
+        getDataFromIntent();
         setTitle("비상연락처 등록");
         setView();
         setListener();
+    }
+
+    private void getDataFromIntent() {
+        Intent intent = getIntent();
+        userInfoDTO = (UserInfoDTO) intent.getSerializableExtra("userInfo");
     }
 
     private void setView() {
@@ -47,8 +60,25 @@ public class NokPhoneActivity extends AppCompatActivity {
         registerDone.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent = new Intent(NokPhoneActivity.this, HomeActivity.class);
-                startActivity(intent);
+                if (nokPhoneEditText_1.getText().toString().isEmpty() && nokPhoneEditText_2.getText().toString().isEmpty()) {
+                    Toast.makeText(getApplicationContext(), "최소 한 개 이상의 보호자 연락처가 필요합니다.", Toast.LENGTH_LONG).show();
+                } else {
+                    List<String> nokPhones = new ArrayList<>();
+                    if (!nokPhoneEditText_1.getText().toString().isEmpty()) {
+                        nokPhones.add(nokPhoneEditText_2.getText().toString());
+                    }
+                    if (!nokPhoneEditText_2.getText().toString().isEmpty()) {
+                        nokPhones.add(nokPhoneEditText_2.getText().toString());
+                    }
+
+                    userInfoDTO.setNokPhones(nokPhones);
+
+                    Log.d("REGISTER", userInfoDTO.toString());
+
+//                    Intent intent = new Intent(NokPhoneActivity.this, HomeActivity.class);
+//                    intent.putExtra("userInfo", userInfoDTO);
+//                    startActivity(intent);
+                }
             }
         });
     }
