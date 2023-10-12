@@ -5,12 +5,22 @@ import androidx.appcompat.app.AppCompatActivity;
 import android.content.Intent;
 import android.icu.text.IDNA;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
 
 import com.example.falldetectionapp.R;
+import com.example.falldetectionapp.retrofit.UserService;
+import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
+
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
+import retrofit2.Retrofit;
+import retrofit2.converter.gson.GsonConverterFactory;
 
 /**
  * 회원가입 시, 카메라ID와 비밀번호를 입력하는 창입니다.
@@ -20,6 +30,8 @@ public class RegisterActivity extends AppCompatActivity {
 
     private Button toInfoButton;
     private EditText cameraIdEditText, passwordEditText, passwordCheckEditText;
+
+    private boolean cameraIdCheck = false;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -52,18 +64,53 @@ public class RegisterActivity extends AppCompatActivity {
                 String password = passwordEditText.getText().toString().trim();
                 String passwordCheck = passwordCheckEditText.getText().toString().trim();
 
-//                캠아이디가 DB에 등록되어 있지 않은 경우는 안되는 걸로
-//                if (cameraId != DB) {
-//                    Toast.makeText(getApplicationContext(), "등록되지 않은 카메라 아이디 입니다.", Toast.LENGTH_LONG).show();
-//                }
+                // 존재하는 카메라 ID 인지 확인
+                checkCameraId(cameraId);
 
-                if (password.equals(passwordCheck)) {
-                    Intent intent = new Intent(RegisterActivity.this, InfoActivity.class);
-                    startActivity(intent);
-                } else {
-                    Toast.makeText(getApplicationContext(), "비밀번호가 일치하지 않습니다.", Toast.LENGTH_LONG).show();
+                // 카메라 아이디 확인되면 진행
+                if (cameraIdCheck) {
+                    if (password.equals(passwordCheck)) {
+                        Intent intent = new Intent(RegisterActivity.this, InfoActivity.class);
+                        startActivity(intent);
+                    } else {
+                        Toast.makeText(getApplicationContext(), "비밀번호가 일치하지 않습니다.", Toast.LENGTH_LONG).show();
+                    }
                 }
+            }
+        });
+    }
 
+    /**
+     * 서버로 요청을 보내서 존재하는 카메라 ID인지 확인한다.
+     * @param cameraId
+     */
+    private void checkCameraId(String cameraId) {
+
+        Gson gson = new GsonBuilder().setLenient().create();
+
+        Retrofit retrofit = new Retrofit.Builder()
+        .baseUrl("http://10.0.2.2:10000") // 기본으로 적용되는 서버 URL (반드시 / 로 마무리되게 설정)
+        .addConverterFactory(GsonConverterFactory.create(gson)) // JSON 데이터를 Gson 라이브러리로 파싱하고 데이터를 Model에 자동으로 담는 converter
+        .build();
+
+        UserService userService = retrofit.create(UserService.class);
+
+        userService.checkCameraId(cameraId).enqueue(new Callback<String>() {
+            @Override
+            public void onResponse(Call<String> call, Response<String> response) {
+                Log.d("RETROFIT", "success : " + response.body());
+                if (response.body().equals("exist")) {
+                    // 있는 카메라 아이디
+                    cameraIdCheck = true;
+                } else {
+                    // 없는 카메라 아이디
+                    cameraIdCheck = false;
+                }
+            }
+
+            @Override
+            public void onFailure(Call<String> call, Throwable t) {
+                Log.d("RETROFIT", t.getCause().toString());
             }
         });
     }
