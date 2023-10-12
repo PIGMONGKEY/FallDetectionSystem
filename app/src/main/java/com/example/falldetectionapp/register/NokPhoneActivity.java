@@ -14,6 +14,7 @@ import com.example.falldetectionapp.DTO.SignUpDTO;
 import com.example.falldetectionapp.DTO.UserInfoDTO;
 import com.example.falldetectionapp.DTO.UserPhoneTokenDTO;
 import com.example.falldetectionapp.HomeActivity;
+import com.example.falldetectionapp.LoginActivity;
 import com.example.falldetectionapp.R;
 import com.example.falldetectionapp.retrofit.UserService;
 import com.google.gson.Gson;
@@ -113,7 +114,7 @@ public class NokPhoneActivity extends AppCompatActivity {
             public void onResponse(Call<String> call, Response<String> response) {
                 String responseString = response.body().toString();
                 if (responseString.equals("Success")) {
-                    Intent intent = new Intent(NokPhoneActivity.this, HomeActivity.class);
+                    Intent intent = new Intent(NokPhoneActivity.this, LoginActivity.class);
                     startActivity(intent);
                 } else if (responseString.equals("Registered CameraId")) {
                     // TODO: 이미 가입한 cameraId라고 알려주는거 앞에서 처리하도록 변경
