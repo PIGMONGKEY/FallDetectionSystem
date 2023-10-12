@@ -33,7 +33,6 @@
         <activity
             android:name=".register.InfoActivity"
             android:exported="false" />
-
         <activity
             android:name=".LoginActivity"
             android:exported="true" >

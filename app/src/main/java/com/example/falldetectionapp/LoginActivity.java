@@ -33,7 +33,7 @@ public class LoginActivity extends AppCompatActivity {
         init();
     }
 
-//    초기 설정을 넣어주세요
+    // 초기 설정을 넣어주세요
     private void init() {
         setView();
         setListener();
@@ -48,8 +48,10 @@ public class LoginActivity extends AppCompatActivity {
         forgetPasswordTextView = findViewById(R.id.forgetPasswordTextView_login);
     }
 
-//    리스너는 여기 모아주세요
+    // 리스너는 여기 모아주세요
     private void setListener() {
+
+        // 회원가입 버튼
         registerButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -58,6 +60,7 @@ public class LoginActivity extends AppCompatActivity {
             }
         });
 
+        // 로그인 버튼
         loginButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -75,6 +78,7 @@ public class LoginActivity extends AppCompatActivity {
             }
         });
 
+        // 자동로그인 체크박스 버튼
         autoLoginCheckBox.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
@@ -86,12 +90,16 @@ public class LoginActivity extends AppCompatActivity {
             }
         });
 
-//        TextView에도 onClickListener를 달 수 있습니다.
+        // TextView에도 onClickListener를 달 수 있습니다.
         forgetPasswordTextView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
 
             }
         });
+    }
+
+    private void requestLogin(String cameraId, String password) {
+
     }
 }
