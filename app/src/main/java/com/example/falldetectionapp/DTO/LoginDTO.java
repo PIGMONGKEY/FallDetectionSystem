@@ -4,6 +4,11 @@ import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 
 public class LoginDTO {
+    public LoginDTO(String cameraId, String password) {
+        this.cameraId = cameraId;
+        this.password = password;
+    }
+
     @SerializedName("cameraId")
     @Expose
     private String cameraId;
