@@ -11,6 +11,12 @@
         WHERE CAMERA_ID = #{cameraId};
     </select>
 
+    <update id="update">
+        UPDATE TBL_UPTOKEN
+        SET TOKEN = #{token}
+        WHERE CAMERA_ID = #{cameraId};
+    </update>
+
     <delete id="delete">
         DELETE FROM TBL_UPTOKEN
         WHERE CAMERA_ID = #{cameraId};

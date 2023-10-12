@@ -26,6 +26,14 @@ public class UPTokenDao {
         return uPTokenMapper.select(cameraId);
     }
 
+    public int update(UserPhoneTokenVO userPhoneTokenVO) {
+        try {
+            return uPTokenMapper.update(userPhoneTokenVO);
+        } catch (Exception e) {
+            return -1;
+        }
+    }
+
     public int delete(String cameraId) {
         try {
             return uPTokenMapper.delete(cameraId);
