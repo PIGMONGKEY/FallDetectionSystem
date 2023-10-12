@@ -33,13 +33,4 @@ public class MessageController {
 
         return ResponseEntity.ok().build();
     }
-
-    @PutMapping("update-token")
-    public ResponseEntity updateUserPhoneToken(@RequestBody UserPhoneTokenVO userPhoneTokenVO) {
-        if (uPTokenDao.update(userPhoneTokenVO) == 1) {
-            return ResponseEntity.ok("Success");
-        } else {
-            return ResponseEntity.ok("Fail");
-        }
-    }
 }
