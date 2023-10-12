@@ -11,6 +11,7 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
 
+import com.example.falldetectionapp.DTO.UserInfoDTO;
 import com.example.falldetectionapp.R;
 import com.example.falldetectionapp.retrofit.UserService;
 import com.google.gson.Gson;
@@ -30,8 +31,6 @@ public class RegisterActivity extends AppCompatActivity {
 
     private Button toInfoButton;
     private EditText cameraIdEditText, passwordEditText, passwordCheckEditText;
-
-    private boolean cameraIdCheck = false;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -61,21 +60,9 @@ public class RegisterActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 String cameraId = cameraIdEditText.getText().toString().trim();
-                String password = passwordEditText.getText().toString().trim();
-                String passwordCheck = passwordCheckEditText.getText().toString().trim();
 
                 // 존재하는 카메라 ID 인지 확인
                 checkCameraId(cameraId);
-
-                // 카메라 아이디 확인되면 진행
-                if (cameraIdCheck) {
-                    if (password.equals(passwordCheck)) {
-                        Intent intent = new Intent(RegisterActivity.this, InfoActivity.class);
-                        startActivity(intent);
-                    } else {
-                        Toast.makeText(getApplicationContext(), "비밀번호가 일치하지 않습니다.", Toast.LENGTH_LONG).show();
-                    }
-                }
             }
         });
     }
@@ -101,10 +88,22 @@ public class RegisterActivity extends AppCompatActivity {
                 Log.d("RETROFIT", "success : " + response.body());
                 if (response.body().equals("exist")) {
                     // 있는 카메라 아이디
-                    cameraIdCheck = true;
+                    if (passwordEditText.getText().toString().equals(passwordCheckEditText.getText().toString())) {
+
+                        UserInfoDTO userInfoDTO = new UserInfoDTO();
+                        userInfoDTO.setCameraId(cameraId);
+                        userInfoDTO.setUserPassword(passwordEditText.getText().toString());
+
+                        Intent intent = new Intent(RegisterActivity.this, InfoActivity.class);
+                        intent.putExtra("userInfo", userInfoDTO);
+                        startActivity(intent);
+
+                    } else {
+                        Toast.makeText(getApplicationContext(), "비밀번호가 일치하지 않습니다.", Toast.LENGTH_LONG).show();
+                    }
                 } else {
                     // 없는 카메라 아이디
-                    cameraIdCheck = false;
+                    Toast.makeText(getApplicationContext(), "존재하지 않는 카메라 ID 입니다.", Toast.LENGTH_LONG).show();
                 }
             }
 
