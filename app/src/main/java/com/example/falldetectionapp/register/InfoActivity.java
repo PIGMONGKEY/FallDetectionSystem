@@ -17,6 +17,7 @@ import com.example.falldetectionapp.R;
  * activity_info.xml과 연결됩니다.
  */
 public class InfoActivity extends AppCompatActivity {
+    // TODO: 전화번호 인증 구현 필요 - 시간 없으면 뺍니다.
 
     private Button toAddressButton, phoneAuthButton;
     private EditText nameEditText, phoneEditText, phoneCheckEditText;
@@ -57,7 +58,11 @@ public class InfoActivity extends AppCompatActivity {
         toAddressButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                userInfoDTO.setUserPhone(phoneEditText.getText().toString());
+                userInfoDTO.setUserName(nameEditText.getText().toString());
+
                 Intent intent = new Intent(InfoActivity.this, AddressActivity.class);
+                intent.putExtra("userInfo", userInfoDTO);
                 startActivity(intent);
             }
         });
