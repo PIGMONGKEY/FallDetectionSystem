@@ -37,8 +37,6 @@ public class LoginActivity extends AppCompatActivity {
     private CheckBox autoLoginCheckBox;
     private TextView forgetPasswordTextView;
 
-    private String personalToken;
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -114,7 +112,8 @@ public class LoginActivity extends AppCompatActivity {
 
     /**
      * 서버에 아이디와 비밀번호를 보내서 로그인 요청한다.
-     * 로그인 성공 시, token을 발급받는다.
+     * 로그인 성공 시, token을 발급받고,
+     * intent에 token과 cameraId를 넣어서 HomeActivity를 호출한다.
      * @param cameraId
      * @param password
      */
@@ -133,9 +132,8 @@ public class LoginActivity extends AppCompatActivity {
                 if (response.body().getToken().trim().equals("fail")) {
                     Toast.makeText(getApplicationContext(), "올바르지 않은 아이디 혹은 비밀번호 입니다.", Toast.LENGTH_LONG).show();
                 } else {
-                    personalToken = response.body().toString().trim();
                     Intent intent = new Intent(LoginActivity.this, HomeActivity.class);
-                    intent.putExtra("personalToken", personalToken);
+                    intent.putExtra("personalToken", response.body().getToken());
                     intent.putExtra("cameraId", cameraId);
                     startActivity(intent);
                 }
