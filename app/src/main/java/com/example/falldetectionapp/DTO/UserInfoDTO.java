@@ -3,12 +3,13 @@ package com.example.falldetectionapp.DTO;
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 
+import java.io.Serializable;
 import java.util.List;
 
 /**
  * 사용자 정보를 받아올 때 사용하는 DTO 입니다.
  */
-public class UserInfoDTO {
+public class UserInfoDTO implements Serializable {
     @SerializedName("requestSuccess")
     @Expose
     private String requestSuccess;
@@ -73,19 +74,31 @@ public class UserInfoDTO {
         return userAddress;
     }
 
-    public String getRegdate() {
-        return regdate;
-    }
-
-    public String getUpdatedate() {
-        return updatedate;
-    }
-
-    public String getUserRole() {
-        return userRole;
-    }
-
     public List<String> getNokPhones() {
         return nokPhones;
+    }
+
+    public void setCameraId(String cameraId) {
+        this.cameraId = cameraId;
+    }
+
+    public void setUserName(String userName) {
+        this.userName = userName;
+    }
+
+    public void setUserPassword(String userPassword) {
+        this.userPassword = userPassword;
+    }
+
+    public void setUserPhone(String userPhone) {
+        this.userPhone = userPhone;
+    }
+
+    public void setUserAddress(String userAddress) {
+        this.userAddress = userAddress;
+    }
+
+    public void setNokPhones(List<String> nokPhones) {
+        this.nokPhones = nokPhones;
     }
 }

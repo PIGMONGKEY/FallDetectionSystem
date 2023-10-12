@@ -11,4 +11,20 @@ public class SignUpDTO {
     @SerializedName("userInfo")
     @Expose
     private UserInfoDTO userInfo;
+
+    public UserPhoneTokenDTO getPhoneToken() {
+        return phoneToken;
+    }
+
+    public void setPhoneToken(UserPhoneTokenDTO phoneToken) {
+        this.phoneToken = phoneToken;
+    }
+
+    public UserInfoDTO getUserInfo() {
+        return userInfo;
+    }
+
+    public void setUserInfo(UserInfoDTO userInfo) {
+        this.userInfo = userInfo;
+    }
 }

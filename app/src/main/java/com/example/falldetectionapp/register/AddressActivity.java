@@ -9,6 +9,7 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
 
+import com.example.falldetectionapp.DTO.UserInfoDTO;
 import com.example.falldetectionapp.R;
 
 /**
@@ -20,6 +21,8 @@ public class AddressActivity extends AppCompatActivity {
     private Button toNokPhone;
     private EditText zipCodeEditText, addressEditText, deepAddressEditText;
 
+    private UserInfoDTO userInfoDTO;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -30,9 +33,15 @@ public class AddressActivity extends AppCompatActivity {
 
 //    초기 설정을 넣으시면 됩니다.
     private void init() {
+        getDataFromIntent();
         setTitle("주소");
         setView();
         setListener();
+    }
+
+    private void getDataFromIntent() {
+        Intent intent = getIntent();
+        userInfoDTO = (UserInfoDTO) intent.getSerializableExtra("userInfo");
     }
 
     private void setView() {
@@ -47,13 +56,17 @@ public class AddressActivity extends AppCompatActivity {
         toNokPhone.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                String zipCode = zipCodeEditText.getText().toString().trim();
-                String address = addressEditText.getText().toString().trim();
-                String addressDeep = deepAddressEditText.getText().toString().trim();
+                String zipCode = zipCodeEditText.getText().toString();
+                String address = addressEditText.getText().toString();
+                String addressDeep = deepAddressEditText.getText().toString();
 
                 if (!zipCode.isEmpty() && !address.isEmpty() && !addressDeep.isEmpty()) {
+                    userInfoDTO.setUserAddress(address + " " + addressDeep);
+
                     Intent intent = new Intent(AddressActivity.this, NokPhoneActivity.class);
+                    intent.putExtra("userInfo", userInfoDTO);
                     startActivity(intent);
+
                 } else {
                     Toast.makeText(getApplicationContext(), "주소를 모두 입력해 주세요", Toast.LENGTH_LONG).show();
                 }
