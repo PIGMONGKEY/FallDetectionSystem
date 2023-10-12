@@ -36,7 +36,7 @@ public class UserController {
 
     /**
      * 사용자 정보를 받아옴
-     * @param cameraId PK인 UNO를 전달해준다
+     * @param cameraId PK인 cameraId를 전달한다.
      * @return 결과 UserVO를 JSON 형태로 리턴한다.
      */
     @GetMapping("info")
@@ -77,7 +77,7 @@ public class UserController {
 
     /**
      * 사용자 정보 갱신
-     * @param userDTO UserVO 형태로 받아와야 하며, 모든 멤버를 다 체워야 한다.
+     * @param userDTO UserDTO 형태로 받아와야 한다.
      */
     @PutMapping("modify")
     @PreAuthorize("hasAnyRole('USER', 'ADMIN')")
