@@ -5,6 +5,7 @@ import com.example.falldowndetectionserver.domain.vo.PositionVO;
 import com.example.falldowndetectionserver.service.FirebaseMessageService;
 import lombok.*;
 import lombok.extern.slf4j.Slf4j;
+import org.jetbrains.annotations.NotNull;
 import org.springframework.stereotype.Component;
 
 import java.io.IOException;
@@ -21,7 +22,7 @@ public class FallDownDetector {
 
     private final HashMap<String, Queue<PositionVO>> positionHash = new HashMap<>();
 
-    public void checkFallDown(String cameraId, PositionVO positionVO) {
+    public void checkFallDown(String cameraId, @NotNull PositionVO positionVO) {
         float ratio;
         try {
             ratio = (float) (positionVO.getMax_x() - positionVO.getMin_x()) / (positionVO.getMax_y() - positionVO.getMin_y());
