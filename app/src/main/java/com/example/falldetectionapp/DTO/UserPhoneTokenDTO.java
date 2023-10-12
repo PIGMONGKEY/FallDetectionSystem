@@ -11,4 +11,20 @@ public class UserPhoneTokenDTO {
     @SerializedName("token")
     @Expose
     private String token;
+
+    public String getCameraId() {
+        return cameraId;
+    }
+
+    public void setCameraId(String cameraId) {
+        this.cameraId = cameraId;
+    }
+
+    public String getToken() {
+        return token;
+    }
+
+    public void setToken(String token) {
+        this.token = token;
+    }
 }
