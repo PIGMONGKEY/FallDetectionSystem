@@ -1,5 +1,6 @@
 package com.example.falldowndetectionserver.controller;
 
+import com.example.falldowndetectionserver.dao.CameraIdDao;
 import com.example.falldowndetectionserver.domain.dto.SignUpDTO;
 import com.example.falldowndetectionserver.domain.dto.UserDTO;
 import com.example.falldowndetectionserver.jwt.TokenProvider;
@@ -23,6 +24,12 @@ import java.nio.charset.StandardCharsets;
 public class UserController {
     private final UserService userService;
     private final TokenProvider tokenProvider;
+    private final CameraIdDao cameraIdDao;
+
+    @GetMapping("checkCameraId")
+    public ResponseEntity checkCameraId(String cameraId) {
+        return ResponseEntity.ok(cameraIdDao.select(cameraId));
+    }
 
     /**
      * 회원가입
