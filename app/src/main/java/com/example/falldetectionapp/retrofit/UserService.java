@@ -12,9 +12,9 @@ import retrofit2.http.Path;
 import retrofit2.http.Query;
 
 public interface UserService {
-    @POST("user/signup")
-    Call<String> signUp(@Body SignUpDTO signUpDTO);
-
     @GET("user/checkCameraId")
     Call<String> checkCameraId(@Query("cameraId") String cameraId);
+
+    @POST("user/signup")
+    Call<String> signUp(@Body SignUpDTO signUpDTO);
 }
