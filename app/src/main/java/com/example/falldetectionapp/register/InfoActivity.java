@@ -9,6 +9,7 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 
+import com.example.falldetectionapp.DTO.UserInfoDTO;
 import com.example.falldetectionapp.R;
 
 /**
@@ -19,6 +20,7 @@ public class InfoActivity extends AppCompatActivity {
 
     private Button toAddressButton, phoneAuthButton;
     private EditText nameEditText, phoneEditText, phoneCheckEditText;
+    private UserInfoDTO userInfoDTO;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -30,9 +32,15 @@ public class InfoActivity extends AppCompatActivity {
 
 //    초기설정을 넣어주세요
     private void init() {
+        getDataFromIntent();
         setTitle("개인정보");
         setView();
         setListener();
+    }
+
+    private void getDataFromIntent() {
+        Intent intent = getIntent();
+        userInfoDTO = (UserInfoDTO) intent.getSerializableExtra("userInfo");
     }
 
     private void setView() {
@@ -45,6 +53,7 @@ public class InfoActivity extends AppCompatActivity {
 
 //    리스너는 여기에 모아주세요
     private void setListener() {
+        // 다음 버튼
         toAddressButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -53,6 +62,7 @@ public class InfoActivity extends AppCompatActivity {
             }
         });
 
+        // 전화번호 인증번호 전송 버튼 리스너
         phoneAuthButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
