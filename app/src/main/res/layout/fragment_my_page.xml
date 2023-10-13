@@ -51,19 +51,18 @@
                 android:layout_height="match_parent"
                 android:layout_gravity="center"
                 android:layout_weight="0.6"
-                android:text="카메라 아이디"
+                android:text="이름"
                 android:textAlignment="center"
                 android:textSize="20sp"
                 android:textStyle="bold" />
 
-            <EditText
-                android:id="@+id/cameraIdEditText_mypage"
+            <TextView
+                android:id="@+id/nameTextView_myPage"
                 android:layout_width="0dp"
                 android:layout_height="match_parent"
                 android:layout_gravity="center"
                 android:layout_weight="1"
                 android:ems="10"
-                android:inputType="text"
                 android:textAlignment="center"
                 android:textSize="20sp" />
         </LinearLayout>
@@ -80,19 +79,18 @@
                 android:layout_height="match_parent"
                 android:layout_gravity="center"
                 android:layout_weight="0.6"
-                android:text="비밀번호"
+                android:text="전화번호"
                 android:textAlignment="center"
                 android:textSize="20sp"
                 android:textStyle="bold" />
 
-            <EditText
-                android:id="@+id/passwordEditText_mypage"
+            <TextView
+                android:id="@+id/phoneTextView_myPage"
                 android:layout_width="0dp"
                 android:layout_height="match_parent"
                 android:layout_gravity="center"
                 android:layout_weight="1"
                 android:ems="10"
-                android:inputType="textPassword"
                 android:textAlignment="center"
                 android:textSize="20sp" />
 
@@ -115,14 +113,13 @@
                 android:textSize="20sp"
                 android:textStyle="bold" />
 
-            <EditText
-                android:id="@+id/addressEditText_mypage"
+            <TextView
+                android:id="@+id/addressTextView_myPage"
                 android:layout_width="0dp"
                 android:layout_height="match_parent"
                 android:layout_gravity="center"
                 android:layout_weight="1"
                 android:ems="10"
-                android:inputType="textPostalAddress"
                 android:textAlignment="center"
                 android:textSize="20sp" />
 
@@ -145,8 +142,8 @@
                 android:textSize="20sp"
                 android:textStyle="bold" />
 
-            <EditText
-                android:id="@+id/nokPhone_1_EditText_mypage"
+            <TextView
+                android:id="@+id/nokPhone_1_TextView_myPage"
                 android:layout_width="0dp"
                 android:layout_height="match_parent"
                 android:layout_gravity="center"
@@ -174,8 +171,8 @@
                 android:textSize="20sp"
                 android:textStyle="bold" />
 
-            <EditText
-                android:id="@+id/nokPhone_2_EditText_mypage"
+            <TextView
+                android:id="@+id/nokPhone_2_TextView_myPage"
                 android:layout_width="0dp"
                 android:layout_height="match_parent"
                 android:layout_gravity="center"

@@ -31,7 +31,7 @@ public class HomeActivity extends AppCompatActivity {
 
     private BottomNavigationView bottomNavigationView;
     private String personalToken;
-    private UserInfoDTO userInfoDTO;
+    private String cameraId;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -41,50 +41,18 @@ public class HomeActivity extends AppCompatActivity {
         init();
     }
 
-
-    //     화면이 생성될 때 실행시켜줌으로써, 초기 설정을 한다.
+    // 화면이 생성될 때 실행시켜줌으로써, 초기 설정을 한다.
     private void init() {
         getDataFromIntent();
         setViews();
         setBottomNavigationView();
     }
 
+    // Intent로 넘어온 데이터 받기
     private void getDataFromIntent() {
         Intent intent = getIntent();
         personalToken = intent.getStringExtra("personalToken");
-        requestUserInfo(intent.getStringExtra("cameraId"));
-    }
-
-    private void requestUserInfo(String cameraId) {
-        Gson gson = new GsonBuilder().setLenient().create();
-
-        Retrofit retrofit = new Retrofit.Builder()
-                .baseUrl("http://10.0.2.2:10000") // 기본으로 적용되는 서버 URL (반드시 / 로 마무리되게 설정)
-                .addConverterFactory(GsonConverterFactory.create(gson)) // JSON 데이터를 Gson 라이브러리로 파싱하고 데이터를 Model에 자동으로 담는 converter
-                .build();
-
-        UserService userService = retrofit.create(UserService.class);
-
-        userService.getUserInfo("Bearer " + personalToken, cameraId).enqueue(new Callback<UserInfoDTO>() {
-            @Override
-            public void onResponse(Call<UserInfoDTO> call, Response<UserInfoDTO> response) {
-                if (response.body().getRequestSuccess().trim().equals("Success")) {
-                    userInfoDTO = new UserInfoDTO();
-                    userInfoDTO.setUserName(response.body().getUserName());
-                    userInfoDTO.setCameraId(response.body().getCameraId());
-                    userInfoDTO.setUserPhone(response.body().getUserPhone());
-                    userInfoDTO.setUserAddress(response.body().getUserAddress());
-                    userInfoDTO.setNokPhones(response.body().getNokPhones());
-                } else {
-                    Toast.makeText(getApplicationContext(), "사용자 정보를 가져오는데 실패했습니다.", Toast.LENGTH_LONG).show();
-                }
-            }
-
-            @Override
-            public void onFailure(Call<UserInfoDTO> call, Throwable t) {
-                Log.d("HOME", t.getMessage());
-            }
-        });
+        cameraId = intent.getStringExtra("cameraId");
     }
 
     //    findViewById 메소드를 이용해서 멤버 변수와 View를 연결한다.
@@ -117,6 +85,10 @@ public class HomeActivity extends AppCompatActivity {
             newFragment = new VideoFragment();
         } else {
             newFragment = new MyPageFragment();
+            Bundle bundle = new Bundle();
+            bundle.putString("cameraId", cameraId);
+            bundle.putString("personalToken", personalToken);
+            newFragment.setArguments(bundle);
         }
 
         FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
