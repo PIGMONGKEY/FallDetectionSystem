@@ -79,13 +79,15 @@ public class HomeActivity extends AppCompatActivity {
      */
     private void setFrame(int id) {
         Fragment newFragment;
+        Bundle bundle = new Bundle();
+
         if (id == R.id.home) {
             newFragment = new HomeFragment();
         } else if (id == R.id.video) {
             newFragment = new VideoFragment();
+            bundle.putString("cameraId", cameraId);
         } else {
             newFragment = new MyPageFragment();
-            Bundle bundle = new Bundle();
             bundle.putString("cameraId", cameraId);
             bundle.putString("personalToken", personalToken);
             newFragment.setArguments(bundle);

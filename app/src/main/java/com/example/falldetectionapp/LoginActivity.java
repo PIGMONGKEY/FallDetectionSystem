@@ -30,6 +30,7 @@ import retrofit2.converter.gson.GsonConverterFactory;
  * 로그인 화면 입니다.
  * activity_log_in.xml과 연결됩니다.
  */
+// TODO: 비밀번호 찾기, 자동 로그인 구현
 public class LoginActivity extends AppCompatActivity {
 
     private Button registerButton, loginButton;
