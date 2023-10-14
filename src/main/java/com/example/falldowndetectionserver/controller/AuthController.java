@@ -3,7 +3,7 @@ package com.example.falldowndetectionserver.controller;
 import com.example.falldowndetectionserver.domain.dto.LoginDTO;
 import com.example.falldowndetectionserver.domain.dto.AuthTokenDTO;
 import com.example.falldowndetectionserver.jwt.JwtFilter;
-import com.example.falldowndetectionserver.service.AuthService;
+import com.example.falldowndetectionserver.service.auth.AuthService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpHeaders;

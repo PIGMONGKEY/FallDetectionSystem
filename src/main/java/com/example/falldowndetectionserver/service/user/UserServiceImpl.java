@@ -1,4 +1,4 @@
-package com.example.falldowndetectionserver.service;
+package com.example.falldowndetectionserver.service.user;
 
 import com.example.falldowndetectionserver.dao.NokPhoneDao;
 import com.example.falldowndetectionserver.dao.UPTokenDao;

@@ -1,4 +1,4 @@
-package com.example.falldowndetectionserver.service;
+package com.example.falldowndetectionserver.service.user;
 
 import com.example.falldowndetectionserver.domain.dto.SignUpDTO;
 import com.example.falldowndetectionserver.domain.dto.UserDTO;

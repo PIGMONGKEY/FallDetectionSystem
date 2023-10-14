@@ -1,6 +1,7 @@
 package com.example.falldowndetectionserver.service;
 
 import com.example.falldowndetectionserver.domain.dto.UserDTO;
+import com.example.falldowndetectionserver.service.user.UserService;
 import lombok.extern.slf4j.Slf4j;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
