@@ -14,8 +14,10 @@ EXTRA_HEADER = {
     "camera_id": "cam01"
 }
 
+print("Loading model...")
 model = hub.load(f"./movenet_singlepose_thunder_4")
 movenet = model.signatures['serving_default']
+print("Model load success")
 
 # 웹캡으로 영상 캡쳐
 cap = cv2.VideoCapture(0)
@@ -56,9 +58,7 @@ async def get_position_and_send(frame, position_socket):
     outputs = movenet(pose_image)['output_0']
 
     for keypoint in outputs.numpy()[0][0]:
-        for key in keypoint:
-            key = float(key)
-        if keypoint[2] <= 0.4:
+        if keypoint[2] <= 0.35:
             continue
         if keypoint[0] <= min_y:
             min_y = keypoint[0]
@@ -69,25 +69,65 @@ async def get_position_and_send(frame, position_socket):
         if keypoint[1] >= max_x:
             max_x = keypoint[1]
 
+    position = outputs.numpy()[0][0]
+
     temp = {
-        "position": [
-            [1*outputs.numpy()[0][0][0][0], 1*outputs.numpy()[0][0][0][1], 1*outputs.numpy()[0][0][0][2]],
-            [1*outputs.numpy()[0][0][1][0], 1*outputs.numpy()[0][0][1][1], 1*outputs.numpy()[0][0][1][2]],
-            [1*outputs.numpy()[0][0][2][0], 1*outputs.numpy()[0][0][2][1], 1*outputs.numpy()[0][0][2][2]],
-            [1*outputs.numpy()[0][0][3][0], 1*outputs.numpy()[0][0][3][1], 1*outputs.numpy()[0][0][3][2]],
-            [1*outputs.numpy()[0][0][4][0], 1*outputs.numpy()[0][0][4][1], 1*outputs.numpy()[0][0][4][2]],
-            [1*outputs.numpy()[0][0][5][0], 1*outputs.numpy()[0][0][5][1], 1*outputs.numpy()[0][0][5][2]],
-            [1*outputs.numpy()[0][0][6][0], 1*outputs.numpy()[0][0][6][1], 1*outputs.numpy()[0][0][6][2]],
-            [1*outputs.numpy()[0][0][7][0], 1*outputs.numpy()[0][0][7][1], 1*outputs.numpy()[0][0][7][2]],
-            [1*outputs.numpy()[0][0][8][0], 1*outputs.numpy()[0][0][8][1], 1*outputs.numpy()[0][0][8][2]],
-            [1*outputs.numpy()[0][0][9][0], 1*outputs.numpy()[0][0][9][1], 1*outputs.numpy()[0][0][9][2]],
-            [1*outputs.numpy()[0][0][10][0], 1*outputs.numpy()[0][0][10][1], 1*outputs.numpy()[0][0][10][2]],
-            [1*outputs.numpy()[0][0][11][0], 1*outputs.numpy()[0][0][11][1], 1*outputs.numpy()[0][0][11][2]],
-            [1*outputs.numpy()[0][0][12][0], 1*outputs.numpy()[0][0][12][1], 1*outputs.numpy()[0][0][12][2]],
-            [1*outputs.numpy()[0][0][13][0], 1*outputs.numpy()[0][0][13][1], 1*outputs.numpy()[0][0][13][2]],
-            [1*outputs.numpy()[0][0][14][0], 1*outputs.numpy()[0][0][14][1], 1*outputs.numpy()[0][0][14][2]],
-            [1*outputs.numpy()[0][0][15][0], 1*outputs.numpy()[0][0][15][1], 1*outputs.numpy()[0][0][15][2]],
-            [1*outputs.numpy()[0][0][16][0], 1*outputs.numpy()[0][0][16][1], 1*outputs.numpy()[0][0][16][2]]
+        "position_x": [
+            int(position[0][1] * 100),
+            int(position[1][1] * 100),
+            int(position[2][1] * 100),
+            int(position[3][1] * 100),
+            int(position[4][1] * 100),
+            int(position[5][1] * 100),
+            int(position[6][1] * 100),
+            int(position[7][1] * 100),
+            int(position[8][1] * 100),
+            int(position[9][1] * 100),
+            int(position[10][1] * 100),
+            int(position[11][1] * 100),
+            int(position[12][1] * 100),
+            int(position[13][1] * 100),
+            int(position[14][1] * 100),
+            int(position[15][1] * 100),
+            int(position[16][1] * 100)
+        ],
+        "position_y": [
+            int(position[0][0] * 100),
+            int(position[1][0] * 100),
+            int(position[2][0] * 100),
+            int(position[3][0] * 100),
+            int(position[4][0] * 100),
+            int(position[5][0] * 100),
+            int(position[6][0] * 100),
+            int(position[7][0] * 100),
+            int(position[8][0] * 100),
+            int(position[9][0] * 100),
+            int(position[10][0] * 100),
+            int(position[11][0] * 100),
+            int(position[12][0] * 100),
+            int(position[13][0] * 100),
+            int(position[14][0] * 100),
+            int(position[15][0] * 100),
+            int(position[16][0] * 100)
+        ],
+        "position_trust": [
+            int(position[0][2] * 100),
+            int(position[1][2] * 100),
+            int(position[2][2] * 100),
+            int(position[3][2] * 100),
+            int(position[4][2] * 100),
+            int(position[5][2] * 100),
+            int(position[6][2] * 100),
+            int(position[7][2] * 100),
+            int(position[8][2] * 100),
+            int(position[9][2] * 100),
+            int(position[10][2] * 100),
+            int(position[11][2] * 100),
+            int(position[12][2] * 100),
+            int(position[13][2] * 100),
+            int(position[14][2] * 100),
+            int(position[15][2] * 100),
+            int(position[16][2] * 100)
         ],
         "min_x": int(round(min_x, 2) * 100) if min_x != 99999 else -1,
         "max_x": int(round(max_x, 2) * 100) if max_x != 0 else -2,
@@ -96,7 +136,6 @@ async def get_position_and_send(frame, position_socket):
     }
 
     json_message = json.dumps(temp)
-    print(json_message)
     await position_socket.send(json_message)
 
 
