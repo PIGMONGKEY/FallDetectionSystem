@@ -50,9 +50,9 @@ async def get_position_and_send(frame, position_socket):
     max_x = 0
     max_y = 0
 
-    pose_image = cv2.resize(frame, (192, 192))
+    pose_image = cv2.resize(frame, (256, 256))
     pose_image = tf.expand_dims(pose_image, axis=0)
-    pose_image = tf.cast(tf.image.resize_with_pad(pose_image, 192, 192), dtype=tf.int32)
+    pose_image = tf.cast(tf.image.resize_with_pad(pose_image, 256, 256), dtype=tf.int32)
     outputs = movenet(pose_image)['output_0']
 
     for keypoint in outputs.numpy()[0][0]:
