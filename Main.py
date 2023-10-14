@@ -14,7 +14,7 @@ EXTRA_HEADER = {
     "camera_id": "cam01"
 }
 
-model = hub.load("https://tfhub.dev/google/movenet/singlepose/lightning/4")
+model = hub.load(f"./movenet_singlepose_thunder_4")
 movenet = model.signatures['serving_default']
 
 # 웹캡으로 영상 캡쳐
