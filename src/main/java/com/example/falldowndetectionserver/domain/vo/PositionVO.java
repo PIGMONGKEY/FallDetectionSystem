@@ -3,6 +3,8 @@ package com.example.falldowndetectionserver.domain.vo;
 import lombok.Data;
 import org.springframework.stereotype.Component;
 
+import java.util.Arrays;
+
 @Data
 @Component
 public class PositionVO {
@@ -24,8 +26,9 @@ public class PositionVO {
                                                 "left ankle",
                                                 "right ankle"
                                             };
-
-    private double[][] position;
+    private int[] position_x;
+    private int[] position_y;
+    private int[] position_trust;
     private int min_x;
     private int min_y;
     private int max_x;

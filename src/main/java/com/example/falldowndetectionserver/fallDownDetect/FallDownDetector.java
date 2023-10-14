@@ -24,14 +24,17 @@ public class FallDownDetector {
 
     public void checkFallDown(String cameraId, @NotNull PositionVO positionVO) {
         float ratio;
+
         try {
             ratio = (float) (positionVO.getMax_x() - positionVO.getMin_x()) / (positionVO.getMax_y() - positionVO.getMin_y());
             if (ratio >= 1.0) {
-                log.info("Body radio : " + ratio + "fall down");
                 checkEmergency(cameraId, positionVO);
+//                log.info("ratio : " + ratio);
+//                log.info(positionVO.toString());
             } else {
-                log.info("Body radio : " + ratio);
-                positionHash.get(cameraId).clear();
+                log.info("ratio : " + ratio);
+//                log.info(positionVO.toString());
+//                positionHash.get(cameraId).clear();
             }
         } catch (ArithmeticException e) {
             e.printStackTrace();
@@ -42,6 +45,7 @@ public class FallDownDetector {
         positionHash.get(cameraId).add(positionVO);
 
         // 25 프레임 정도 나옴
+        // Thunder 사용하면 15 프레임으로 떨어짐
         if (positionHash.get(cameraId).size() == 180) {
             try {
                 firebaseMessageService.sendMessageTo(uPTokenDao.select(cameraId).get(), cameraId, "dangerous");
