@@ -613,3 +613,5 @@ $RECYCLE.BIN/
 *.lnk
 
 # End of https://www.toptal.com/developers/gitignore/api/pycharm,pycharm+all,pycharm+iml,macos,windows,linux,archlinuxpackages,python,pythonvanilla,circuitpython,video,images
+
+movenet_singlepose_thunder_4
