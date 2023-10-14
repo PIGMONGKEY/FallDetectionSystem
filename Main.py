@@ -28,7 +28,7 @@ async def main():
         async with websockets.connect("ws://localhost:10000/video", extra_headers=EXTRA_HEADER) as video_socket:
 
             # 연결되면 연결 정보를 TextMessage로 보냄
-            await position_socket.send(CONNECTION_INFO)
+            # await position_socket.send(CONNECTION_INFO)
             await video_socket.send(CONNECTION_INFO)
 
             # 웹캡이 켜져 있는동안 반복
@@ -69,12 +69,13 @@ async def get_position_and_send(frame, position_socket):
 
     temp = {
         "min_x": int(round(min_x, 2) * 100) if min_x != 99999 else -1,
-        "max_x": int(round(max_x, 2) * 100) if max_x != 0 else -1,
+        "max_x": int(round(max_x, 2) * 100) if max_x != 0 else -2,
         "min_y": int(round(min_y, 2) * 100) if min_y != 99999 else -1,
-        "max_y": int(round(max_y, 2) * 100) if max_y != 0 else -1
+        "max_y": int(round(max_y, 2) * 100) if max_y != 0 else -2
     }
 
     json_message = json.dumps(temp)
+    print(json_message)
     await position_socket.send(json_message)
 
 
