@@ -9,5 +9,5 @@ import lombok.Data;
 @Builder
 public class SignUpRequestDTO {
     private final UserPhoneTokenVO phoneToken;
-    private final UserDTO userInfo;
+    private final UserRequestDTO userInfo;
 }

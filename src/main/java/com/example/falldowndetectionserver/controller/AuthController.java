@@ -10,12 +10,15 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
+
+import java.nio.charset.StandardCharsets;
 
 @RestController
 @RequiredArgsConstructor
@@ -32,15 +35,16 @@ public class AuthController {
      */
     @PostMapping("login")
     public ResponseEntity<AuthTokenResponse> login(@RequestBody LoginDTO loginDTO) {
+        HttpHeaders httpHeaders = new HttpHeaders();
+        httpHeaders.setContentType(new MediaType("application", "json", StandardCharsets.UTF_8));
+
         AuthTokenResponse authTokenResponse = authService.login(loginDTO);
 
         if (authTokenResponse.getCode() == HttpStatus.OK.value()) {
-            HttpHeaders httpHeaders = new HttpHeaders();
             httpHeaders.add(JwtFilter.AUTHORIZATION_HEADER, "Bearer " + authTokenResponse.getToken());
-
             return new ResponseEntity<>(authTokenResponse, httpHeaders, HttpStatus.OK);
         } else {
-            return new ResponseEntity<>(authTokenResponse, new HttpHeaders(), HttpStatus.UNAUTHORIZED);
+            return new ResponseEntity<>(authTokenResponse, httpHeaders, HttpStatus.UNAUTHORIZED);
         }
     }
 
@@ -52,12 +56,16 @@ public class AuthController {
     @PostMapping("logout")
     @PreAuthorize("hasAnyRole('USER', 'ADMIN')")
     public ResponseEntity logout(@RequestBody AuthTokenParam authTokenParam) {
+        HttpHeaders httpHeaders = new HttpHeaders();
+        httpHeaders.setContentType(new MediaType("application", "json", StandardCharsets.UTF_8));
+
         authService.logout(authTokenParam);
+
         return new ResponseEntity(BasicResponseDTO.builder()
                 .code(HttpStatus.OK.value())
                 .httpStatus(HttpStatus.OK)
                 .message("로그아웃 성공")
-                .build(), HttpStatus.OK);
+                .build(), httpHeaders, HttpStatus.OK);
     }
 
 }

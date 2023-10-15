@@ -6,6 +6,8 @@ import com.example.falldowndetectionserver.dao.UPTokenDao;
 import com.example.falldowndetectionserver.dao.UserDao;
 import com.example.falldowndetectionserver.domain.dto.user.SignUpRequestDTO;
 import com.example.falldowndetectionserver.domain.dto.BasicResponseDTO;
+import com.example.falldowndetectionserver.domain.dto.user.UserRequestDTO;
+import com.example.falldowndetectionserver.domain.dto.user.UserResponseDTO;
 import com.example.falldowndetectionserver.domain.vo.NokPhoneVO;
 import com.example.falldowndetectionserver.domain.dto.UserDTO;
 import com.example.falldowndetectionserver.domain.vo.UserVO;
@@ -110,31 +112,33 @@ public class UserServiceImpl implements UserService {
      * userVO 또는 nokPhones가 null일 경우, UserDTO의 requestSuccess를 false로 설정하여 리턴한다.
      */
     @Override
-    public UserDTO getUserInfo(String cameraId) {
+    public UserResponseDTO getUserInfo(String cameraId) {
         UserVO userVO = userDao.select(cameraId).orElse(null);
         List<String> nokPhones = nokPhoneDao.selectAll(cameraId);
-        UserDTO userDTO;
 
         if (userVO != null && !nokPhones.isEmpty()) {
-            userDTO = UserDTO.builder()
-                    .requestSuccess("Success")
+            UserRequestDTO userInfo = UserRequestDTO.builder()
                     .cameraId(userVO.getCameraId())
                     .userPassword(userVO.getUserPassword())
                     .userName(userVO.getUserName())
                     .userAddress(userVO.getUserAddress())
                     .userPhone(userVO.getUserPhone())
-                    .userRole(userVO.getUserRole())
-                    .regdate(userVO.getRegdate())
-                    .updatedate(userVO.getUpdatedate())
                     .nokPhones(nokPhones)
                     .build();
+
+            return UserResponseDTO.builder()
+                    .code(HttpStatus.OK.value())
+                    .httpStatus(HttpStatus.OK)
+                    .message("사용자 정보 조회 성공")
+                    .userInfo(userInfo)
+                    .build();
         } else {
-            userDTO = UserDTO.builder()
-                    .requestSuccess("Fail")
+            return UserResponseDTO.builder()
+                    .code(HttpStatus.NOT_FOUND.value())
+                    .httpStatus(HttpStatus.NOT_FOUND)
+                    .message("사용자 정보가 존재하지 않습니다.")
                     .build();
         }
-
-        return userDTO;
     }
 
     /**
