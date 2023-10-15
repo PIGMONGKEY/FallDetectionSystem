@@ -11,12 +11,8 @@ import org.springframework.stereotype.Repository;
 public class CameraIdDao {
     private final CameraIdMapper cameraIdMapper;
 
-    public String select(String cameraId) {
-        // 이미 있으면 1, 없으면 0 리턴
-        if (cameraIdMapper.select(cameraId) != 0) {
-            return "exist";
-        } else {
-            return "none";
-        }
+    public int select(String cameraId) {
+        // 있으면 1, 없으면 0 리턴
+        return cameraIdMapper.select(cameraId);
     }
 }

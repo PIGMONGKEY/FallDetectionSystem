@@ -26,7 +26,11 @@ public class UserController {
 
     @GetMapping("/checkCameraId")
     public ResponseEntity checkCameraId(String cameraId) {
-        return ResponseEntity.ok(cameraIdDao.select(cameraId));
+        if (cameraIdDao.select(cameraId) == 1) {
+            return ResponseEntity.ok("exist");
+        } else {
+            return ResponseEntity.ok("none");
+        }
     }
 
     /**
