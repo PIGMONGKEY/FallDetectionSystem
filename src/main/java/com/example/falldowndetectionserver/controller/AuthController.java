@@ -1,5 +1,6 @@
 package com.example.falldowndetectionserver.controller;
 
+import com.example.falldowndetectionserver.domain.dto.BasicResponseDTO;
 import com.example.falldowndetectionserver.domain.dto.LoginDTO;
 import com.example.falldowndetectionserver.domain.dto.auth.AuthTokenParam;
 import com.example.falldowndetectionserver.domain.dto.auth.AuthTokenResponse;
@@ -50,9 +51,13 @@ public class AuthController {
      */
     @PostMapping("logout")
     @PreAuthorize("hasAnyRole('USER', 'ADMIN')")
-    public ResponseEntity<String> logout(@RequestBody AuthTokenParam authTokenParam) {
+    public ResponseEntity logout(@RequestBody AuthTokenParam authTokenParam) {
         authService.logout(authTokenParam);
-        return ResponseEntity.ok("Success");
+        return new ResponseEntity(BasicResponseDTO.builder()
+                .code(HttpStatus.OK.value())
+                .httpStatus(HttpStatus.OK)
+                .message("로그아웃 성공")
+                .build(), HttpStatus.OK);
     }
 
 }
