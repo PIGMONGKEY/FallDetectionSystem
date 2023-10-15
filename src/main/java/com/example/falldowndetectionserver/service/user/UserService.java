@@ -8,6 +8,6 @@ public interface UserService {
     public BasicResponseDTO checkCameraId(String cameraId);
     public BasicResponseDTO signup(SignUpRequestDTO signUpRequestDTO);
     public UserDTO getUserInfo(String cameraId);
-    public String removeUserInfo(String cameraId);
+    public BasicResponseDTO removeUserInfo(String cameraId);
     public String modifyUserInfo(UserDTO userDTO);
 }

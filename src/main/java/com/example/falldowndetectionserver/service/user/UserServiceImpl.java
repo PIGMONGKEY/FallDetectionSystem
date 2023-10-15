@@ -143,11 +143,19 @@ public class UserServiceImpl implements UserService {
      * @return 삭제 성공 시엔 1을 리턴한다.
      */
     @Override
-    public String removeUserInfo(String cameraId) {
+    public BasicResponseDTO removeUserInfo(String cameraId) {
         if (userDao.delete(cameraId) != 1) {
-            return "Fail";
+            return BasicResponseDTO.builder()
+                    .code(HttpStatus.INTERNAL_SERVER_ERROR.value())
+                    .httpStatus(HttpStatus.INTERNAL_SERVER_ERROR)
+                    .message("사용자 삭제에 실패했습니다..")
+                    .build();
         } else {
-            return "Success";
+            return BasicResponseDTO.builder()
+                    .code(HttpStatus.OK.value())
+                    .httpStatus(HttpStatus.METHOD_NOT_ALLOWED)
+                    .message("사용자 삭제 성공")
+                    .build();
         }
     }
 

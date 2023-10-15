@@ -73,13 +73,19 @@ public class UserController {
      */
     @DeleteMapping("/user")
     @PreAuthorize("hasAnyRole('USER', 'ADMIN')")
-    public ResponseEntity<String> removeUserInfo(String cameraId, @RequestHeader("Authorization") String token) {
+    public ResponseEntity removeUserInfo(String cameraId, @RequestHeader("Authorization") String token) {
         // 토큰 속에 있는 CameraId와 요청 CameraId가 다르면 서비스 거부
         if (!tokenProvider.getAudience(token.substring(7)).equals(cameraId)) {
-            return ResponseEntity.ok("NOT ALLOWED");
+            return new ResponseEntity(BasicResponseDTO.builder()
+                    .code(HttpStatus.METHOD_NOT_ALLOWED.value())
+                    .httpStatus(HttpStatus.METHOD_NOT_ALLOWED)
+                    .message("요청한 작업에 대한 권한이 없습니다.")
+                    .build(), HttpStatus.METHOD_NOT_ALLOWED);
         }
 
-        return ResponseEntity.ok(userService.removeUserInfo(cameraId));
+        BasicResponseDTO response = userService.removeUserInfo(cameraId);
+
+        return new ResponseEntity(response, response.getHttpStatus());
     }
 
     /**
