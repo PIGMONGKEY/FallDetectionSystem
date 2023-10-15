@@ -12,6 +12,7 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
 import org.springframework.data.redis.core.RedisTemplate;
+import org.springframework.http.HttpMethod;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 
@@ -60,8 +61,8 @@ public class WebSecurityConfig {
 
                 .and()
                 .authorizeHttpRequests() // HttpServletRequest를 사용하는 요청들에 대한 접근제한을 설정하겠다.
-                .antMatchers("/user/signup").permitAll()
-                .antMatchers("/user/checkCameraId").permitAll()
+                .antMatchers(HttpMethod.POST, "/user").permitAll()
+                .antMatchers("/checkCameraId").permitAll()
                 .antMatchers("/auth/login").permitAll()
                 .antMatchers("/fcm/*").permitAll()
                 .antMatchers("/video").permitAll()
