@@ -1,13 +1,16 @@
 package com.example.falldowndetectionserver.service.user;
 
+import com.example.falldowndetectionserver.dao.CameraIdDao;
 import com.example.falldowndetectionserver.dao.NokPhoneDao;
 import com.example.falldowndetectionserver.dao.UPTokenDao;
 import com.example.falldowndetectionserver.dao.UserDao;
 import com.example.falldowndetectionserver.domain.dto.SignUpDTO;
+import com.example.falldowndetectionserver.domain.dto.user.CheckCameraIdResponse;
 import com.example.falldowndetectionserver.domain.vo.NokPhoneVO;
 import com.example.falldowndetectionserver.domain.dto.UserDTO;
 import com.example.falldowndetectionserver.domain.vo.UserVO;
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.HttpStatus;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
@@ -20,6 +23,32 @@ public class UserServiceImpl implements UserService {
     private final NokPhoneDao nokPhoneDao;
     private final UPTokenDao uPTokenDao;
     private final PasswordEncoder passwordEncoder;
+    private final CameraIdDao cameraIdDao;
+
+    @Override
+    public CheckCameraIdResponse checkCameraId(String cameraId) {
+        if (cameraIdDao.select(cameraId) == 1) {
+            if (!userDao.select(cameraId).isEmpty()) {
+                return CheckCameraIdResponse.builder()
+                        .code(HttpStatus.OK.value()) // 200
+                        .httpStatus(HttpStatus.OK)
+                        .message("등록 가능한 카메라 아이디 입니다.")
+                        .build();
+            } else {
+                return CheckCameraIdResponse.builder()
+                        .code(HttpStatus.FORBIDDEN.value()) // 403
+                        .httpStatus(HttpStatus.FORBIDDEN)
+                        .message("이미 등록된 카메라 아이디 입니다.")
+                        .build();
+            }
+        } else {
+            return CheckCameraIdResponse.builder()
+                    .code(HttpStatus.NOT_FOUND.value()) //404
+                    .httpStatus(HttpStatus.NOT_FOUND)
+                    .message("잘못된 카메라 아이디 입니다.")
+                    .build();
+        }
+    }
 
     /**
      * 새로운 사용자를 등록하는 서비스
@@ -28,10 +57,6 @@ public class UserServiceImpl implements UserService {
      */
     @Override
     public String signup(SignUpDTO signUpDTO) {
-        if (!userDao.select(signUpDTO.getUserInfo().getCameraId()).isEmpty()) {
-            return "Registered CameraId";
-        }
-
         UserVO userVO = UserVO.builder()
                 .cameraId(signUpDTO.getUserInfo().getCameraId())
                 .userPassword(passwordEncoder.encode(signUpDTO.getUserInfo().getUserPassword()))

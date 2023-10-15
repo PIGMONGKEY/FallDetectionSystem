@@ -1,8 +1,8 @@
 package com.example.falldowndetectionserver.controller;
 
-import com.example.falldowndetectionserver.dao.CameraIdDao;
 import com.example.falldowndetectionserver.domain.dto.SignUpDTO;
 import com.example.falldowndetectionserver.domain.dto.UserDTO;
+import com.example.falldowndetectionserver.domain.dto.user.CheckCameraIdResponse;
 import com.example.falldowndetectionserver.jwt.TokenProvider;
 import com.example.falldowndetectionserver.service.user.UserService;
 import lombok.RequiredArgsConstructor;
@@ -22,15 +22,12 @@ import java.nio.charset.StandardCharsets;
 public class UserController {
     private final UserService userService;
     private final TokenProvider tokenProvider;
-    private final CameraIdDao cameraIdDao;
 
     @GetMapping("/checkCameraId")
     public ResponseEntity checkCameraId(String cameraId) {
-        if (cameraIdDao.select(cameraId) == 1) {
-            return ResponseEntity.ok("exist");
-        } else {
-            return ResponseEntity.ok("none");
-        }
+        CheckCameraIdResponse response = userService.checkCameraId(cameraId);
+
+        return new ResponseEntity(response, response.getHttpStatus());
     }
 
     /**
