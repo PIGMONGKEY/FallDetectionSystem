@@ -9,7 +9,6 @@ import com.example.falldowndetectionserver.domain.dto.BasicResponseDTO;
 import com.example.falldowndetectionserver.domain.dto.user.UserRequestDTO;
 import com.example.falldowndetectionserver.domain.dto.user.UserResponseDTO;
 import com.example.falldowndetectionserver.domain.vo.NokPhoneVO;
-import com.example.falldowndetectionserver.domain.dto.UserDTO;
 import com.example.falldowndetectionserver.domain.vo.UserVO;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
@@ -165,33 +164,57 @@ public class UserServiceImpl implements UserService {
 
     /**
      * 사용자 정보를 수정한다.
-     * @param userDTO UserDTO 형태로 모든 정보를 받아와서 update를 해준다. - NokPhone은 삭제 후 다시 삽입한다.
+     * @param userRequestDTO UserDTO 형태로 모든 정보를 받아와서 update를 해준다. - NokPhone은 삭제 후 다시 삽입한다.
      * @return 삭제 성공시 1, User 실패시 -1, NokPhone 실패시 -2 리턴한다.
      */
     @Override
-    public String modifyUserInfo(UserDTO userDTO) {
-        UserVO userVO = UserVO.builder()
-                .cameraId(userDTO.getCameraId())
-                .userPassword(passwordEncoder.encode(userDTO.getUserPassword()))
-                .userName(userDTO.getUserName())
-                .userAddress(userDTO.getUserAddress())
-                .userPhone(userDTO.getUserPhone())
-                .build();
-
-        if (userDao.update(userVO) != 1) {
-            return "User Update Fail";
+    public BasicResponseDTO modifyUserInfo(UserRequestDTO userRequestDTO) {
+        UserVO userVO;
+        // 비밀번호가 변경됨!
+        if (userDao.select(userRequestDTO.getCameraId()).get().getUserPassword() != userRequestDTO.getUserPassword()) {
+            userVO = UserVO.builder()
+                    .cameraId(userRequestDTO.getCameraId())
+                    .userPassword(passwordEncoder.encode(userRequestDTO.getUserPassword()))
+                    .userName(userRequestDTO.getUserName())
+                    .userAddress(userRequestDTO.getUserAddress())
+                    .userPhone(userRequestDTO.getUserPhone())
+                    .build();
+        } else {
+            userVO = UserVO.builder()
+                    .cameraId(userRequestDTO.getCameraId())
+                    .userPassword(userRequestDTO.getUserPassword())
+                    .userName(userRequestDTO.getUserName())
+                    .userAddress(userRequestDTO.getUserAddress())
+                    .userPhone(userRequestDTO.getUserPhone())
+                    .build();
         }
 
-        nokPhoneDao.delete(userDTO.getCameraId());
-        NokPhoneVO nokPhoneVO = NokPhoneVO.builder().cameraId(userDTO.getCameraId()).build();
+        if (userDao.update(userVO) != 1) {
+            return BasicResponseDTO.builder()
+                    .code(HttpStatus.INTERNAL_SERVER_ERROR.value())
+                    .httpStatus(HttpStatus.INTERNAL_SERVER_ERROR)
+                    .message("사용자 정보 수정에 실패했습니다.")
+                    .build();
+        }
 
-        for (String nokPhone : userDTO.getNokPhones()) {
+        nokPhoneDao.delete(userRequestDTO.getCameraId());
+        NokPhoneVO nokPhoneVO = NokPhoneVO.builder().cameraId(userRequestDTO.getCameraId()).build();
+
+        for (String nokPhone : userRequestDTO.getNokPhones()) {
             nokPhoneVO.setNokPhone(nokPhone);
             if (nokPhoneDao.insert(nokPhoneVO) != 1) {
-                return "NokPhone Update Fail";
+                return BasicResponseDTO.builder()
+                        .code(HttpStatus.INTERNAL_SERVER_ERROR.value())
+                        .httpStatus(HttpStatus.INTERNAL_SERVER_ERROR)
+                        .message("보호자 연락처 정보 수정에 실패했습니다.")
+                        .build();
             }
         }
 
-        return "Success";
+        return BasicResponseDTO.builder()
+                .code(HttpStatus.OK.value())
+                .httpStatus(HttpStatus.OK)
+                .message("사용자 정보 수정에 성공했습니다.")
+                .build();
     }
 }

@@ -1,8 +1,8 @@
 package com.example.falldowndetectionserver.controller;
 
 import com.example.falldowndetectionserver.domain.dto.user.SignUpRequestDTO;
-import com.example.falldowndetectionserver.domain.dto.UserDTO;
 import com.example.falldowndetectionserver.domain.dto.BasicResponseDTO;
+import com.example.falldowndetectionserver.domain.dto.user.UserRequestDTO;
 import com.example.falldowndetectionserver.domain.dto.user.UserResponseDTO;
 import com.example.falldowndetectionserver.jwt.TokenProvider;
 import com.example.falldowndetectionserver.service.user.UserService;
@@ -103,19 +103,25 @@ public class UserController {
 
     /**
      * 사용자 정보 갱신
-     * @param userDTO UserDTO 형태로 받아와야 한다.
+     * @param userRequestDTO UserDTO 형태로 받아와야 한다.
      */
     @PutMapping("/user")
     @PreAuthorize("hasAnyRole('USER', 'ADMIN')")
-    public ResponseEntity<String> modifyUserInfo(@RequestBody UserDTO userDTO, @RequestHeader("Authorization") String token) {
+    public ResponseEntity<BasicResponseDTO> modifyUserInfo(@RequestBody UserRequestDTO userRequestDTO, @RequestHeader("Authorization") String token) {
         HttpHeaders httpHeaders = new HttpHeaders();
         httpHeaders.setContentType(new MediaType("application", "json", StandardCharsets.UTF_8));
 
         // 토큰 속에 있는 CameraId와 요청 CameraId가 다르면 서비스 거부
-        if (!tokenProvider.getAudience(token.substring(7)).equals(userDTO.getCameraId())) {
-            return ResponseEntity.ok("NOT ALLOWED");
+        if (!tokenProvider.getAudience(token.substring(7)).equals(userRequestDTO.getCameraId())) {
+            return new ResponseEntity(BasicResponseDTO.builder()
+                    .code(HttpStatus.METHOD_NOT_ALLOWED.value())
+                    .httpStatus(HttpStatus.METHOD_NOT_ALLOWED)
+                    .message("요청한 작업에 대한 권한이 없습니다.")
+                    .build(), httpHeaders, HttpStatus.METHOD_NOT_ALLOWED);
         }
 
-        return ResponseEntity.ok(userService.modifyUserInfo(userDTO));
+        BasicResponseDTO response = userService.modifyUserInfo(userRequestDTO);
+
+        return new ResponseEntity<>(response, httpHeaders, response.getHttpStatus());
     }
 }
