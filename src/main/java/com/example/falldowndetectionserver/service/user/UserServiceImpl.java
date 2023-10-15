@@ -148,12 +148,12 @@ public class UserServiceImpl implements UserService {
             return BasicResponseDTO.builder()
                     .code(HttpStatus.INTERNAL_SERVER_ERROR.value())
                     .httpStatus(HttpStatus.INTERNAL_SERVER_ERROR)
-                    .message("사용자 삭제에 실패했습니다..")
+                    .message("사용자 삭제에 실패했습니다.")
                     .build();
         } else {
             return BasicResponseDTO.builder()
                     .code(HttpStatus.OK.value())
-                    .httpStatus(HttpStatus.METHOD_NOT_ALLOWED)
+                    .httpStatus(HttpStatus.OK)
                     .message("사용자 삭제 성공")
                     .build();
         }
