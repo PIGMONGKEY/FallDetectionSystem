@@ -18,6 +18,7 @@ public class SmsUtil {
     private final String sendMessagePath;
     private final String accessKey;
     private final String secretKey;
+    private final String sender;
 
     /**
      * application.yml 에서 Naver key를 읽어온다.
@@ -28,11 +29,13 @@ public class SmsUtil {
     public SmsUtil(
             @Value("${naver.service-id}") String serviceId,
             @Value("${naver.access-key}") String accessKey,
-            @Value("${naver.secret-key}") String secretKey
+            @Value("${naver.secret-key}") String secretKey,
+            @Value("${naver.sender}") String sender
     ) {
         this.serviceId = serviceId;
         this.accessKey = accessKey;
         this.secretKey = secretKey;
+        this.sender = sender;
         // TODO: URI 생성할 때 문제 안되는 지 확인 필요
         this.sendMessagePath = "/sms/v2/services/" + serviceId + "/messages";
     }

@@ -74,7 +74,7 @@ public class EmergencyServiceImpl implements EmergencyService {
 
         return NaverSMSRequestDTO.builder()
                 .type("SMS")
-                .from("01057292701")
+                .from(smsUtil.getSender())
                 .content(name + "님의 자택에 설치된 위급상황 감지 시스템이 위급상황을 감지했습니다.\n" +
                         "자택 주소 : " + address + "\n" +
                         name + "님의 전화번호 : " + phone + "\n" +
