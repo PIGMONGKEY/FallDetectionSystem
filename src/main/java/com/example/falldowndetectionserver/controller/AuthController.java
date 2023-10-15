@@ -1,7 +1,8 @@
 package com.example.falldowndetectionserver.controller;
 
 import com.example.falldowndetectionserver.domain.dto.LoginDTO;
-import com.example.falldowndetectionserver.domain.dto.AuthTokenDTO;
+import com.example.falldowndetectionserver.domain.dto.auth.AuthTokenParam;
+import com.example.falldowndetectionserver.domain.dto.auth.AuthTokenResponse;
 import com.example.falldowndetectionserver.jwt.JwtFilter;
 import com.example.falldowndetectionserver.service.auth.AuthService;
 import lombok.RequiredArgsConstructor;
@@ -29,24 +30,28 @@ public class AuthController {
      * @return
      */
     @PostMapping("login")
-    public ResponseEntity<AuthTokenDTO> login(@RequestBody LoginDTO loginDTO) {
-        AuthTokenDTO authTokenDTO = authService.login(loginDTO);
+    public ResponseEntity<AuthTokenResponse> login(@RequestBody LoginDTO loginDTO) {
+        AuthTokenResponse authTokenResponse = authService.login(loginDTO);
 
-        HttpHeaders httpHeaders = new HttpHeaders();
-        httpHeaders.add(JwtFilter.AUTHORIZATION_HEADER, "Bearer " + authTokenDTO.getToken());
+        if (authTokenResponse.getCode() == HttpStatus.OK.value()) {
+            HttpHeaders httpHeaders = new HttpHeaders();
+            httpHeaders.add(JwtFilter.AUTHORIZATION_HEADER, "Bearer " + authTokenResponse.getToken());
 
-        return new ResponseEntity<>(authTokenDTO, httpHeaders, HttpStatus.OK);
+            return new ResponseEntity<>(authTokenResponse, httpHeaders, HttpStatus.OK);
+        } else {
+            return new ResponseEntity<>(authTokenResponse, new HttpHeaders(), HttpStatus.UNAUTHORIZED);
+        }
     }
 
     /**
      * 로그아웃하는 메소드
-     * @param authTokenDTO 토큰을 넘겨주면 redis에 토큰을 저장하고, 이후 이 토큰과 함께 들어오는 토큰은 무시함
+     * @param authTokenParam 토큰을 넘겨주면 redis에 토큰을 저장하고, 이후 이 토큰과 함께 들어오는 토큰은 무시함
      * @return
      */
     @PostMapping("logout")
     @PreAuthorize("hasAnyRole('USER', 'ADMIN')")
-    public ResponseEntity<String> logout(@RequestBody AuthTokenDTO authTokenDTO) {
-        authService.logout(authTokenDTO);
+    public ResponseEntity<String> logout(@RequestBody AuthTokenParam authTokenParam) {
+        authService.logout(authTokenParam);
         return ResponseEntity.ok("Success");
     }
 
