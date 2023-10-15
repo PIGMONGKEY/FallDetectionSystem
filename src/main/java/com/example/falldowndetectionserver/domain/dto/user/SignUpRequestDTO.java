@@ -1,12 +1,13 @@
-package com.example.falldowndetectionserver.domain.dto;
+package com.example.falldowndetectionserver.domain.dto.user;
 
+import com.example.falldowndetectionserver.domain.dto.UserDTO;
 import com.example.falldowndetectionserver.domain.vo.UserPhoneTokenVO;
 import lombok.Builder;
 import lombok.Data;
 
 @Data
 @Builder
-public class SignUpDTO {
+public class SignUpRequestDTO {
     private final UserPhoneTokenVO phoneToken;
     private final UserDTO userInfo;
 }

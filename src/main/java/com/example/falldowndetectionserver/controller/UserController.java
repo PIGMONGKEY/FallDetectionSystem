@@ -1,8 +1,8 @@
 package com.example.falldowndetectionserver.controller;
 
-import com.example.falldowndetectionserver.domain.dto.SignUpDTO;
+import com.example.falldowndetectionserver.domain.dto.user.SignUpRequestDTO;
 import com.example.falldowndetectionserver.domain.dto.UserDTO;
-import com.example.falldowndetectionserver.domain.dto.user.CheckCameraIdResponse;
+import com.example.falldowndetectionserver.domain.dto.BasicResponseDTO;
 import com.example.falldowndetectionserver.jwt.TokenProvider;
 import com.example.falldowndetectionserver.service.user.UserService;
 import lombok.RequiredArgsConstructor;
@@ -25,19 +25,20 @@ public class UserController {
 
     @GetMapping("/checkCameraId")
     public ResponseEntity checkCameraId(String cameraId) {
-        CheckCameraIdResponse response = userService.checkCameraId(cameraId);
+        BasicResponseDTO response = userService.checkCameraId(cameraId);
 
         return new ResponseEntity(response, response.getHttpStatus());
     }
 
     /**
      * 회원가입
-     * @param signUpDTO UserVO 형태로 삽입할 데이터를 받아와야 함
+     * @param signUpRequestDTO UserVO 형태로 삽입할 데이터를 받아와야 함
      * @return 성공 시 OK 보내줌
      */
     @PostMapping("/user")
-    public ResponseEntity<String> signup(@RequestBody SignUpDTO signUpDTO) {
-        return ResponseEntity.ok(userService.signup(signUpDTO));
+    public ResponseEntity signup(@RequestBody SignUpRequestDTO signUpRequestDTO) {
+        BasicResponseDTO response = userService.signup(signUpRequestDTO);
+        return new ResponseEntity(response, response.getHttpStatus());
     }
 
     /**

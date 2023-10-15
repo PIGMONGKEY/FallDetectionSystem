@@ -4,8 +4,8 @@ import com.example.falldowndetectionserver.dao.CameraIdDao;
 import com.example.falldowndetectionserver.dao.NokPhoneDao;
 import com.example.falldowndetectionserver.dao.UPTokenDao;
 import com.example.falldowndetectionserver.dao.UserDao;
-import com.example.falldowndetectionserver.domain.dto.SignUpDTO;
-import com.example.falldowndetectionserver.domain.dto.user.CheckCameraIdResponse;
+import com.example.falldowndetectionserver.domain.dto.user.SignUpRequestDTO;
+import com.example.falldowndetectionserver.domain.dto.BasicResponseDTO;
 import com.example.falldowndetectionserver.domain.vo.NokPhoneVO;
 import com.example.falldowndetectionserver.domain.dto.UserDTO;
 import com.example.falldowndetectionserver.domain.vo.UserVO;
@@ -26,23 +26,23 @@ public class UserServiceImpl implements UserService {
     private final CameraIdDao cameraIdDao;
 
     @Override
-    public CheckCameraIdResponse checkCameraId(String cameraId) {
+    public BasicResponseDTO checkCameraId(String cameraId) {
         if (cameraIdDao.select(cameraId) == 1) {
             if (!userDao.select(cameraId).isEmpty()) {
-                return CheckCameraIdResponse.builder()
+                return BasicResponseDTO.builder()
                         .code(HttpStatus.OK.value()) // 200
                         .httpStatus(HttpStatus.OK)
                         .message("등록 가능한 카메라 아이디 입니다.")
                         .build();
             } else {
-                return CheckCameraIdResponse.builder()
+                return BasicResponseDTO.builder()
                         .code(HttpStatus.FORBIDDEN.value()) // 403
                         .httpStatus(HttpStatus.FORBIDDEN)
                         .message("이미 등록된 카메라 아이디 입니다.")
                         .build();
             }
         } else {
-            return CheckCameraIdResponse.builder()
+            return BasicResponseDTO.builder()
                     .code(HttpStatus.NOT_FOUND.value()) //404
                     .httpStatus(HttpStatus.NOT_FOUND)
                     .message("잘못된 카메라 아이디 입니다.")
@@ -52,39 +52,55 @@ public class UserServiceImpl implements UserService {
 
     /**
      * 새로운 사용자를 등록하는 서비스
-     * @param signUpDTO signUpDTO 형태로 사용자 정보와 보호자 핸드폰 번호 까지 받는다.
+     * @param signUpRequestDTO signUpDTO 형태로 사용자 정보와 보호자 핸드폰 번호 까지 받는다.
      * @return 모두 성공하면 1, User실패는 -1, NokPhone 실패는 -2를 리턴한다.
      */
     @Override
-    public String signup(SignUpDTO signUpDTO) {
+    public BasicResponseDTO signup(SignUpRequestDTO signUpRequestDTO) {
         UserVO userVO = UserVO.builder()
-                .cameraId(signUpDTO.getUserInfo().getCameraId())
-                .userPassword(passwordEncoder.encode(signUpDTO.getUserInfo().getUserPassword()))
-                .userName(signUpDTO.getUserInfo().getUserName())
-                .userAddress(signUpDTO.getUserInfo().getUserAddress())
-                .userPhone(signUpDTO.getUserInfo().getUserPhone())
+                .cameraId(signUpRequestDTO.getUserInfo().getCameraId())
+                .userPassword(passwordEncoder.encode(signUpRequestDTO.getUserInfo().getUserPassword()))
+                .userName(signUpRequestDTO.getUserInfo().getUserName())
+                .userAddress(signUpRequestDTO.getUserInfo().getUserAddress())
+                .userPhone(signUpRequestDTO.getUserInfo().getUserPhone())
                 .build();
 
         if (userDao.insert(userVO) != 1) {
-            return "User Register Error";
+            return BasicResponseDTO.builder()
+                    .code(HttpStatus.INTERNAL_SERVER_ERROR.value())
+                    .httpStatus(HttpStatus.INTERNAL_SERVER_ERROR)
+                    .message("사용자 정보 등록에 실패했습니다.")
+                    .build();
         }
 
         NokPhoneVO nokPhoneVO = NokPhoneVO.builder()
-                .cameraId(signUpDTO.getUserInfo().getCameraId())
+                .cameraId(signUpRequestDTO.getUserInfo().getCameraId())
                 .build();
 
-        for (String nokPhone : signUpDTO.getUserInfo().getNokPhones()) {
+        for (String nokPhone : signUpRequestDTO.getUserInfo().getNokPhones()) {
             nokPhoneVO.setNokPhone(nokPhone);
             if (nokPhoneDao.insert(nokPhoneVO) != 1) {
-                return "NokPhone Register Error";
+                return BasicResponseDTO.builder()
+                        .code(HttpStatus.INTERNAL_SERVER_ERROR.value())
+                        .httpStatus(HttpStatus.INTERNAL_SERVER_ERROR)
+                        .message("보호자 연락처 정보 등록에 실패했습니다.")
+                        .build();
             }
         }
 
-        if (uPTokenDao.insert(signUpDTO.getPhoneToken()) != 1) {
-            return "UPToken Register Error";
+        if (uPTokenDao.insert(signUpRequestDTO.getPhoneToken()) != 1) {
+            return BasicResponseDTO.builder()
+                    .code(HttpStatus.INTERNAL_SERVER_ERROR.value())
+                    .httpStatus(HttpStatus.INTERNAL_SERVER_ERROR)
+                    .message("사용자 기기 정보 등록에 실패했습니다.")
+                    .build();
         }
 
-        return "Success";
+        return BasicResponseDTO.builder()
+                .code(HttpStatus.OK.value())
+                .httpStatus(HttpStatus.OK)
+                .message("사용자 등록을 성공했습니다.")
+                .build();
     }
 
     /**
