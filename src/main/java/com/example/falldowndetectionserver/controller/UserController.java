@@ -18,14 +18,13 @@ import java.nio.charset.StandardCharsets;
 
 @RestController
 @RequiredArgsConstructor
-@RequestMapping("/user/")
 @Slf4j
 public class UserController {
     private final UserService userService;
     private final TokenProvider tokenProvider;
     private final CameraIdDao cameraIdDao;
 
-    @GetMapping("checkCameraId")
+    @GetMapping("/checkCameraId")
     public ResponseEntity checkCameraId(String cameraId) {
         return ResponseEntity.ok(cameraIdDao.select(cameraId));
     }
@@ -35,7 +34,7 @@ public class UserController {
      * @param signUpDTO UserVO 형태로 삽입할 데이터를 받아와야 함
      * @return 성공 시 OK 보내줌
      */
-    @PostMapping("signup")
+    @PostMapping("/user")
     public ResponseEntity<String> signup(@RequestBody SignUpDTO signUpDTO) {
         return ResponseEntity.ok(userService.signup(signUpDTO));
     }
@@ -45,7 +44,7 @@ public class UserController {
      * @param cameraId PK인 cameraId를 전달한다.
      * @return 결과 UserVO를 JSON 형태로 리턴한다.
      */
-    @GetMapping("info")
+    @GetMapping("/user")
     @PreAuthorize("hasAnyRole('USER', 'ADMIN')")
     public ResponseEntity<UserDTO> getUserInfo(String cameraId, @RequestHeader("Authorization") String token) {
         HttpHeaders httpHeaders = new HttpHeaders();
@@ -70,7 +69,7 @@ public class UserController {
      * 등록된 사용자 삭제
      * @param cameraId PK인 UNO를 전달하면 삭제함
      */
-    @DeleteMapping("remove")
+    @DeleteMapping("/user")
     @PreAuthorize("hasAnyRole('USER', 'ADMIN')")
     public ResponseEntity<String> removeUserInfo(String cameraId, @RequestHeader("Authorization") String token) {
         // 토큰 속에 있는 CameraId와 요청 CameraId가 다르면 서비스 거부
@@ -85,7 +84,7 @@ public class UserController {
      * 사용자 정보 갱신
      * @param userDTO UserDTO 형태로 받아와야 한다.
      */
-    @PutMapping("modify")
+    @PutMapping("/user")
     @PreAuthorize("hasAnyRole('USER', 'ADMIN')")
     public ResponseEntity<String> modifyUserInfo(@RequestBody UserDTO userDTO, @RequestHeader("Authorization") String token) {
         // 토큰 속에 있는 CameraId와 요청 CameraId가 다르면 서비스 거부
