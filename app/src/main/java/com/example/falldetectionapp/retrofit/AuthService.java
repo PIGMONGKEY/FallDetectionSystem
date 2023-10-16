@@ -9,6 +9,6 @@ import retrofit2.http.Body;
 import retrofit2.http.POST;
 
 public interface AuthService {
-    @POST("/auth/login")
+    @POST("auth/login")
     Call<BasicResponseDTO<AuthTokenDTO>> requestLogin(@Body LoginDTO loginDTO);
 }

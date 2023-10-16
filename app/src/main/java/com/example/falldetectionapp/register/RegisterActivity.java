@@ -10,11 +10,14 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
 
+import com.example.falldetectionapp.DTO.BasicResponseDTO;
 import com.example.falldetectionapp.DTO.UserInfoDTO;
 import com.example.falldetectionapp.R;
 import com.example.falldetectionapp.retrofit.UserService;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
+
+import java.io.IOException;
 
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -75,18 +78,17 @@ public class RegisterActivity extends AppCompatActivity {
         Gson gson = new GsonBuilder().setLenient().create();
 
         Retrofit retrofit = new Retrofit.Builder()
-        .baseUrl("http://10.0.2.2:10000") // 기본으로 적용되는 서버 URL (반드시 / 로 마무리되게 설정)
+        .baseUrl("http://10.0.2.2:10000/") // 기본으로 적용되는 서버 URL (반드시 / 로 마무리되게 설정)
         .addConverterFactory(GsonConverterFactory.create(gson)) // JSON 데이터를 Gson 라이브러리로 파싱하고 데이터를 Model에 자동으로 담는 converter
         .build();
 
         UserService userService = retrofit.create(UserService.class);
 
-        userService.checkCameraId(cameraId).enqueue(new Callback<String>() {
+        userService.checkCameraId(cameraId).enqueue(new Callback<BasicResponseDTO>() {
             @Override
-            public void onResponse(Call<String> call, Response<String> response) {
-                Log.d("RETROFIT", "success : " + response.body());
-                if (response.body().equals("exist")) {
-                    // 있는 카메라 아이디
+            public void onResponse(Call<BasicResponseDTO> call, Response<BasicResponseDTO> response) {
+                if (response.isSuccessful()) {
+                    // 등록 가능한 카메라 아이디
                     if (passwordEditText.getText().toString().equals(passwordCheckEditText.getText().toString())) {
 
                         UserInfoDTO userInfoDTO = new UserInfoDTO();
@@ -101,14 +103,29 @@ public class RegisterActivity extends AppCompatActivity {
                         Toast.makeText(getApplicationContext(), "비밀번호가 일치하지 않습니다.", Toast.LENGTH_LONG).show();
                     }
                 } else {
-                    // 없는 카메라 아이디
-                    Toast.makeText(getApplicationContext(), "존재하지 않는 카메라 ID 입니다.", Toast.LENGTH_LONG).show();
+                    try {
+                        BasicResponseDTO basicResponseDTO = (BasicResponseDTO) retrofit.responseBodyConverter(
+                                BasicResponseDTO.class,
+                                BasicResponseDTO.class.getAnnotations()
+                        ).convert(response.errorBody());
+
+                        if (basicResponseDTO.getCode() == 404) {
+                            // 없는 카메라 아이디
+                            Toast.makeText(getApplicationContext(), basicResponseDTO.getMessage(), Toast.LENGTH_LONG).show();
+                        } else {
+                            // 이미 등록된 카메라 아이디
+                            Toast.makeText(getApplicationContext(), basicResponseDTO.getMessage(), Toast.LENGTH_LONG).show();
+                        }
+                    } catch (IOException e) {
+                        throw new RuntimeException(e);
+                    }
                 }
             }
 
             @Override
-            public void onFailure(Call<String> call, Throwable t) {
+            public void onFailure(Call<BasicResponseDTO> call, Throwable t) {
                 Log.d("RETROFIT", t.getCause().toString());
+                Toast.makeText(getApplicationContext(), "서버 연결에 실패했습니다.", Toast.LENGTH_LONG).show();
             }
         });
     }

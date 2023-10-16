@@ -11,6 +11,7 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.example.falldetectionapp.DTO.BasicResponseDTO;
 import com.example.falldetectionapp.DTO.UserInfoDTO;
 import com.example.falldetectionapp.R;
 import com.example.falldetectionapp.retrofit.UserService;
@@ -80,32 +81,29 @@ public class MyPageFragment extends Fragment {
         Gson gson = new GsonBuilder().setLenient().create();
 
         Retrofit retrofit = new Retrofit.Builder()
-                .baseUrl("http://10.0.2.2:10000") // 기본으로 적용되는 서버 URL (반드시 / 로 마무리되게 설정)
+                .baseUrl("http://10.0.2.2:10000/") // 기본으로 적용되는 서버 URL (반드시 / 로 마무리되게 설정)
                 .addConverterFactory(GsonConverterFactory.create(gson)) // JSON 데이터를 Gson 라이브러리로 파싱하고 데이터를 Model에 자동으로 담는 converter
                 .build();
 
         UserService userService = retrofit.create(UserService.class);
 
-        userService.getUserInfo("Bearer " + personalToken, cameraId).enqueue(new Callback<UserInfoDTO>() {
+        userService.getUserInfo("Bearer " + personalToken, cameraId).enqueue(new Callback<BasicResponseDTO<UserInfoDTO>>() {
             @Override
-            public void onResponse(Call<UserInfoDTO> call, Response<UserInfoDTO> response) {
-                if (response.body().getRequestSuccess().trim().equals("Success")) {
-                    userInfoDTO = new UserInfoDTO();
-                    userInfoDTO.setUserName(response.body().getUserName());
-                    userInfoDTO.setCameraId(response.body().getCameraId());
-                    userInfoDTO.setUserPhone(response.body().getUserPhone());
-                    userInfoDTO.setUserAddress(response.body().getUserAddress());
-                    userInfoDTO.setNokPhones(response.body().getNokPhones());
-
+            public void onResponse(Call<BasicResponseDTO<UserInfoDTO>> call, Response<BasicResponseDTO<UserInfoDTO>> response) {
+                if (response.body().getCode() == 200) {
+                    userInfoDTO = response.body().getData();
                     showInfo();
+                } else if (response.body().getCode() == 405){
+                    Toast.makeText(getContext().getApplicationContext(), response.body().getMessage(), Toast.LENGTH_LONG).show();
                 } else {
-                    Toast.makeText(getContext().getApplicationContext(), "사용자 정보를 가져오는데 실패했습니다.", Toast.LENGTH_LONG).show();
+                    Toast.makeText(getContext().getApplicationContext(), response.body().getMessage(), Toast.LENGTH_LONG).show();
                 }
             }
 
             @Override
-            public void onFailure(Call<UserInfoDTO> call, Throwable t) {
+            public void onFailure(Call<BasicResponseDTO<UserInfoDTO>> call, Throwable t) {
                 Log.d("HOME", t.getMessage());
+                Toast.makeText(getContext().getApplicationContext(), "서버 연결에 실패했습니다.", Toast.LENGTH_LONG).show();
             }
         });
     }

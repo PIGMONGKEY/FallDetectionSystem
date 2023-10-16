@@ -10,6 +10,7 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
 
+import com.example.falldetectionapp.DTO.BasicResponseDTO;
 import com.example.falldetectionapp.DTO.SignUpDTO;
 import com.example.falldetectionapp.DTO.UserInfoDTO;
 import com.example.falldetectionapp.DTO.UserPhoneTokenDTO;
@@ -20,6 +21,7 @@ import com.example.falldetectionapp.retrofit.UserService;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -95,7 +97,7 @@ public class NokPhoneActivity extends AppCompatActivity {
         Gson gson = new GsonBuilder().setLenient().create();
 
         Retrofit retrofit = new Retrofit.Builder()
-                .baseUrl("http://10.0.2.2:10000") // 기본으로 적용되는 서버 URL (반드시 / 로 마무리되게 설정)
+                .baseUrl("http://10.0.2.2:10000/") // 기본으로 적용되는 서버 URL (반드시 / 로 마무리되게 설정)
                 .addConverterFactory(GsonConverterFactory.create(gson)) // JSON 데이터를 Gson 라이브러리로 파싱하고 데이터를 Model에 자동으로 담는 converter
                 .build();
 
@@ -109,23 +111,30 @@ public class NokPhoneActivity extends AppCompatActivity {
         signUpDTO.setUserInfo(userInfoDTO);
         signUpDTO.setPhoneToken(userPhoneTokenDTO);
 
-        userService.signUp(signUpDTO).enqueue(new Callback<String>() {
+        userService.signUp(signUpDTO).enqueue(new Callback<BasicResponseDTO>() {
             @Override
-            public void onResponse(Call<String> call, Response<String> response) {
-                String responseString = response.body().toString();
-                if (responseString.equals("Success")) {
+            public void onResponse(Call<BasicResponseDTO> call, Response<BasicResponseDTO> response) {
+                if (response.isSuccessful()) {
                     Intent intent = new Intent(NokPhoneActivity.this, LoginActivity.class);
                     startActivity(intent);
-                } else if (responseString.equals("Registered CameraId")) {
-                    // TODO: 이미 가입한 cameraId라고 알려주는거 앞에서 처리하도록 변경
                 } else {
-                    Toast.makeText(getApplicationContext(), "서버 오류가 발생했습니다. 관리자에게 문의하세요.", Toast.LENGTH_LONG).show();
+                    try {
+                        BasicResponseDTO basicResponseDTO = (BasicResponseDTO) retrofit.responseBodyConverter(
+                                BasicResponseDTO.class,
+                                BasicResponseDTO.class.getAnnotations()
+                        ).convert(response.errorBody());
+
+                        Toast.makeText(getApplicationContext(), basicResponseDTO.getMessage(), Toast.LENGTH_LONG).show();
+                    } catch (IOException e) {
+                        throw new RuntimeException(e);
+                    }
                 }
             }
 
             @Override
-            public void onFailure(Call<String> call, Throwable t) {
+            public void onFailure(Call<BasicResponseDTO> call, Throwable t) {
                 Log.d("REGISTER", t.getCause().toString());
+                Toast.makeText(getApplicationContext(), "서버 연결에 실패했습니다.", Toast.LENGTH_LONG).show();
             }
         });
     }

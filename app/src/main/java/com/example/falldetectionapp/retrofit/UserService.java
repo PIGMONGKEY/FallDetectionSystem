@@ -14,7 +14,7 @@ import retrofit2.http.Path;
 import retrofit2.http.Query;
 
 public interface UserService {
-    @GET("user")
+    @GET("checkCameraId")
     Call<BasicResponseDTO> checkCameraId(@Query("cameraId") String cameraId);
 
     @GET("user")

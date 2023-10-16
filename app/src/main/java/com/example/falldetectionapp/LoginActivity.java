@@ -21,6 +21,8 @@ import com.example.falldetectionapp.retrofit.AuthService;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 
+import java.io.IOException;
+
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
@@ -129,13 +131,21 @@ public class LoginActivity extends AppCompatActivity {
         authService.requestLogin(new LoginDTO(cameraId, password)).enqueue(new Callback<BasicResponseDTO<AuthTokenDTO>>() {
             @Override
             public void onResponse(Call<BasicResponseDTO<AuthTokenDTO>> call, Response<BasicResponseDTO<AuthTokenDTO>> response) {
-                if (response.body().getCode() == 200) {
+                if (response.isSuccessful()) {
                     Intent intent = new Intent(LoginActivity.this, HomeActivity.class);
                     intent.putExtra("personalToken", response.body().getData().getToken());
                     intent.putExtra("cameraId", cameraId);
                     startActivity(intent);
                 } else {
-                    Toast.makeText(getApplicationContext(), "올바르지 않은 아이디 혹은 비밀번호 입니다.", Toast.LENGTH_LONG).show();
+                    try {
+                        BasicResponseDTO basicResponseDTO = (BasicResponseDTO) retrofit.responseBodyConverter(
+                                BasicResponseDTO.class,
+                                BasicResponseDTO.class.getAnnotations()
+                        ).convert(response.errorBody());
+                        Toast.makeText(getApplicationContext(), basicResponseDTO.getMessage(), Toast.LENGTH_LONG).show();
+                    } catch (IOException e) {
+                        throw new RuntimeException(e);
+                    }
                 }
             }
 
