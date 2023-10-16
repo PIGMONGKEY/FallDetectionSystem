@@ -15,6 +15,7 @@ import android.widget.Toast;
 
 import com.denzcoskun.imageslider.ImageSlider;
 import com.denzcoskun.imageslider.models.SlideModel;
+import com.example.falldetectionapp.register.RegisterActivity;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -55,10 +56,18 @@ public class GuideActivity extends AppCompatActivity {
         slideModels.add(new SlideModel(R.drawable.guide2));
         slideModels.add(new SlideModel(R.drawable.guide3));
 
+        guideSlider.setImageList(slideModels, true);
     }
 
     //    리스너는 여기 모아주세요
     private void setListener() {
-
+        backButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                //Intent intent = new Intent(GuideActivity.this, RegisterActivity.class);
+                //startActivity(intent);
+                // 뒤로가기 하면 어디로 가나요?
+            }
+        });
     }
 }

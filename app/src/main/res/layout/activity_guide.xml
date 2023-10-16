@@ -8,16 +8,19 @@
     tools:context=".GuideActivity">
 
     <com.denzcoskun.imageslider.ImageSlider
+        android:id="@+id/slider"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        app:auto_cycle="false"
-        app:period="3000"
-        app:placeholder="@color/black"
-        app:error_image="@color/white"
-        android:id="@+id/slider"
+        android:layout_marginStart="20dp"
+        android:layout_marginTop="20dp"
+        android:layout_marginEnd="20dp"
+        android:layout_marginBottom="20dp"
+        app:auto_cycle="true"
+        app:delay="0"
         app:corner_radius="20"
-        android:layout_margin="20dp"
-        />
+        app:error_image="@color/white"
+        app:period="3000"
+        app:placeholder="@color/black" />
 
 
     <ImageButton
