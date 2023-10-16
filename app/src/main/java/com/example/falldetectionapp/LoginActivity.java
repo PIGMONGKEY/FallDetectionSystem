@@ -28,6 +28,7 @@ import retrofit2.Callback;
 import retrofit2.Response;
 import retrofit2.Retrofit;
 import retrofit2.converter.gson.GsonConverterFactory;
+import com.google.firebase.messaging.FirebaseMessaging;
 
 /**
  * 로그인 화면 입니다.
@@ -41,6 +42,8 @@ public class LoginActivity extends AppCompatActivity {
     private CheckBox autoLoginCheckBox;
     private TextView forgetPasswordTextView;
 
+    private String fcmDeviceToken;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -51,8 +54,16 @@ public class LoginActivity extends AppCompatActivity {
 
     // 초기 설정을 넣어주세요
     private void init() {
+        getFcmDeviceToken();
         setView();
         setListener();
+    }
+
+    // FCM 기기 토큰 읽어오기
+    private void getFcmDeviceToken() {
+        FirebaseMessaging.getInstance().getToken().addOnCompleteListener(task -> {
+            fcmDeviceToken = task.getResult();
+        });
     }
 
     private void setView() {
