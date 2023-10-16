@@ -41,6 +41,7 @@ public class NokPhoneActivity extends AppCompatActivity {
     private EditText nokPhoneEditText_1, nokPhoneEditText_2;
 
     private UserInfoDTO userInfoDTO;
+    private String fcmDeviceToken;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -61,6 +62,7 @@ public class NokPhoneActivity extends AppCompatActivity {
     private void getDataFromIntent() {
         Intent intent = getIntent();
         userInfoDTO = (UserInfoDTO) intent.getSerializableExtra("userInfo");
+        fcmDeviceToken = intent.getStringExtra("fcmDeviceToken");
     }
 
     private void setView() {
@@ -105,7 +107,7 @@ public class NokPhoneActivity extends AppCompatActivity {
 
         UserPhoneTokenDTO userPhoneTokenDTO = new UserPhoneTokenDTO();
         userPhoneTokenDTO.setCameraId(userInfoDTO.getCameraId());
-        userPhoneTokenDTO.setToken("token");
+        userPhoneTokenDTO.setToken(fcmDeviceToken);
 
         SignUpDTO signUpDTO = new SignUpDTO();
         signUpDTO.setUserInfo(userInfoDTO);

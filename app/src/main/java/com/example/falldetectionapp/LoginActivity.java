@@ -84,6 +84,7 @@ public class LoginActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 Intent intent = new Intent(LoginActivity.this, RegisterActivity.class);
+                intent.putExtra("fcmDeviceToken", fcmDeviceToken);
                 startActivity(intent);
             }
         });

@@ -33,6 +33,7 @@ public class RegisterActivity extends AppCompatActivity {
 
     private Button toInfoButton;
     private EditText cameraIdEditText, passwordEditText, passwordCheckEditText;
+    private String fcmDeviceToken;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -47,6 +48,12 @@ public class RegisterActivity extends AppCompatActivity {
         setTitle("회원가입");
         setView();
         setListener();
+        getDataFromIntent();
+    }
+
+    private void getDataFromIntent() {
+        Intent intent = getIntent();
+        fcmDeviceToken = intent.getStringExtra("fcmDeviceToken");
     }
 
     private void setView() {
@@ -97,6 +104,7 @@ public class RegisterActivity extends AppCompatActivity {
 
                         Intent intent = new Intent(RegisterActivity.this, InfoActivity.class);
                         intent.putExtra("userInfo", userInfoDTO);
+                        intent.putExtra("fcmDeviceToken", fcmDeviceToken);
                         startActivity(intent);
 
                     } else {
