@@ -14,6 +14,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.falldetectionapp.DTO.AuthTokenDTO;
+import com.example.falldetectionapp.DTO.BasicResponseDTO;
 import com.example.falldetectionapp.DTO.LoginDTO;
 import com.example.falldetectionapp.register.RegisterActivity;
 import com.example.falldetectionapp.retrofit.AuthService;
@@ -115,34 +116,33 @@ public class LoginActivity extends AppCompatActivity {
      * 서버에 아이디와 비밀번호를 보내서 로그인 요청한다.
      * 로그인 성공 시, token을 발급받고,
      * intent에 token과 cameraId를 넣어서 HomeActivity를 호출한다.
-     * @param cameraId
-     * @param password
      */
     private void requestLogin(String cameraId, String password) {
         Gson gson = new GsonBuilder().setLenient().create();
 
         Retrofit retrofit = new Retrofit.Builder()
-                .baseUrl("http://10.0.2.2:10000") // 기본으로 적용되는 서버 URL (반드시 / 로 마무리되게 설정)
+                .baseUrl("http://10.0.2.2:10000/") // 기본으로 적용되는 서버 URL (반드시 / 로 마무리되게 설정)
                 .addConverterFactory(GsonConverterFactory.create(gson)) // JSON 데이터를 Gson 라이브러리로 파싱하고 데이터를 Model에 자동으로 담는 converter
                 .build();
 
         AuthService authService = retrofit.create(AuthService.class);
-        authService.requestLogin(new LoginDTO(cameraId, password)).enqueue(new Callback<AuthTokenDTO>() {
+        authService.requestLogin(new LoginDTO(cameraId, password)).enqueue(new Callback<BasicResponseDTO<AuthTokenDTO>>() {
             @Override
-            public void onResponse(Call<AuthTokenDTO> call, Response<AuthTokenDTO> response) {
-                if (response.body().getToken().trim().equals("fail")) {
-                    Toast.makeText(getApplicationContext(), "올바르지 않은 아이디 혹은 비밀번호 입니다.", Toast.LENGTH_LONG).show();
-                } else {
+            public void onResponse(Call<BasicResponseDTO<AuthTokenDTO>> call, Response<BasicResponseDTO<AuthTokenDTO>> response) {
+                if (response.body().getCode() == 200) {
                     Intent intent = new Intent(LoginActivity.this, HomeActivity.class);
-                    intent.putExtra("personalToken", response.body().getToken());
+                    intent.putExtra("personalToken", response.body().getData().getToken());
                     intent.putExtra("cameraId", cameraId);
                     startActivity(intent);
+                } else {
+                    Toast.makeText(getApplicationContext(), "올바르지 않은 아이디 혹은 비밀번호 입니다.", Toast.LENGTH_LONG).show();
                 }
             }
 
             @Override
-            public void onFailure(Call<AuthTokenDTO> call, Throwable t) {
+            public void onFailure(Call<BasicResponseDTO<AuthTokenDTO>> call, Throwable t) {
                 Log.d("LOGIN", t.getMessage());
+                Toast.makeText(getApplicationContext(), "서버 연결에 실패했습니다.", Toast.LENGTH_LONG).show();
             }
         });
     }
