@@ -1,8 +1,10 @@
 package com.example.falldowndetectionserver.service.auth;
 
+import com.example.falldowndetectionserver.dao.UPTokenDao;
 import com.example.falldowndetectionserver.domain.dto.BasicResponseDTO;
 import com.example.falldowndetectionserver.domain.dto.user.LoginRequestDTO;
 import com.example.falldowndetectionserver.domain.dto.auth.AuthTokenParam;
+import com.example.falldowndetectionserver.domain.vo.UserPhoneTokenVO;
 import com.example.falldowndetectionserver.jwt.TokenProvider;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.redis.core.RedisTemplate;
@@ -23,6 +25,7 @@ public class AuthServiceImpl implements AuthService{
     private final AuthenticationManagerBuilder authenticationManagerBuilder;
     private final TokenProvider tokenProvider;
     private final RedisTemplate<String, Object> redisTemplate;
+    private final UPTokenDao uPTokenDao;
 
     /**
      * 로그인 서비스를 담당하는 메소드
@@ -40,6 +43,11 @@ public class AuthServiceImpl implements AuthService{
 
             SecurityContextHolder.getContext().setAuthentication(authentication);
             String jwt = tokenProvider.createToken(authentication);
+
+            uPTokenDao.update(UserPhoneTokenVO.builder()
+                    .cameraId(loginRequestDTO.getCameraId())
+                    .token(loginRequestDTO.getDeviceToken())
+                    .build());
 
             // 로그인 성공
             return BasicResponseDTO.<AuthTokenParam>builder()

@@ -8,4 +8,5 @@ import lombok.Data;
 public class LoginRequestDTO {
     private final String cameraId;
     private final String password;
+    private final String deviceToken;
 }
