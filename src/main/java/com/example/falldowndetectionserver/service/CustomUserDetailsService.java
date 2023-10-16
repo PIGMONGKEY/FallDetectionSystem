@@ -1,7 +1,6 @@
 package com.example.falldowndetectionserver.service;
 
 import com.example.falldowndetectionserver.dao.UserDao;
-import com.example.falldowndetectionserver.domain.dto.UserDTO;
 import com.example.falldowndetectionserver.domain.vo.UserVO;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;

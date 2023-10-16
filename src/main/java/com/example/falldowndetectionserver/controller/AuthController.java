@@ -1,9 +1,8 @@
 package com.example.falldowndetectionserver.controller;
 
 import com.example.falldowndetectionserver.domain.dto.BasicResponseDTO;
-import com.example.falldowndetectionserver.domain.dto.LoginDTO;
+import com.example.falldowndetectionserver.domain.dto.user.LoginRequestDTO;
 import com.example.falldowndetectionserver.domain.dto.auth.AuthTokenParam;
-import com.example.falldowndetectionserver.domain.dto.auth.AuthTokenResponse;
 import com.example.falldowndetectionserver.jwt.JwtFilter;
 import com.example.falldowndetectionserver.service.auth.AuthService;
 import lombok.RequiredArgsConstructor;
@@ -30,21 +29,21 @@ public class AuthController {
     /**
      * 로그인하는 메소드
      * 카메라 아이디와 비밀번호를 넘겨주면 확인 후 토큰을 리턴함
-     * @param loginDTO
+     * @param loginRequestDTO
      * @return
      */
     @PostMapping("login")
-    public ResponseEntity<AuthTokenResponse> login(@RequestBody LoginDTO loginDTO) {
+    public ResponseEntity<BasicResponseDTO<AuthTokenParam>> login(@RequestBody LoginRequestDTO loginRequestDTO) {
         HttpHeaders httpHeaders = new HttpHeaders();
         httpHeaders.setContentType(new MediaType("application", "json", StandardCharsets.UTF_8));
 
-        AuthTokenResponse authTokenResponse = authService.login(loginDTO);
+        BasicResponseDTO<AuthTokenParam> response = authService.login(loginRequestDTO);
 
-        if (authTokenResponse.getCode() == HttpStatus.OK.value()) {
-            httpHeaders.add(JwtFilter.AUTHORIZATION_HEADER, "Bearer " + authTokenResponse.getToken());
-            return new ResponseEntity<>(authTokenResponse, httpHeaders, HttpStatus.OK);
+        if (response.getCode() == HttpStatus.OK.value()) {
+            httpHeaders.add(JwtFilter.AUTHORIZATION_HEADER, "Bearer " + response.getData().getToken());
+            return new ResponseEntity<>(response, httpHeaders, HttpStatus.OK);
         } else {
-            return new ResponseEntity<>(authTokenResponse, httpHeaders, HttpStatus.UNAUTHORIZED);
+            return new ResponseEntity<>(response, httpHeaders, HttpStatus.UNAUTHORIZED);
         }
     }
 
@@ -55,13 +54,13 @@ public class AuthController {
      */
     @PostMapping("logout")
     @PreAuthorize("hasAnyRole('USER', 'ADMIN')")
-    public ResponseEntity logout(@RequestBody AuthTokenParam authTokenParam) {
+    public ResponseEntity<BasicResponseDTO> logout(@RequestBody AuthTokenParam authTokenParam) {
         HttpHeaders httpHeaders = new HttpHeaders();
         httpHeaders.setContentType(new MediaType("application", "json", StandardCharsets.UTF_8));
 
         authService.logout(authTokenParam);
 
-        return new ResponseEntity(BasicResponseDTO.builder()
+        return new ResponseEntity<>(BasicResponseDTO.builder()
                 .code(HttpStatus.OK.value())
                 .httpStatus(HttpStatus.OK)
                 .message("로그아웃 성공")

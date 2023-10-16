@@ -7,7 +7,6 @@ import com.example.falldowndetectionserver.dao.UserDao;
 import com.example.falldowndetectionserver.domain.dto.user.SignUpRequestDTO;
 import com.example.falldowndetectionserver.domain.dto.BasicResponseDTO;
 import com.example.falldowndetectionserver.domain.dto.user.UserRequestDTO;
-import com.example.falldowndetectionserver.domain.dto.user.UserResponseDTO;
 import com.example.falldowndetectionserver.domain.vo.NokPhoneVO;
 import com.example.falldowndetectionserver.domain.vo.UserVO;
 import lombok.RequiredArgsConstructor;
@@ -111,7 +110,7 @@ public class UserServiceImpl implements UserService {
      * userVO 또는 nokPhones가 null일 경우, UserDTO의 requestSuccess를 false로 설정하여 리턴한다.
      */
     @Override
-    public UserResponseDTO getUserInfo(String cameraId) {
+    public BasicResponseDTO<UserRequestDTO> getUserInfo(String cameraId) {
         UserVO userVO = userDao.select(cameraId).orElse(null);
         List<String> nokPhones = nokPhoneDao.selectAll(cameraId);
 
@@ -125,14 +124,14 @@ public class UserServiceImpl implements UserService {
                     .nokPhones(nokPhones)
                     .build();
 
-            return UserResponseDTO.builder()
+            return BasicResponseDTO.<UserRequestDTO>builder()
                     .code(HttpStatus.OK.value())
                     .httpStatus(HttpStatus.OK)
                     .message("사용자 정보 조회 성공")
-                    .userInfo(userInfo)
+                    .data(userInfo)
                     .build();
         } else {
-            return UserResponseDTO.builder()
+            return BasicResponseDTO.<UserRequestDTO>builder()
                     .code(HttpStatus.NOT_FOUND.value())
                     .httpStatus(HttpStatus.NOT_FOUND)
                     .message("사용자 정보가 존재하지 않습니다.")

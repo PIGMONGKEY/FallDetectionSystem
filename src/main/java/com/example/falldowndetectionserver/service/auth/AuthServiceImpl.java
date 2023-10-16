@@ -1,8 +1,8 @@
 package com.example.falldowndetectionserver.service.auth;
 
-import com.example.falldowndetectionserver.domain.dto.LoginDTO;
+import com.example.falldowndetectionserver.domain.dto.BasicResponseDTO;
+import com.example.falldowndetectionserver.domain.dto.user.LoginRequestDTO;
 import com.example.falldowndetectionserver.domain.dto.auth.AuthTokenParam;
-import com.example.falldowndetectionserver.domain.dto.auth.AuthTokenResponse;
 import com.example.falldowndetectionserver.jwt.TokenProvider;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.redis.core.RedisTemplate;
@@ -26,13 +26,13 @@ public class AuthServiceImpl implements AuthService{
 
     /**
      * 로그인 서비스를 담당하는 메소드
-     * @param loginDTO cameraId와 password로 이루어진 LoginDTO를 파라미터로 받는다.
+     * @param loginRequestDTO cameraId와 password로 이루어진 LoginDTO를 파라미터로 받는다.
      * @return 로그인에 성공하면 token을 리턴하고, 실패하면 fail 문자열을 반환한다.
      */
     @Override
-    public AuthTokenResponse login(LoginDTO loginDTO) {
+    public BasicResponseDTO<AuthTokenParam> login(LoginRequestDTO loginRequestDTO) {
         UsernamePasswordAuthenticationToken authenticationToken =
-                new UsernamePasswordAuthenticationToken(loginDTO.getCameraId(), loginDTO.getPassword());
+                new UsernamePasswordAuthenticationToken(loginRequestDTO.getCameraId(), loginRequestDTO.getPassword());
         try {
             Authentication authentication = authenticationManagerBuilder
                     .getObject()
@@ -42,15 +42,15 @@ public class AuthServiceImpl implements AuthService{
             String jwt = tokenProvider.createToken(authentication);
 
             // 로그인 성공
-            return AuthTokenResponse.builder()
+            return BasicResponseDTO.<AuthTokenParam>builder()
                     .code(HttpStatus.OK.value())
                     .httpStatus(HttpStatus.OK)
                     .message("로그인 성공")
-                    .token(jwt)
+                    .data(AuthTokenParam.builder().token(jwt).build())
                     .build();
         } catch (BadCredentialsException e) {
             // 로그인 실패
-            return AuthTokenResponse.builder()
+            return BasicResponseDTO.<AuthTokenParam>builder()
                     .code(HttpStatus.UNAUTHORIZED.value())
                     .httpStatus(HttpStatus.UNAUTHORIZED)
                     .message("사용자 인증 실패")

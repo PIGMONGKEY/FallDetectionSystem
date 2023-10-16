@@ -6,8 +6,9 @@ import org.springframework.http.HttpStatus;
 
 @Data
 @Builder
-public class BasicResponseDTO {
+public class BasicResponseDTO<T> {
     private final Integer code;
     private final HttpStatus httpStatus;
     private final String message;
+    private final T data;
 }

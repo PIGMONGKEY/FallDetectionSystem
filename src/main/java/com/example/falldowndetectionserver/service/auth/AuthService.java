@@ -1,10 +1,10 @@
 package com.example.falldowndetectionserver.service.auth;
 
-import com.example.falldowndetectionserver.domain.dto.LoginDTO;
+import com.example.falldowndetectionserver.domain.dto.BasicResponseDTO;
+import com.example.falldowndetectionserver.domain.dto.user.LoginRequestDTO;
 import com.example.falldowndetectionserver.domain.dto.auth.AuthTokenParam;
-import com.example.falldowndetectionserver.domain.dto.auth.AuthTokenResponse;
 
 public interface AuthService {
-    public AuthTokenResponse login(LoginDTO loginDTO);
+    public BasicResponseDTO<AuthTokenParam> login(LoginRequestDTO loginRequestDTO);
     public void logout(AuthTokenParam authTokenParam);
 }

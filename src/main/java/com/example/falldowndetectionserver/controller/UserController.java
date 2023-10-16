@@ -3,7 +3,6 @@ package com.example.falldowndetectionserver.controller;
 import com.example.falldowndetectionserver.domain.dto.user.SignUpRequestDTO;
 import com.example.falldowndetectionserver.domain.dto.BasicResponseDTO;
 import com.example.falldowndetectionserver.domain.dto.user.UserRequestDTO;
-import com.example.falldowndetectionserver.domain.dto.user.UserResponseDTO;
 import com.example.falldowndetectionserver.jwt.TokenProvider;
 import com.example.falldowndetectionserver.service.user.UserService;
 import lombok.RequiredArgsConstructor;
@@ -25,13 +24,13 @@ public class UserController {
     private final TokenProvider tokenProvider;
 
     @GetMapping("/checkCameraId")
-    public ResponseEntity checkCameraId(String cameraId) {
+    public ResponseEntity<BasicResponseDTO> checkCameraId(String cameraId) {
         HttpHeaders httpHeaders = new HttpHeaders();
         httpHeaders.setContentType(new MediaType("application", "json", StandardCharsets.UTF_8));
 
         BasicResponseDTO response = userService.checkCameraId(cameraId);
 
-        return new ResponseEntity(response, httpHeaders, response.getHttpStatus());
+        return new ResponseEntity<>(response, httpHeaders, response.getHttpStatus());
     }
 
     /**
@@ -40,12 +39,12 @@ public class UserController {
      * @return 성공 시 OK 보내줌
      */
     @PostMapping("/user")
-    public ResponseEntity signup(@RequestBody SignUpRequestDTO signUpRequestDTO) {
+    public ResponseEntity<BasicResponseDTO> signup(@RequestBody SignUpRequestDTO signUpRequestDTO) {
         HttpHeaders httpHeaders = new HttpHeaders();
         httpHeaders.setContentType(new MediaType("application", "json", StandardCharsets.UTF_8));
 
         BasicResponseDTO response = userService.signup(signUpRequestDTO);
-        return new ResponseEntity(response, httpHeaders, response.getHttpStatus());
+        return new ResponseEntity<>(response, httpHeaders, response.getHttpStatus());
     }
 
     /**
@@ -55,15 +54,15 @@ public class UserController {
      */
     @GetMapping("/user")
     @PreAuthorize("hasAnyRole('USER', 'ADMIN')")
-    public ResponseEntity<UserResponseDTO> getUserInfo(String cameraId, @RequestHeader("Authorization") String token) {
+    public ResponseEntity<BasicResponseDTO> getUserInfo(String cameraId, @RequestHeader("Authorization") String token) {
         HttpHeaders httpHeaders = new HttpHeaders();
         httpHeaders.setContentType(new MediaType("application", "json", StandardCharsets.UTF_8));
 
-        UserResponseDTO response;
+        BasicResponseDTO<UserRequestDTO> response;
 
         // 토큰 속에 있는 CameraId와 요청 CameraId가 다르면 서비스 거부
         if (!tokenProvider.getAudience(token.substring(7)).equals(cameraId)) {
-            response = UserResponseDTO.builder()
+            response = BasicResponseDTO.<UserRequestDTO>builder()
                     .code(HttpStatus.METHOD_NOT_ALLOWED.value())
                     .httpStatus(HttpStatus.METHOD_NOT_ALLOWED)
                     .message("요청한 작업에 대한 권한이 없습니다.")
@@ -83,13 +82,13 @@ public class UserController {
      */
     @DeleteMapping("/user")
     @PreAuthorize("hasAnyRole('USER', 'ADMIN')")
-    public ResponseEntity removeUserInfo(String cameraId, @RequestHeader("Authorization") String token) {
+    public ResponseEntity<BasicResponseDTO> removeUserInfo(String cameraId, @RequestHeader("Authorization") String token) {
         HttpHeaders httpHeaders = new HttpHeaders();
         httpHeaders.setContentType(new MediaType("application", "json", StandardCharsets.UTF_8));
 
         // 토큰 속에 있는 CameraId와 요청 CameraId가 다르면 서비스 거부
         if (!tokenProvider.getAudience(token.substring(7)).equals(cameraId)) {
-            return new ResponseEntity(BasicResponseDTO.builder()
+            return new ResponseEntity<>(BasicResponseDTO.builder()
                     .code(HttpStatus.METHOD_NOT_ALLOWED.value())
                     .httpStatus(HttpStatus.METHOD_NOT_ALLOWED)
                     .message("요청한 작업에 대한 권한이 없습니다.")
@@ -98,7 +97,7 @@ public class UserController {
 
         BasicResponseDTO response = userService.removeUserInfo(cameraId);
 
-        return new ResponseEntity(response, httpHeaders, response.getHttpStatus());
+        return new ResponseEntity<>(response, httpHeaders, response.getHttpStatus());
     }
 
     /**
@@ -113,7 +112,7 @@ public class UserController {
 
         // 토큰 속에 있는 CameraId와 요청 CameraId가 다르면 서비스 거부
         if (!tokenProvider.getAudience(token.substring(7)).equals(userRequestDTO.getCameraId())) {
-            return new ResponseEntity(BasicResponseDTO.builder()
+            return new ResponseEntity<>(BasicResponseDTO.builder()
                     .code(HttpStatus.METHOD_NOT_ALLOWED.value())
                     .httpStatus(HttpStatus.METHOD_NOT_ALLOWED)
                     .message("요청한 작업에 대한 권한이 없습니다.")
