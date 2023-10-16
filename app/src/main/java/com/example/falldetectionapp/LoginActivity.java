@@ -4,6 +4,7 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.CheckBox;
@@ -13,6 +14,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.falldetectionapp.register.RegisterActivity;
+import com.google.firebase.messaging.FirebaseMessaging;
 
 /**
  * 로그인 화면 입니다.
@@ -25,6 +27,8 @@ public class LoginActivity extends AppCompatActivity {
     private CheckBox autoLoginCheckBox;
     private TextView forgetPasswordTextView;
 
+    private String fcmDeviceToken;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -35,8 +39,16 @@ public class LoginActivity extends AppCompatActivity {
 
 //    초기 설정을 넣어주세요
     private void init() {
+        getFcmDeviceToken();
         setView();
         setListener();
+    }
+
+    // FCM 기기 토큰 읽어오기
+    private void getFcmDeviceToken() {
+        FirebaseMessaging.getInstance().getToken().addOnCompleteListener(task -> {
+            fcmDeviceToken = task.getResult();
+        });
     }
 
     private void setView() {
