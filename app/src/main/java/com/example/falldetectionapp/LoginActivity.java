@@ -35,6 +35,7 @@ import com.google.firebase.messaging.FirebaseMessaging;
  * activity_log_in.xml과 연결됩니다.
  */
 // TODO: 비밀번호 찾기, 자동 로그인 구현
+// TODO: 로그인 할 때, 기기 토큰 업데이트
 public class LoginActivity extends AppCompatActivity {
 
     private Button registerButton, loginButton;
