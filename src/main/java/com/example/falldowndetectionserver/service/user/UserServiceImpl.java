@@ -28,7 +28,7 @@ public class UserServiceImpl implements UserService {
     @Override
     public BasicResponseDTO checkCameraId(String cameraId) {
         if (cameraIdDao.select(cameraId) == 1) {
-            if (!userDao.select(cameraId).isEmpty()) {
+            if (userDao.select(cameraId).isEmpty()) {
                 return BasicResponseDTO.builder()
                         .code(HttpStatus.OK.value()) // 200
                         .httpStatus(HttpStatus.OK)
