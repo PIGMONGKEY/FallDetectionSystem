@@ -141,7 +141,7 @@ public class LoginActivity extends AppCompatActivity {
                 .build();
 
         AuthService authService = retrofit.create(AuthService.class);
-        authService.requestLogin(new LoginDTO(cameraId, password)).enqueue(new Callback<BasicResponseDTO<AuthTokenDTO>>() {
+        authService.requestLogin(new LoginDTO(cameraId, password, fcmDeviceToken)).enqueue(new Callback<BasicResponseDTO<AuthTokenDTO>>() {
             @Override
             public void onResponse(Call<BasicResponseDTO<AuthTokenDTO>> call, Response<BasicResponseDTO<AuthTokenDTO>> response) {
                 if (response.isSuccessful()) {
