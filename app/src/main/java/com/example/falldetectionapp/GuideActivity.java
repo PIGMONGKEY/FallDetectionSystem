@@ -64,9 +64,8 @@ public class GuideActivity extends AppCompatActivity {
         backButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                //Intent intent = new Intent(GuideActivity.this, RegisterActivity.class);
-                //startActivity(intent);
-                // 뒤로가기 하면 어디로 가나요?
+                Intent intent = new Intent(GuideActivity.this, HomeActivity.class);
+                startActivity(intent);
             }
         });
     }

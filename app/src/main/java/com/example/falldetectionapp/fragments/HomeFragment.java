@@ -1,5 +1,6 @@
 package com.example.falldetectionapp.fragments;
 
+import android.content.Intent;
 import android.os.Bundle;
 
 import androidx.fragment.app.Fragment;
@@ -7,7 +8,9 @@ import androidx.fragment.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 
+import com.example.falldetectionapp.GuideActivity;
 import com.example.falldetectionapp.R;
 
 /**
@@ -21,6 +24,8 @@ import com.example.falldetectionapp.R;
  */
 public class HomeFragment extends Fragment {
 
+    private Button toGuideButton, toVideoButton, toMyPageButton;
+
 //    빈 생성자가 있어야 합니다. 삭제하면 안됩니다.
     public HomeFragment() { }
 
@@ -28,11 +33,30 @@ public class HomeFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_home, container, false);
+        View view = inflater.inflate(R.layout.fragment_home, container, false);
+        setView(view);
+
+        return view;
     }
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+    }
+
+    private void setView(View view) {
+        toGuideButton = view.findViewById(R.id.toGuideButton);
+        toVideoButton = view.findViewById(R.id.toVideoButton);
+        toMyPageButton = view.findViewById(R.id.toMyPageButton);
+    }
+
+    private void setListener() {
+        toGuideButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(getActivity(), GuideActivity.class);
+                startActivity(intent);
+            }
+        });
     }
 }
