@@ -47,7 +47,7 @@ public class MyPageFragment extends Fragment {
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_my_page, container, false);
-        setViews(view);
+        init(view);
 
         return view;
     }
@@ -55,11 +55,10 @@ public class MyPageFragment extends Fragment {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
-        init();
     }
 
-    private void init() {
+    private void init(View view) {
+        setViews(view);
         getDataFromBundle();
     }
 
@@ -73,7 +72,13 @@ public class MyPageFragment extends Fragment {
 
     private void getDataFromBundle() {
         personalToken = getArguments().getString("personalToken");
-        requestUserInfo(getArguments().getString("cameraId"));
+//        requestUserInfo(getArguments().getString("cameraId"));
+
+        nameTV.setText("userInfoDTO.getUserName()");
+        phoneTV.setText("userInfoDTO.getUserPhone()");
+        addressTV.setText("userInfoDTO.getUserAddress()");
+        nokPhone1TV.setText("userInfoDTO.getNokPhones().get(0)");
+        nokPhone2TV.setText("userInfoDTO.getNokPhones().get(1)");
     }
 
     // 서버에 cameraId를 넘겨서 사용자 정보 받아오기
