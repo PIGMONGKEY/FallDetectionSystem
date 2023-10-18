@@ -43,6 +43,8 @@ public class RegisterActivity extends AppCompatActivity {
         init();
     }
 
+
+
 //    초기 설정을 넣어주세요
     private void init() {
         setTitle("회원가입");
