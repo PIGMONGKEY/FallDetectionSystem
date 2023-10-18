@@ -12,6 +12,7 @@ import android.view.MenuItem;
 import android.widget.Toast;
 
 import com.example.falldetectionapp.DTO.UserInfoDTO;
+import com.example.falldetectionapp.fragments.GuideFragment;
 import com.example.falldetectionapp.fragments.HomeFragment;
 import com.example.falldetectionapp.fragments.MyPageFragment;
 import com.example.falldetectionapp.fragments.VideoFragment;
@@ -86,11 +87,13 @@ public class HomeActivity extends AppCompatActivity {
         } else if (id == R.id.video) {
             newFragment = new VideoFragment();
             bundle.putString("cameraId", cameraId);
-        } else {
+        } else if (id == R.id.myPage) {
             newFragment = new MyPageFragment();
             bundle.putString("cameraId", cameraId);
             bundle.putString("personalToken", personalToken);
             newFragment.setArguments(bundle);
+        } else {
+            newFragment = new GuideFragment();
         }
 
         FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();

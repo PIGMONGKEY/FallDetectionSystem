@@ -97,7 +97,13 @@ public class LoginActivity extends AppCompatActivity {
                 String password = passwordEditText.getText().toString().trim();
 
                 if (!cameraId.isEmpty() && !password.isEmpty()) {
-                    requestLogin(cameraId, password);
+//                    requestLogin(cameraId, password);
+
+                    // UI 구현을 위한 인텐트 로직
+                    Intent intent = new Intent(LoginActivity.this, HomeActivity.class);
+                    intent.putExtra("personalToken", "token");
+                    intent.putExtra("cameraId", cameraId);
+                    startActivity(intent);
                 } else if (cameraId.isEmpty()) {
                     Toast.makeText(getApplicationContext(), "아이디를 입력해 주세요", Toast.LENGTH_LONG).show();
                 } else {

@@ -89,7 +89,11 @@ public class NokPhoneActivity extends AppCompatActivity {
 
                     userInfoDTO.setNokPhones(nokPhones);
 
-                    requestRegister();
+//                    requestRegister();
+
+                    // UI 구현을 위한 임시 인텐트 로직
+                    Intent intent = new Intent(NokPhoneActivity.this, LoginActivity.class);
+                    startActivity(intent);
                 }
             }
         });

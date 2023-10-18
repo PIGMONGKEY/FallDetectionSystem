@@ -71,7 +71,17 @@ public class RegisterActivity extends AppCompatActivity {
                 String cameraId = cameraIdEditText.getText().toString().trim();
 
                 // 존재하는 카메라 ID 인지 확인
-                checkCameraId(cameraId);
+//                checkCameraId(cameraId);
+
+                // UI 구현을 위한 임시 인텐트 로직
+                UserInfoDTO userInfoDTO = new UserInfoDTO();
+                userInfoDTO.setCameraId(cameraId);
+                userInfoDTO.setUserPassword(passwordEditText.getText().toString());
+
+                Intent intent = new Intent(RegisterActivity.this, InfoActivity.class);
+                intent.putExtra("userInfo", userInfoDTO);
+                intent.putExtra("fcmDeviceToken", fcmDeviceToken);
+                startActivity(intent);
             }
         });
     }
