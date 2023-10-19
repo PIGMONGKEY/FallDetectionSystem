@@ -47,12 +47,22 @@ public class NotiController {
         HttpHeaders httpHeaders = new HttpHeaders();
         httpHeaders.setContentType(new MediaType("application", "json", StandardCharsets.UTF_8));
 
-        response = BasicResponseDTO.builder()
-                .code(HttpStatus.OK.value())
-                .httpStatus(HttpStatus.OK)
-                .message("공지사항 불러오기 성공")
-                .data(notiBoardDao.selectAll())
-                .build();
+        List<NotiBoardVO> notices = notiBoardDao.selectAll();
+
+        if (notices.isEmpty()) {
+            response = BasicResponseDTO.builder()
+                    .code(HttpStatus.NOT_FOUND.value())
+                    .httpStatus(HttpStatus.NOT_FOUND)
+                    .message("등록된 공지사항이 없습니다.")
+                    .build();
+        } else {
+            response = BasicResponseDTO.builder()
+                    .code(HttpStatus.OK.value())
+                    .httpStatus(HttpStatus.OK)
+                    .message("공지사항 불러오기 성공")
+                    .data(notices)
+                    .build();
+        }
 
         return new ResponseEntity<>(response, httpHeaders, response.getHttpStatus());
     }
