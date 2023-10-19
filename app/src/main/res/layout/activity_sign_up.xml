@@ -8,14 +8,28 @@
     android:orientation="vertical"
     tools:context=".register.RegisterActivity">
 
+    <FrameLayout
+        android:layout_width="match_parent"
+        android:layout_height="80dp">
+    </FrameLayout>
+
+    <ImageView
+        android:id="@+id/imageView2"
+        android:layout_width="156dp"
+        android:layout_height="134dp"
+        android:layout_gravity="center"
+        app:srcCompat="@drawable/logo" />
+
     <TextView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_gravity="center"
-        android:layout_marginTop="150dp"
+        android:layout_marginTop="20dp"
         android:layout_marginBottom="30dp"
-        android:text="회원가입"
+        android:fontFamily="sans-serif-condensed-medium"
+        android:text="긴급 상황 신고 서비스"
         android:textAlignment="center"
+        android:textColor="#F14559"
         android:textSize="30sp"
         android:textStyle="bold" />
 
@@ -23,95 +37,89 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_gravity="center"
-        android:orientation="horizontal"
-        android:padding="20dp">
-
-        <TextView
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_weight="0.6"
-            android:text="카메라 아이디"
-            android:textAlignment="viewEnd"
-            android:textSize="20sp"
-            android:textStyle="bold" />
+        android:orientation="vertical">
 
         <EditText
             android:id="@+id/cameraIdEditText_register"
-            android:layout_width="0dp"
+            android:layout_width="280dp"
             android:layout_height="wrap_content"
             android:layout_gravity="center"
-            android:layout_weight="1"
-            android:ems="10"
-            android:inputType="text"
-            android:textSize="20sp" />
+            android:layout_marginTop="10dp"
+            android:background="#B1B1B1"
+            android:drawableStart="@drawable/ic_camera"
+            android:drawableLeft="@drawable/ic_camera"
+            android:drawablePadding="10dp"
+            android:fontFamily="sans-serif-condensed-medium"
+            android:hint="카메라 아이디"
+            android:padding="10dp"
+            android:textColor="#FFFFFF"
+            android:textColorHint="#ffffff"
+            android:textSize="20sp"
+            android:textStyle="bold" />
 
     </LinearLayout>
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:orientation="horizontal"
-        android:padding="20dp">
-
-        <TextView
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_weight="0.6"
-            android:text="비밀번호"
-            android:textAlignment="viewEnd"
-            android:textSize="20sp"
-            android:textStyle="bold" />
+        android:orientation="vertical">
 
         <EditText
             android:id="@+id/passwordEditText_register"
-            android:layout_width="0dp"
+            android:layout_width="280dp"
             android:layout_height="wrap_content"
             android:layout_gravity="center"
-            android:layout_weight="1"
-            android:ems="10"
-            android:inputType="textPassword"
-            android:textSize="20sp" />
+            android:layout_marginTop="20dp"
+            android:background="#B1B1B1"
+            android:drawableStart="@drawable/ic_password"
+            android:drawableLeft="@drawable/ic_password"
+            android:drawablePadding="10dp"
+            android:fontFamily="sans-serif-condensed-medium"
+            android:hint="비밀번호"
+            android:padding="10dp"
+            android:textColor="#FFFFFF"
+            android:textColorHint="#ffffff"
+            android:textSize="20sp"
+            android:textStyle="bold" />
     </LinearLayout>
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:orientation="horizontal"
-        android:padding="20dp">
-
-        <TextView
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_weight="0.6"
-            android:text="비밀번호 확인"
-            android:textAlignment="viewEnd"
-            android:textSize="20sp"
-            android:textStyle="bold" />
+        android:orientation="vertical"
+        >
 
         <EditText
             android:id="@+id/passwordCheckEditText_register"
-            android:layout_width="0dp"
+            android:layout_width="280dp"
             android:layout_height="wrap_content"
             android:layout_gravity="center"
-            android:layout_weight="1"
-            android:ems="10"
-            android:inputType="textPassword"
-            android:textSize="20sp" />
+            android:layout_marginTop="20dp"
+            android:background="#B1B1B1"
+            android:drawableStart="@drawable/ic_checkoutline"
+            android:drawableLeft="@drawable/ic_checkcircle"
+            android:drawablePadding="10dp"
+            android:fontFamily="sans-serif-condensed-medium"
+            android:hint="비밀번호 확인"
+            android:padding="10dp"
+            android:textColor="#FFFFFF"
+            android:textColorHint="#ffffff"
+            android:textSize="20sp"
+            android:textStyle="bold" />
 
     </LinearLayout>
 
     <Button
         android:id="@+id/continueToInfoButton"
-        android:layout_width="250dp"
+        android:layout_width="280dp"
         android:layout_height="wrap_content"
         android:layout_gravity="center"
         android:layout_marginTop="40dp"
-        android:background="#808080"
-        android:backgroundTint="#808080"
+        android:backgroundTint="#F14559"
         android:gravity="center"
         android:text="다음"
         android:textColor="#FFFFFF"
-        android:textSize="16sp"
+        android:textSize="27sp"
         android:textStyle="bold" />
 
 
