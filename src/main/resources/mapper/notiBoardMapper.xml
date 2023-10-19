@@ -11,7 +11,7 @@
     </select>
 
     <update id="update">
-        UPDATE TBL_NOTI_BOARD SET TITLE=#{title}, CONTENT=#{content}
+        UPDATE TBL_NOTI_BOARD SET TITLE=#{title}, CONTENT=#{content}, UPDATEDATE=NOW()
         WHERE BNO=#{bno};
     </update>
 
