@@ -95,7 +95,7 @@ public class UserController {
                     .build(), HttpStatus.METHOD_NOT_ALLOWED);
         }
 
-        BasicResponseDTO response = userService.removeUserInfo(cameraId);
+        BasicResponseDTO response = userService.removeUserInfo(cameraId, token);
 
         return new ResponseEntity<>(response, httpHeaders, response.getHttpStatus());
     }

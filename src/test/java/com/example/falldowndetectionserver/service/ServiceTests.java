@@ -42,7 +42,7 @@ public class ServiceTests {
 
     @Test
     public void removeUserInfoTest() {
-        userService.removeUserInfo("cam01");
+        userService.removeUserInfo("cam01", "");
     }
 
 //    @Test

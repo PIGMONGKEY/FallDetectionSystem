@@ -4,11 +4,13 @@ import com.example.falldowndetectionserver.dao.CameraIdDao;
 import com.example.falldowndetectionserver.dao.NokPhoneDao;
 import com.example.falldowndetectionserver.dao.UPTokenDao;
 import com.example.falldowndetectionserver.dao.UserDao;
+import com.example.falldowndetectionserver.domain.dto.auth.AuthTokenParam;
 import com.example.falldowndetectionserver.domain.dto.user.SignUpRequestDTO;
 import com.example.falldowndetectionserver.domain.dto.BasicResponseDTO;
 import com.example.falldowndetectionserver.domain.dto.user.UserRequestDTO;
 import com.example.falldowndetectionserver.domain.vo.NokPhoneVO;
 import com.example.falldowndetectionserver.domain.vo.UserVO;
+import com.example.falldowndetectionserver.service.auth.AuthService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -24,6 +26,7 @@ public class UserServiceImpl implements UserService {
     private final UPTokenDao uPTokenDao;
     private final PasswordEncoder passwordEncoder;
     private final CameraIdDao cameraIdDao;
+    private final AuthService authService;
 
     @Override
     public BasicResponseDTO checkCameraId(String cameraId) {
@@ -145,7 +148,7 @@ public class UserServiceImpl implements UserService {
      * @return 삭제 성공 시엔 1을 리턴한다.
      */
     @Override
-    public BasicResponseDTO removeUserInfo(String cameraId) {
+    public BasicResponseDTO removeUserInfo(String cameraId, String token) {
         if (userDao.delete(cameraId) != 1) {
             return BasicResponseDTO.builder()
                     .code(HttpStatus.INTERNAL_SERVER_ERROR.value())
@@ -153,6 +156,8 @@ public class UserServiceImpl implements UserService {
                     .message("사용자 삭제에 실패했습니다.")
                     .build();
         } else {
+            // 토큰을 만료 시킨다.
+            authService.logout(AuthTokenParam.builder().token(token).build());
             return BasicResponseDTO.builder()
                     .code(HttpStatus.OK.value())
                     .httpStatus(HttpStatus.OK)
