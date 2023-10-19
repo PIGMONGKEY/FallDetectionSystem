@@ -7,51 +7,55 @@
     android:orientation="vertical"
     tools:context=".register.NokPhoneActivity">
 
+    <ImageView
+        android:id="@+id/logo"
+        android:layout_width="100dp"
+        android:layout_height="100dp"
+        android:layout_gravity="center"
+        android:layout_marginTop="100dp"
+        android:layout_marginBottom="30dp"
+        app:srcCompat="@drawable/help_logo_2" />
+
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="center"
-        android:layout_marginTop="150dp"
+        android:layout_marginTop="20dp"
         android:layout_marginBottom="30dp"
         android:text="비상 연락처 등록"
+        android:textColor="#F14559"
         android:textStyle="bold"
         android:textSize="30sp" />
 
     <LinearLayout
-        android:layout_width="match_parent"
+        android:layout_width="300dp"
         android:layout_height="wrap_content"
+        android:layout_gravity="center"
         android:padding="20dp">
-
-        <TextView
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_weight="0.6"
-            android:textAlignment="viewEnd"
-            android:textSize="20sp"
-            android:text="비상 연락처 1" />
 
         <EditText
             android:id="@+id/nokPhone_1_EditText_register"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="1"
+            android:background="#B1B1B1"
+            android:fontFamily="sans-serif-condensed-medium"
+            android:hint="비상 연락처 1"
+            android:inputType="phone"
+            android:padding="5dp"
+            android:textColor="#FFFFFF"
+            android:textColorHint="#ffffff"
             android:textSize="20sp"
-            android:inputType="phone" />
+            android:textStyle="bold" />
 
     </LinearLayout>
 
     <LinearLayout
-        android:layout_width="match_parent"
+        android:layout_width="300dp"
         android:layout_height="wrap_content"
+        android:layout_gravity="center"
         android:padding="20dp">
 
-        <TextView
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_weight="0.6"
-            android:textAlignment="viewEnd"
-            android:textSize="20sp"
-            android:text="비상 연락처 2" />
 
         <EditText
             android:id="@+id/nokPhone_2_EditText_register"
@@ -59,7 +63,14 @@
             android:layout_height="wrap_content"
             android:layout_weight="1"
             android:textSize="20sp"
-            android:inputType="phone" />
+            android:background="#B1B1B1"
+            android:fontFamily="sans-serif-condensed-medium"
+            android:hint="비상 연락처 2"
+            android:inputType="phone"
+            android:padding="5dp"
+            android:textColor="#FFFFFF"
+            android:textColorHint="#ffffff"
+            android:textStyle="bold" />
 
     </LinearLayout>
 
@@ -69,8 +80,12 @@
         android:layout_height="50dp"
         android:layout_marginTop="30dp"
         android:layout_gravity="center"
-        android:backgroundTint="#787070"
+        android:backgroundTint="#F14559"
+        android:textSize="20sp"
+        android:textStyle="bold"
         android:text="확인"
         android:textColorHighlight="#807171" />
+
+
 
 </LinearLayout>

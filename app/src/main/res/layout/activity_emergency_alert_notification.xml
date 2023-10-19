@@ -10,9 +10,10 @@
         android:id="@+id/textView"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="302dp"
-        android:layout_marginEnd="188dp"
-        android:text="Emergency!!!"
+        android:layout_marginTop="300dp"
+        android:layout_marginEnd="70dp"
+        android:text="Emergency!!!\n긴급상황 발생!!!"
+        android:textSize="40sp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 </androidx.constraintlayout.widget.ConstraintLayout>
