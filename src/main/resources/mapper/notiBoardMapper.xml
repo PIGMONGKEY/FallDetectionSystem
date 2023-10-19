@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0/EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.example.falldowndetectionserver.mapper.NotiBoardMapper">
+    <insert id="insert">
+        INSERT INTO TBL_NOTI_BOARD (TITLE, CONTENT)
+        VALUES (#{title}, #{content});
+    </insert>
+
+    <select id="selectAll" resultType="notiBoardVO">
+        SELECT BNO, TITLE, CONTENT, REGDATE, UPDATEDATE FROM TBL_NOTI_BOARD;
+    </select>
+
+    <update id="update">
+        UPDATE TBL_NOTI_BOARD SET TITLE=#{title}, CONTENT=#{content}
+        WHERE BNO=#{bno};
+    </update>
+
+    <delete id="delete">
+        DELETE FROM TBL_NOTI_BOARD
+        WHERE BNO=#{bno};
+    </delete>
+</mapper>
