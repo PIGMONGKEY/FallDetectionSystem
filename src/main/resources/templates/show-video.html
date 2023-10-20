@@ -26,7 +26,7 @@
     });
 
     $connect.on("click", function (arrayLike) {
-        socket = new WebSocket("ws://localhost:10000/video");
+        socket = new WebSocket("ws://122.32.198.225:12300/video");
 
         socket.addEventListener("open", () => {
             console.log("connected");
