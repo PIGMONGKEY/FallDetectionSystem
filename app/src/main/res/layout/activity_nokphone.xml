@@ -38,15 +38,15 @@
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="1"
-            android:background="#B1B1B1"
+            android:background="@drawable/textbox_shape_round"
             android:fontFamily="sans-serif-condensed-medium"
             android:hint="비상 연락처 1"
             android:inputType="phone"
             android:padding="5dp"
-            android:textColor="#FFFFFF"
-            android:textColorHint="#ffffff"
+            android:textColor="#F14559"
+            android:textColorHint="#F18491"
             android:textSize="20sp"
-            android:textStyle="bold" />
+            android:textStyle="normal" />
 
     </LinearLayout>
 
@@ -63,14 +63,14 @@
             android:layout_height="wrap_content"
             android:layout_weight="1"
             android:textSize="20sp"
-            android:background="#B1B1B1"
+            android:background="@drawable/textbox_shape_round"
             android:fontFamily="sans-serif-condensed-medium"
             android:hint="비상 연락처 2"
             android:inputType="phone"
             android:padding="5dp"
-            android:textColor="#FFFFFF"
-            android:textColorHint="#ffffff"
-            android:textStyle="bold" />
+            android:textColor="#F14559"
+            android:textColorHint="#FFF18491"
+            android:textStyle="normal" />
 
     </LinearLayout>
 
