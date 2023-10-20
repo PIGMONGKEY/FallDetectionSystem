@@ -48,7 +48,7 @@
             android:hint="아이디"
             android:inputType="textPersonName"
             android:padding="10dp"
-            android:textColorHint="#F14559"
+            android:textColorHint="#F6A0AA"
             android:textSize="20dp"
             android:textStyle="bold" />
 
@@ -62,7 +62,7 @@
             android:hint="비밀번호"
             android:inputType="textPassword"
             android:padding="10dp"
-            android:textColorHint="#F14559"
+            android:textColorHint="#FFF6A0AA"
             android:textSize="20dp"
             android:textStyle="bold" />
 
