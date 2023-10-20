@@ -32,6 +32,7 @@
             android:layout_height="wrap_content"
             android:layout_marginTop="10dp"
             android:layout_marginBottom="20dp"
+            android:baselineAligned="false"
             android:fontFamily="sans-serif-condensed-medium"
             android:paddingTop="10dp"
             android:text="긴급 상황 신고 서비스"
@@ -45,39 +46,39 @@
             android:layout_width="280dp"
             android:layout_height="wrap_content"
             android:layout_gravity="center"
+            android:layout_marginTop="20dp"
             android:backgroundTint="#ffffff"
             android:gravity="center"
             android:text="이용 가이드"
             android:textColor="#F14559"
             android:textSize="27sp"
-            android:textStyle="bold"
-            android:layout_marginTop="20dp"/>
+            android:textStyle="bold" />
 
         <Button
             android:id="@+id/continueToInfoButton2"
             android:layout_width="280dp"
             android:layout_height="wrap_content"
             android:layout_gravity="center"
+            android:layout_marginTop="10dp"
             android:backgroundTint="#ffffff"
             android:gravity="center"
             android:text="로그인"
             android:textColor="#F14559"
             android:textSize="27sp"
-            android:textStyle="bold"
-            android:layout_marginTop="10dp"/>
+            android:textStyle="bold" />
 
         <Button
             android:id="@+id/continueToInfoButton3"
             android:layout_width="280dp"
             android:layout_height="wrap_content"
             android:layout_gravity="center"
+            android:layout_marginTop="10dp"
             android:backgroundTint="#ffffff"
             android:gravity="center"
             android:text="회원가입"
             android:textColor="#F14559"
             android:textSize="27sp"
-            android:textStyle="bold"
-            android:layout_marginTop="10dp"/>
+            android:textStyle="bold" />
 
     </LinearLayout>
 
@@ -85,7 +86,9 @@
         android:id="@+id/bottom_navigationview"
         android:layout_width="match_parent"
         android:layout_height="89dp"
+        app:itemIconTint="#F14559"
         app:itemTextColor="#F14559"
+        app:itemIconSize="40dp"
         app:labelVisibilityMode="labeled"
         app:menu="@menu/bottom_menu" />
 

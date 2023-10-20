@@ -5,6 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
+    android:background="@drawable/background2"
     tools:context=".fragments.HomeFragment">
 
     <ImageView
@@ -111,7 +112,7 @@
             android:layout_height="wrap_content"
             tools:src="@tools:sample/avatars"
             android:paddingTop="10dp"
-            android:paddingLeft="20dp"/>
+            android:paddingLeft="30dp"/>
 
         <TextView
             android:id="@+id/textView4"
@@ -122,8 +123,8 @@
             android:textColor="#F14559"
             android:textSize="25sp"
             android:textStyle="bold"
-            android:paddingBottom="20dp"
-            android:paddingLeft="20dp"/>
+            android:paddingBottom="30dp"
+            android:paddingLeft="30dp"/>
 
         <TextView
             android:id="@+id/textView8"
@@ -134,15 +135,14 @@
             android:textColor="#000000"
             android:textSize="25sp"
             android:textStyle="bold"
-            android:paddingBottom="20dp"
-            android:paddingLeft="80dp"/>
+            android:paddingBottom="30dp"
+            android:paddingLeft="100dp"/>
 
     </FrameLayout>
 
     <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="369dp"
-        android:background="@drawable/background"
+        android:layout_height="367dp"
         android:orientation="vertical"
         android:padding="25dp">
 
@@ -150,7 +150,7 @@
             android:id="@+id/toGuideButton"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="10dp"
+            android:layout_marginTop="20dp"
             android:layout_weight="1"
             android:backgroundTint="#ffffff"
             android:text="가이드보기"
@@ -183,11 +183,14 @@
 
     </LinearLayout>
 
+
     <com.google.android.material.bottomnavigation.BottomNavigationView
         android:id="@+id/bottom_navigationview"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="89dp"
+        app:itemIconTint="#F14559"
         app:itemTextColor="#F14559"
+        app:itemIconSize="40dp"
         app:labelVisibilityMode="labeled"
         app:menu="@menu/bottom_menu" />
 
