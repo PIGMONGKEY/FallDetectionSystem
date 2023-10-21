@@ -19,7 +19,7 @@ import com.example.falldetectionapp.R;
 public class AddressActivity extends AppCompatActivity {
 
     private Button toNokPhone;
-    private EditText zipCodeEditText, addressEditText, deepAddressEditText;
+    private EditText addressEditText, deepAddressEditText;
 
     private UserInfoDTO userInfoDTO;
     private String fcmDeviceToken;
@@ -48,7 +48,6 @@ public class AddressActivity extends AppCompatActivity {
 
     private void setView() {
         toNokPhone = findViewById(R.id.continueToEP);
-        zipCodeEditText = findViewById(R.id.zipCodeEditText_register);
         addressEditText = findViewById(R.id.addressEditText_register);
         deepAddressEditText = findViewById(R.id.addressDeepEditText_register);
     }
@@ -58,11 +57,10 @@ public class AddressActivity extends AppCompatActivity {
         toNokPhone.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                String zipCode = zipCodeEditText.getText().toString();
                 String address = addressEditText.getText().toString();
                 String addressDeep = deepAddressEditText.getText().toString();
 
-                if (!zipCode.isEmpty() && !address.isEmpty() && !addressDeep.isEmpty()) {
+                if (!address.isEmpty() && !addressDeep.isEmpty()) {
                     userInfoDTO.setUserAddress(address + " " + addressDeep);
 
                     Intent intent = new Intent(AddressActivity.this, NokPhoneActivity.class);

@@ -5,12 +5,12 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    tools:context=".HomeActivity">
+    tools:context=".StartActivity">
 
 
     <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="644dp"
+        android:layout_height="match_parent"
         android:background="@drawable/background"
         android:orientation="vertical"
         android:padding="25dp">
@@ -20,14 +20,12 @@
             android:layout_height="80dp"></FrameLayout>
 
         <ImageView
-            android:id="@+id/imageView1"
             android:layout_width="235dp"
             android:layout_height="158dp"
             android:layout_gravity="center"
             app:srcCompat="@drawable/logowhite" />
 
         <TextView
-            android:id="@+id/textView1"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="10dp"
@@ -42,7 +40,7 @@
             android:textStyle="bold" />
 
         <Button
-            android:id="@+id/continueToInfoButton1"
+            android:id="@+id/toGuideButton_start"
             android:layout_width="280dp"
             android:layout_height="wrap_content"
             android:layout_gravity="center"
@@ -55,7 +53,7 @@
             android:textStyle="bold" />
 
         <Button
-            android:id="@+id/continueToInfoButton2"
+            android:id="@+id/toLogin_start"
             android:layout_width="280dp"
             android:layout_height="wrap_content"
             android:layout_gravity="center"
@@ -68,7 +66,7 @@
             android:textStyle="bold" />
 
         <Button
-            android:id="@+id/continueToInfoButton3"
+            android:id="@+id/toRegisterButton_start"
             android:layout_width="280dp"
             android:layout_height="wrap_content"
             android:layout_gravity="center"
@@ -81,16 +79,5 @@
             android:textStyle="bold" />
 
     </LinearLayout>
-
-    <com.google.android.material.bottomnavigation.BottomNavigationView
-        android:id="@+id/bottom_navigationview"
-        android:layout_width="match_parent"
-        android:layout_height="89dp"
-        app:itemIconTint="#F14559"
-        app:itemTextColor="#F14559"
-        app:itemIconSize="40dp"
-        app:labelVisibilityMode="labeled"
-        app:menu="@menu/bottom_menu" />
-
 
 </LinearLayout>

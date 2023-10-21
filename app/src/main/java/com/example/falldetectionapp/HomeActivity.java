@@ -7,26 +7,14 @@ import androidx.fragment.app.FragmentTransaction;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.MenuItem;
-import android.widget.Toast;
 
-import com.example.falldetectionapp.DTO.UserInfoDTO;
 import com.example.falldetectionapp.fragments.GuideFragment;
 import com.example.falldetectionapp.fragments.HomeFragment;
 import com.example.falldetectionapp.fragments.MyPageFragment;
 import com.example.falldetectionapp.fragments.VideoFragment;
-import com.example.falldetectionapp.retrofit.UserService;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.android.material.navigation.NavigationBarView;
-import com.google.gson.Gson;
-import com.google.gson.GsonBuilder;
-
-import retrofit2.Call;
-import retrofit2.Callback;
-import retrofit2.Response;
-import retrofit2.Retrofit;
-import retrofit2.converter.gson.GsonConverterFactory;
 
 public class HomeActivity extends AppCompatActivity {
 
@@ -37,7 +25,7 @@ public class HomeActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_main);
+        setContentView(R.layout.activity_home);
 
         init();
     }

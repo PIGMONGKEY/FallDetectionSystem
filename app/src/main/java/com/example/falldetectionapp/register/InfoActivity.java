@@ -19,8 +19,8 @@ import com.example.falldetectionapp.R;
 public class InfoActivity extends AppCompatActivity {
     // TODO: 전화번호 인증 구현 필요 - 시간 없으면 뺍니다.
 
-    private Button toAddressButton, phoneAuthButton;
-    private EditText nameEditText, phoneEditText, phoneCheckEditText;
+    private Button toAddressButton;
+    private EditText nameEditText, phoneEditText, ageEditText, genderEditText, bloodTypeEditText;
     private UserInfoDTO userInfoDTO;
     private String fcmDeviceToken;
 
@@ -48,10 +48,11 @@ public class InfoActivity extends AppCompatActivity {
 
     private void setView() {
         toAddressButton = findViewById(R.id.continueToAddressButton);
-        phoneAuthButton = findViewById(R.id.phoneAuthButton_register);
         nameEditText = findViewById(R.id.nameEditText_register);
         phoneEditText = findViewById(R.id.phoneEditText_register);
-        phoneCheckEditText = findViewById(R.id.phoneAuthEditText_register);
+        ageEditText = findViewById(R.id.ageEditText_register);
+        genderEditText = findViewById(R.id.genderEditText_register);
+        bloodTypeEditText = findViewById(R.id.bloodTypeEditText_register);
     }
 
 //    리스너는 여기에 모아주세요
@@ -67,14 +68,6 @@ public class InfoActivity extends AppCompatActivity {
                 intent.putExtra("userInfo", userInfoDTO);
                 intent.putExtra("fcmDeviceToken", fcmDeviceToken);
                 startActivity(intent);
-            }
-        });
-
-        // 전화번호 인증번호 전송 버튼 리스너
-        phoneAuthButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-
             }
         });
     }

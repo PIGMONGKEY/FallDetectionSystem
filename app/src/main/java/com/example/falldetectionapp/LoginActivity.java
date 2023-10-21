@@ -40,9 +40,6 @@ public class LoginActivity extends AppCompatActivity {
 
     private Button registerButton, loginButton;
     private EditText cameraIdEditText, passwordEditText;
-    private CheckBox autoLoginCheckBox;
-    private TextView forgetPasswordTextView;
-
     private String fcmDeviceToken;
 
     @Override
@@ -72,8 +69,6 @@ public class LoginActivity extends AppCompatActivity {
         loginButton = findViewById(R.id.loginButton_login);
         cameraIdEditText = findViewById(R.id.cameraIdEditText_login);
         passwordEditText = findViewById(R.id.passwordEditText_login);
-        autoLoginCheckBox = findViewById(R.id.autoLoginCheckBox_login);
-        forgetPasswordTextView = findViewById(R.id.forgetPasswordTextView_login);
     }
 
     // 리스너는 여기 모아주세요
@@ -109,26 +104,6 @@ public class LoginActivity extends AppCompatActivity {
                 } else {
                     Toast.makeText(getApplicationContext(), "비밀번호를 입력해 주세요", Toast.LENGTH_LONG).show();
                 }
-            }
-        });
-
-        // 자동로그인 체크박스 버튼
-        autoLoginCheckBox.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
-            @Override
-            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-                if (isChecked) {
-
-                } else {
-
-                }
-            }
-        });
-
-        // TextView에도 onClickListener를 달 수 있습니다.
-        forgetPasswordTextView.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-
             }
         });
     }
