@@ -9,8 +9,11 @@ import java.util.List;
 @Builder
 public class UserInfoRequestDTO {
     private final String cameraId;
-    private final String userName;
     private final String userPassword;
+    private final String userName;
+    private final String userAge;
+    private final String userGender;
+    private final String userBloodType;
     private final String userPhone;
     private final String userAddress;
     private final List<String> nokPhones;
