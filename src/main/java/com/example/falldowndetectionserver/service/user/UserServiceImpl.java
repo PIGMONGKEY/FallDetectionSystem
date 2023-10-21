@@ -163,7 +163,7 @@ public class UserServiceImpl implements UserService {
                     .build();
         } else {
             // 토큰을 만료 시킨다.
-            authService.logout(AuthTokenParam.builder().token(token).build());
+            authService.logout(AuthTokenParam.builder().token(token.substring(7)).build());
             return BasicResponseDTO.builder()
                     .code(HttpStatus.OK.value())
                     .httpStatus(HttpStatus.OK)
