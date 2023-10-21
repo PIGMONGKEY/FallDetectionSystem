@@ -1,6 +1,6 @@
 package com.example.falldowndetectionserver.service;
 
-import com.example.falldowndetectionserver.domain.dto.user.UserRequestDTO;
+import com.example.falldowndetectionserver.domain.dto.user.UserInfoRequestDTO;
 import com.example.falldowndetectionserver.service.user.UserService;
 import lombok.extern.slf4j.Slf4j;
 import org.junit.jupiter.api.Test;
@@ -18,12 +18,12 @@ public class ServiceTests {
 
     @Test
     public void registerTest() {
-        UserRequestDTO userDTO;
+        UserInfoRequestDTO userDTO;
         List<String> phones = new ArrayList<>();
         phones.add("010-1234-1234");
         phones.add("010-2345-2345");
 
-        userDTO = UserRequestDTO.builder()
+        userDTO = UserInfoRequestDTO.builder()
                 .userName("이원희")
                 .userPassword("Dnjsgml0202?")
                 .userAddress("경기도 의정부시 호원동 현대아이파크 201-1201")

@@ -7,7 +7,7 @@ import java.util.List;
 
 @Data
 @Builder
-public class UserRequestDTO {
+public class UserInfoRequestDTO {
     private final String cameraId;
     private final String userName;
     private final String userPassword;

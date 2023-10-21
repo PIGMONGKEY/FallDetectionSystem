@@ -7,7 +7,7 @@ import com.example.falldowndetectionserver.dao.UserDao;
 import com.example.falldowndetectionserver.domain.dto.auth.AuthTokenParam;
 import com.example.falldowndetectionserver.domain.dto.user.SignUpRequestDTO;
 import com.example.falldowndetectionserver.domain.dto.BasicResponseDTO;
-import com.example.falldowndetectionserver.domain.dto.user.UserRequestDTO;
+import com.example.falldowndetectionserver.domain.dto.user.UserInfoRequestDTO;
 import com.example.falldowndetectionserver.domain.vo.NokPhoneVO;
 import com.example.falldowndetectionserver.domain.vo.UserVO;
 import com.example.falldowndetectionserver.service.auth.AuthService;
@@ -113,12 +113,12 @@ public class UserServiceImpl implements UserService {
      * userVO 또는 nokPhones가 null일 경우, UserDTO의 requestSuccess를 false로 설정하여 리턴한다.
      */
     @Override
-    public BasicResponseDTO<UserRequestDTO> getUserInfo(String cameraId) {
+    public BasicResponseDTO<UserInfoRequestDTO> getUserInfo(String cameraId) {
         UserVO userVO = userDao.select(cameraId).orElse(null);
         List<String> nokPhones = nokPhoneDao.selectAll(cameraId);
 
         if (userVO != null && !nokPhones.isEmpty()) {
-            UserRequestDTO userInfo = UserRequestDTO.builder()
+            UserInfoRequestDTO userInfo = UserInfoRequestDTO.builder()
                     .cameraId(userVO.getCameraId())
                     .userPassword(userVO.getUserPassword())
                     .userName(userVO.getUserName())
@@ -127,14 +127,14 @@ public class UserServiceImpl implements UserService {
                     .nokPhones(nokPhones)
                     .build();
 
-            return BasicResponseDTO.<UserRequestDTO>builder()
+            return BasicResponseDTO.<UserInfoRequestDTO>builder()
                     .code(HttpStatus.OK.value())
                     .httpStatus(HttpStatus.OK)
                     .message("사용자 정보 조회 성공")
                     .data(userInfo)
                     .build();
         } else {
-            return BasicResponseDTO.<UserRequestDTO>builder()
+            return BasicResponseDTO.<UserInfoRequestDTO>builder()
                     .code(HttpStatus.NOT_FOUND.value())
                     .httpStatus(HttpStatus.NOT_FOUND)
                     .message("사용자 정보가 존재하지 않습니다.")
@@ -168,28 +168,28 @@ public class UserServiceImpl implements UserService {
 
     /**
      * 사용자 정보를 수정한다.
-     * @param userRequestDTO UserDTO 형태로 모든 정보를 받아와서 update를 해준다. - NokPhone은 삭제 후 다시 삽입한다.
+     * @param userInfoRequestDTO UserDTO 형태로 모든 정보를 받아와서 update를 해준다. - NokPhone은 삭제 후 다시 삽입한다.
      * @return 삭제 성공시 1, User 실패시 -1, NokPhone 실패시 -2 리턴한다.
      */
     @Override
-    public BasicResponseDTO modifyUserInfo(UserRequestDTO userRequestDTO) {
+    public BasicResponseDTO modifyUserInfo(UserInfoRequestDTO userInfoRequestDTO) {
         UserVO userVO;
         // 비밀번호가 변경됨!
-        if (userDao.select(userRequestDTO.getCameraId()).get().getUserPassword() != userRequestDTO.getUserPassword()) {
+        if (userDao.select(userInfoRequestDTO.getCameraId()).get().getUserPassword() != userInfoRequestDTO.getUserPassword()) {
             userVO = UserVO.builder()
-                    .cameraId(userRequestDTO.getCameraId())
-                    .userPassword(passwordEncoder.encode(userRequestDTO.getUserPassword()))
-                    .userName(userRequestDTO.getUserName())
-                    .userAddress(userRequestDTO.getUserAddress())
-                    .userPhone(userRequestDTO.getUserPhone())
+                    .cameraId(userInfoRequestDTO.getCameraId())
+                    .userPassword(passwordEncoder.encode(userInfoRequestDTO.getUserPassword()))
+                    .userName(userInfoRequestDTO.getUserName())
+                    .userAddress(userInfoRequestDTO.getUserAddress())
+                    .userPhone(userInfoRequestDTO.getUserPhone())
                     .build();
         } else {
             userVO = UserVO.builder()
-                    .cameraId(userRequestDTO.getCameraId())
-                    .userPassword(userRequestDTO.getUserPassword())
-                    .userName(userRequestDTO.getUserName())
-                    .userAddress(userRequestDTO.getUserAddress())
-                    .userPhone(userRequestDTO.getUserPhone())
+                    .cameraId(userInfoRequestDTO.getCameraId())
+                    .userPassword(userInfoRequestDTO.getUserPassword())
+                    .userName(userInfoRequestDTO.getUserName())
+                    .userAddress(userInfoRequestDTO.getUserAddress())
+                    .userPhone(userInfoRequestDTO.getUserPhone())
                     .build();
         }
 
@@ -201,10 +201,10 @@ public class UserServiceImpl implements UserService {
                     .build();
         }
 
-        nokPhoneDao.delete(userRequestDTO.getCameraId());
-        NokPhoneVO nokPhoneVO = NokPhoneVO.builder().cameraId(userRequestDTO.getCameraId()).build();
+        nokPhoneDao.delete(userInfoRequestDTO.getCameraId());
+        NokPhoneVO nokPhoneVO = NokPhoneVO.builder().cameraId(userInfoRequestDTO.getCameraId()).build();
 
-        for (String nokPhone : userRequestDTO.getNokPhones()) {
+        for (String nokPhone : userInfoRequestDTO.getNokPhones()) {
             nokPhoneVO.setNokPhone(nokPhone);
             if (nokPhoneDao.insert(nokPhoneVO) != 1) {
                 return BasicResponseDTO.builder()
