@@ -170,6 +170,7 @@
                 android:layout_height="match_parent"
                 android:layout_gravity="center"
                 android:layout_weight="0.6"
+                android:background="@drawable/tv_left_round"
                 android:text="카메라 ID"
                 android:textAlignment="center"
                 android:textColor="#ffffff"
@@ -182,6 +183,7 @@
                 android:layout_height="match_parent"
                 android:layout_gravity="center"
                 android:layout_weight="1"
+                android:background="@drawable/tv_right_round"
                 android:ems="10"
                 android:textAlignment="center"
                 android:textSize="20sp" />
@@ -202,6 +204,7 @@
                 android:layout_height="match_parent"
                 android:layout_gravity="center"
                 android:layout_weight="0.6"
+                android:background="@drawable/tv_left_round"
                 android:text="전화번호"
                 android:textAlignment="center"
                 android:textColor="#ffffff"
@@ -214,6 +217,7 @@
                 android:layout_height="match_parent"
                 android:layout_gravity="center"
                 android:layout_weight="1"
+                android:background="@drawable/tv_right_round"
                 android:ems="10"
                 android:textAlignment="center"
                 android:textSize="20sp" />
@@ -233,6 +237,7 @@
                 android:layout_height="match_parent"
                 android:layout_gravity="center"
                 android:layout_weight="0.6"
+                android:background="@drawable/tv_left_round"
                 android:text="주소"
                 android:textAlignment="center"
                 android:textColor="@color/white"
@@ -245,6 +250,7 @@
                 android:layout_height="match_parent"
                 android:layout_gravity="center"
                 android:layout_weight="1"
+                android:background="@drawable/tv_right_round"
                 android:ems="10"
                 android:textAlignment="center"
                 android:textSize="20sp" />
@@ -264,6 +270,7 @@
                 android:layout_height="match_parent"
                 android:layout_gravity="center"
                 android:layout_weight="0.6"
+                android:background="@drawable/tv_left_round"
                 android:text="비상연락처 1"
                 android:textAlignment="center"
                 android:textColor="@color/white"
@@ -276,6 +283,7 @@
                 android:layout_height="match_parent"
                 android:layout_gravity="center"
                 android:layout_weight="1"
+                android:background="@drawable/tv_right_round"
                 android:ems="10"
                 android:textAlignment="center"
                 android:textSize="20sp" />
@@ -295,6 +303,7 @@
                 android:layout_height="match_parent"
                 android:layout_gravity="center"
                 android:layout_weight="0.6"
+                android:background="@drawable/tv_left_round"
                 android:text="비상연락처 2"
                 android:textAlignment="center"
                 android:textColor="@color/white"
@@ -307,6 +316,7 @@
                 android:layout_height="match_parent"
                 android:layout_gravity="center"
                 android:layout_weight="1"
+                android:background="@drawable/tv_right_round"
                 android:ems="10"
                 android:textAlignment="center"
                 android:textSize="20sp" />
@@ -321,25 +331,27 @@
             android:layout_marginRight="5dp"
             android:orientation="horizontal">
 
-            <TextView
+            <android.widget.Button
                 android:id="@+id/signOutTextView_mypage"
-                android:layout_width="107dp"
-                android:layout_height="wrap_content"
-                android:text="회원 탈퇴"
+                android:layout_width="80dp"
+                android:layout_height="30dp"
+                android:background="#ff0000"
+                android:text="탈퇴하기"
                 android:textColor="@color/white"
-                android:textStyle="bold" />
+                android:textStyle="normal" />
 
-            <TextView
+            <android.widget.Button
                 android:id="@+id/modifyInfoTextView_mypage"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginLeft="200dp"
-                android:text="회원 정보 수정"
+                android:layout_marginLeft="180dp"
+                android:background="@drawable/btn_shape_round"
+                android:text=" 회원 정보 수정 "
                 android:textColor="@color/white"
                 android:textStyle="bold" />
         </LinearLayout>
 
-        <Button
+        <android.widget.Button
             android:id="@+id/noticeButton_mypage"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
