@@ -105,21 +105,27 @@ public class LoginActivity extends AppCompatActivity {
     private void requestLogin(String cameraId, String password) {
         Gson gson = new GsonBuilder().setLenient().create();
 
+        // 레트로핏 겍체 생성
         Retrofit retrofit = new Retrofit.Builder()
                 .baseUrl(BuildConfig.SERVER_URL) // 기본으로 적용되는 서버 URL (반드시 / 로 마무리되게 설정)
                 .addConverterFactory(GsonConverterFactory.create(gson)) // JSON 데이터를 Gson 라이브러리로 파싱하고 데이터를 Model에 자동으로 담는 converter
                 .build();
 
         AuthService authService = retrofit.create(AuthService.class);
+
+        // 서버로 로그인 요청
         authService.requestLogin(new LoginDTO(cameraId, password, fcmDeviceToken)).enqueue(new Callback<BasicResponseDTO<AuthTokenDTO>>() {
             @Override
             public void onResponse(Call<BasicResponseDTO<AuthTokenDTO>> call, Response<BasicResponseDTO<AuthTokenDTO>> response) {
                 if (response.isSuccessful()) {
+                    // 로그인 성공
                     Intent intent = new Intent(LoginActivity.this, HomeActivity.class);
+                    // api 접근을 위한 token을 받아서 넘겨준다.
                     intent.putExtra("personalToken", response.body().getData().getToken());
                     intent.putExtra("cameraId", cameraId);
                     startActivity(intent);
                 } else {
+                    // 로그인 실패
                     try {
                         BasicResponseDTO basicResponseDTO = (BasicResponseDTO) retrofit.responseBodyConverter(
                                 BasicResponseDTO.class,
@@ -134,6 +140,7 @@ public class LoginActivity extends AppCompatActivity {
 
             @Override
             public void onFailure(Call<BasicResponseDTO<AuthTokenDTO>> call, Throwable t) {
+                // 서버 연결 실패
                 Log.d("LOGIN", t.getMessage());
                 Toast.makeText(getApplicationContext(), "서버 연결에 실패했습니다.", Toast.LENGTH_LONG).show();
             }
