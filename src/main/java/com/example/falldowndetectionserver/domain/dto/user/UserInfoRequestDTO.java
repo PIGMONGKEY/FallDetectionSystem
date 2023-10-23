@@ -11,7 +11,7 @@ public class UserInfoRequestDTO {
     private final String cameraId;
     private final String userPassword;
     private final String userName;
-    private final String userAge;
+    private final int userAge;
     private final String userGender;
     private final String userBloodType;
     private final String userPhone;
