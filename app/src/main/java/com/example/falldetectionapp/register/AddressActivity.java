@@ -58,7 +58,7 @@ public class AddressActivity extends AppCompatActivity {
                 String address = addressEditText.getText().toString();
                 String addressDeep = deepAddressEditText.getText().toString();
 
-                if (!address.isEmpty() && !addressDeep.isEmpty()) {
+                if (inputCheck(address, addressDeep)) {
                     userInfoDTO.setUserAddress(address + " " + addressDeep);
 
                     Intent intent = new Intent(AddressActivity.this, NokPhoneActivity.class);
@@ -68,8 +68,15 @@ public class AddressActivity extends AppCompatActivity {
                 } else {
                     Toast.makeText(getApplicationContext(), "주소를 모두 입력해 주세요", Toast.LENGTH_LONG).show();
                 }
-
             }
         });
+    }
+
+    private boolean inputCheck(String address, String addressDeep) {
+        if (address.isEmpty() || addressDeep.isEmpty()) {
+            return false;
+        } else {
+            return true;
+        }
     }
 }
