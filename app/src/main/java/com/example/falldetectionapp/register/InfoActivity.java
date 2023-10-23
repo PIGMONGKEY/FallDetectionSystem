@@ -7,6 +7,7 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.Toast;
 
 import com.example.falldetectionapp.DTO.UserInfoDTO;
 import com.example.falldetectionapp.R;
@@ -16,8 +17,6 @@ import com.example.falldetectionapp.R;
  * activity_info.xml과 연결됩니다.
  */
 public class InfoActivity extends AppCompatActivity {
-    // TODO: 전화번호 인증 구현 필요 - 시간 없으면 뺍니다.
-
     private Button toAddressButton;
     private EditText nameEditText, phoneEditText, ageEditText, genderEditText, bloodTypeEditText;
     private UserInfoDTO userInfoDTO;
@@ -58,13 +57,34 @@ public class InfoActivity extends AppCompatActivity {
         toAddressButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                userInfoDTO.setUserPhone(phoneEditText.getText().toString());
-                userInfoDTO.setUserName(nameEditText.getText().toString());
+                String name = nameEditText.getText().toString().trim();
+                String phone = phoneEditText.getText().toString().trim();
+                String age = ageEditText.getText().toString().trim();
+                String gender = genderEditText.getText().toString().trim();
+                String bloodType = bloodTypeEditText.getText().toString().trim();
 
-                Intent intent = new Intent(InfoActivity.this, AddressActivity.class);
-                intent.putExtra("userInfo", userInfoDTO);
-                startActivity(intent);
+                if (inputCheck(name, phone, age, gender, bloodType)) {
+                    userInfoDTO.setUserPhone(phone);
+                    userInfoDTO.setUserName(name);
+                    userInfoDTO.setUserAge(Integer.getInteger(age));
+                    userInfoDTO.setUserGender(gender);
+                    userInfoDTO.setUserBloodType(bloodType);
+
+                    Intent intent = new Intent(InfoActivity.this, AddressActivity.class);
+                    intent.putExtra("userInfo", userInfoDTO);
+                    startActivity(intent);
+                } else {
+                    Toast.makeText(getApplicationContext(), "모든 항목을 입력해주세요.", Toast.LENGTH_SHORT).show();
+                }
             }
         });
+    }
+
+    private boolean inputCheck(String name, String phone, String age, String gender, String bloodType) {
+        if (name.isEmpty() || phone.isEmpty() || age.isEmpty() || gender.isEmpty() || bloodType.isEmpty()) {
+            return false;
+        } else {
+            return true;
+        }
     }
 }
