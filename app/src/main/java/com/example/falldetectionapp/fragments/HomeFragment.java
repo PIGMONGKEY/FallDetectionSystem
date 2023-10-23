@@ -1,8 +1,10 @@
 package com.example.falldetectionapp.fragments;
 
+import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 
+import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
 
 import android.util.Log;
@@ -10,13 +12,12 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
-import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.falldetectionapp.BuildConfig;
 import com.example.falldetectionapp.DTO.BasicResponseDTO;
 import com.example.falldetectionapp.DTO.UserInfoDTO;
-import com.example.falldetectionapp.GuideActivity;
+import com.example.falldetectionapp.HomeActivity;
 import com.example.falldetectionapp.LoginActivity;
 import com.example.falldetectionapp.R;
 import com.example.falldetectionapp.retrofit.UserService;
@@ -41,9 +42,12 @@ import retrofit2.converter.gson.GsonConverterFactory;
  * Activity와는 다르게 독자적으로 존재할 수 없는 화면이고, 화면 안에 있는 화면이다보니, 로직을 짜는 방식이 조금 다를껍니다.
  */
 // TODO: 홈 화면 지금대로 한다면 주석 처리한 부분 삭제
+// TODO: 공지사항 페이지 제작
 public class HomeFragment extends Fragment {
 
-    private Button toGuideButton, toVideoButton, toMyPageButton;
+    private HomeActivity homeActivity;
+
+    private Button toGuideButton, toVideoButton, toMyPageButton, toNotiBoardButton;
 //    private TextView nameTV, genderTV, ageTV, bloodTypeTV;
     private String cameraId, personalToken;
     private UserInfoDTO userInfoDTO;
@@ -73,6 +77,20 @@ public class HomeFragment extends Fragment {
 //        requestUserInfo();
     }
 
+    @Override
+    public void onAttach(@NonNull Context context) {
+        super.onAttach(context);
+
+        homeActivity = (HomeActivity) getActivity();
+    }
+
+    @Override
+    public void onDetach() {
+        super.onDetach();
+
+        homeActivity = null;
+    }
+
     private void getDataFromBundle() {
         cameraId = getArguments().getString("cameraId");
         personalToken = getArguments().getString("personalToken");
@@ -82,6 +100,7 @@ public class HomeFragment extends Fragment {
         toGuideButton = view.findViewById(R.id.toGuideButton);
         toVideoButton = view.findViewById(R.id.toVideoButton);
         toMyPageButton = view.findViewById(R.id.toMyPageButton);
+        toNotiBoardButton = view.findViewById(R.id.toNotificationBoardButton);
 //        nameTV = view.findViewById(R.id.userName_home);
 //        ageTV = view.findViewById(R.id.userAge_home);
 //        genderTV = view.findViewById(R.id.userGender_home);
@@ -92,18 +111,28 @@ public class HomeFragment extends Fragment {
         toGuideButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-
+                homeActivity.setFrame(R.id.guide);
+                homeActivity.bottomNavigationView.setSelectedItemId(R.id.guide);
             }
         });
 
         toVideoButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-
+                homeActivity.setFrame(R.id.video);
+                homeActivity.bottomNavigationView.setSelectedItemId(R.id.video);
             }
         });
 
         toMyPageButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                homeActivity.setFrame(R.id.myPage);
+                homeActivity.bottomNavigationView.setSelectedItemId(R.id.myPage);
+            }
+        });
+
+        toNotiBoardButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
 

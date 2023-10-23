@@ -18,7 +18,7 @@ import com.google.android.material.navigation.NavigationBarView;
 
 public class HomeActivity extends AppCompatActivity {
 
-    private BottomNavigationView bottomNavigationView;
+    public BottomNavigationView bottomNavigationView;
     private String personalToken;
     private String cameraId;
 
@@ -66,7 +66,7 @@ public class HomeActivity extends AppCompatActivity {
      * 클릭된 메뉴 항목의 아이디를 받아와서, FrameLayout의 출력 fragment를 변경한다.
      * @param id 선택된 항목의 아이디를 파라미터로 받는다. ex) R.id.home
      */
-    private void setFrame(int id) {
+    public void setFrame(int id) {
         Fragment newFragment;
         Bundle bundle = new Bundle();
 
