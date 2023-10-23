@@ -1,5 +1,6 @@
 package com.example.falldetectionapp.fragments;
 
+import android.content.Intent;
 import android.os.Bundle;
 
 import androidx.fragment.app.Fragment;
@@ -11,12 +12,16 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.example.falldetectionapp.BuildConfig;
 import com.example.falldetectionapp.DTO.BasicResponseDTO;
 import com.example.falldetectionapp.DTO.UserInfoDTO;
+import com.example.falldetectionapp.LoginActivity;
 import com.example.falldetectionapp.R;
 import com.example.falldetectionapp.retrofit.UserService;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
+
+import java.io.IOException;
 
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -72,13 +77,7 @@ public class MyPageFragment extends Fragment {
 
     private void getDataFromBundle() {
         personalToken = getArguments().getString("personalToken");
-//        requestUserInfo(getArguments().getString("cameraId"));
-
-        nameTV.setText("userInfoDTO.getUserName()");
-        phoneTV.setText("userInfoDTO.getUserPhone()");
-        addressTV.setText("userInfoDTO.getUserAddress()");
-        nokPhone1TV.setText("userInfoDTO.getNokPhones().get(0)");
-        nokPhone2TV.setText("userInfoDTO.getNokPhones().get(1)");
+        requestUserInfo(getArguments().getString("cameraId"));
     }
 
     // 서버에 cameraId를 넘겨서 사용자 정보 받아오기
@@ -86,7 +85,7 @@ public class MyPageFragment extends Fragment {
         Gson gson = new GsonBuilder().setLenient().create();
 
         Retrofit retrofit = new Retrofit.Builder()
-                .baseUrl("http://10.0.2.2:10000/") // 기본으로 적용되는 서버 URL (반드시 / 로 마무리되게 설정)
+                .baseUrl(BuildConfig.SERVER_URL) // 기본으로 적용되는 서버 URL (반드시 / 로 마무리되게 설정)
                 .addConverterFactory(GsonConverterFactory.create(gson)) // JSON 데이터를 Gson 라이브러리로 파싱하고 데이터를 Model에 자동으로 담는 converter
                 .build();
 
@@ -95,13 +94,27 @@ public class MyPageFragment extends Fragment {
         userService.getUserInfo("Bearer " + personalToken, cameraId).enqueue(new Callback<BasicResponseDTO<UserInfoDTO>>() {
             @Override
             public void onResponse(Call<BasicResponseDTO<UserInfoDTO>> call, Response<BasicResponseDTO<UserInfoDTO>> response) {
-                if (response.body().getCode() == 200) {
+                if (response.isSuccessful()) {
+                    // 유저 정보 조회 성공
                     userInfoDTO = response.body().getData();
-                    showInfo();
-                } else if (response.body().getCode() == 405){
-                    Toast.makeText(getContext().getApplicationContext(), response.body().getMessage(), Toast.LENGTH_LONG).show();
+                    // 유저 정보 화면에 띄우기
+                    showUserInfo();
                 } else {
-                    Toast.makeText(getContext().getApplicationContext(), response.body().getMessage(), Toast.LENGTH_LONG).show();
+                    // 유저 정보 조회 실패
+                    try {
+                        BasicResponseDTO basicResponseDTO = (BasicResponseDTO) retrofit.responseBodyConverter(
+                                BasicResponseDTO.class,
+                                BasicResponseDTO.class.getAnnotations()
+                        ).convert(response.errorBody());
+
+                        // 오류 메시지 띄우고, 로그인 창으로 돌려보냄
+                        Toast.makeText(getContext(), basicResponseDTO.getMessage(), Toast.LENGTH_SHORT).show();
+                        Intent intent = new Intent(getContext(), LoginActivity.class);
+                        startActivity(intent);
+
+                    } catch (IOException e) {
+                        throw new RuntimeException(e);
+                    }
                 }
             }
 
@@ -113,7 +126,7 @@ public class MyPageFragment extends Fragment {
         });
     }
 
-    private void showInfo() {
+    private void showUserInfo() {
         nameTV.setText(userInfoDTO.getUserName());
         phoneTV.setText(userInfoDTO.getUserPhone());
         addressTV.setText(userInfoDTO.getUserAddress());

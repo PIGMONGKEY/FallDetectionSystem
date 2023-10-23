@@ -19,6 +19,7 @@ android {
 
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
         buildConfigField "String", "SERVER_URL", properties['api.server_url']
+        buildConfigField "String", "SOCKET_URL", properties['api.socket_url']
     }
 
     buildTypes {

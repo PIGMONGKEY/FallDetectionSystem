@@ -14,6 +14,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 
+import com.example.falldetectionapp.BuildConfig;
 import com.example.falldetectionapp.R;
 
 import org.json.JSONException;
@@ -99,7 +100,7 @@ public class VideoFragment extends Fragment {
 
     private void videoReceive() throws InterruptedException {
         OkHttpClient client = new OkHttpClient();
-        Request request = new Request.Builder().url("ws://10.0.2.2:10000/video").build();
+        Request request = new Request.Builder().url(BuildConfig.SOCKET_URL).build();
 
         socket = client.newWebSocket(request, new WebSocketListener() {
             @Override
