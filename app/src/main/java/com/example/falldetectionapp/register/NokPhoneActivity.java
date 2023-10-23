@@ -14,7 +14,6 @@ import com.example.falldetectionapp.DTO.BasicResponseDTO;
 import com.example.falldetectionapp.DTO.SignUpDTO;
 import com.example.falldetectionapp.DTO.UserInfoDTO;
 import com.example.falldetectionapp.DTO.UserPhoneTokenDTO;
-import com.example.falldetectionapp.HomeActivity;
 import com.example.falldetectionapp.LoginActivity;
 import com.example.falldetectionapp.R;
 import com.example.falldetectionapp.retrofit.UserService;
@@ -46,7 +45,7 @@ public class NokPhoneActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_nokphone);
+        setContentView(R.layout.activity_register_nokphone);
 
         init();
     }
