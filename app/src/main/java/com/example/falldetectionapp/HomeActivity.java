@@ -72,9 +72,13 @@ public class HomeActivity extends AppCompatActivity {
 
         if (id == R.id.home) {
             newFragment = new HomeFragment();
+            bundle.putString("cameraId", cameraId);
+            bundle.putString("personalToken", personalToken);
+            newFragment.setArguments(bundle);
         } else if (id == R.id.video) {
             newFragment = new VideoFragment();
             bundle.putString("cameraId", cameraId);
+            newFragment.setArguments(bundle);
         } else if (id == R.id.myPage) {
             newFragment = new MyPageFragment();
             bundle.putString("cameraId", cameraId);

@@ -22,7 +22,7 @@ public class UserInfoDTO implements Serializable {
     private String userName;
     @SerializedName("userAge")
     @Expose
-    private Integer userAge;
+    private int userAge;
     @SerializedName("userGender")
     @Expose
     private String userGender;
