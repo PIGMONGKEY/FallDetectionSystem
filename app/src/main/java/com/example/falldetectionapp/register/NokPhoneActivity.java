@@ -8,8 +8,10 @@ import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageButton;
 import android.widget.Toast;
 
+import com.example.falldetectionapp.BuildConfig;
 import com.example.falldetectionapp.DTO.BasicResponseDTO;
 import com.example.falldetectionapp.DTO.SignUpDTO;
 import com.example.falldetectionapp.DTO.UserInfoDTO;
@@ -37,11 +39,13 @@ import retrofit2.converter.gson.GsonConverterFactory;
  */
 public class NokPhoneActivity extends AppCompatActivity {
 
-    private Button registerDone;
+    private Button registerDoneButton;
+    private ImageButton addNokphoneButton;
     private EditText nokPhoneEditText_1, nokPhoneEditText_2;
 
     private UserInfoDTO userInfoDTO;
     private String fcmDeviceToken;
+    private boolean secondNokphone = false;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -73,40 +77,73 @@ public class NokPhoneActivity extends AppCompatActivity {
     }
 
     private void setView() {
-        registerDone = findViewById(R.id.finishButton_register);
+        registerDoneButton = findViewById(R.id.finishButton_register);
         nokPhoneEditText_1 = findViewById(R.id.nokPhone_1_EditText_register);
         nokPhoneEditText_2 = findViewById(R.id.nokPhone_2_EditText_register);
+        addNokphoneButton = findViewById(R.id.add_nokphone_button_register);
     }
 
 //    리스너는 여기에 모아주세요
     private void setListener() {
-        registerDone.setOnClickListener(new View.OnClickListener() {
+        registerDoneButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if (nokPhoneEditText_1.getText().toString().isEmpty() && nokPhoneEditText_2.getText().toString().isEmpty()) {
-                    Toast.makeText(getApplicationContext(), "최소 한 개 이상의 보호자 연락처가 필요합니다.", Toast.LENGTH_LONG).show();
+                String nokphone_1;
+                String nokphone_2;
+
+                if (secondNokphone) {
+                    nokphone_1 = nokPhoneEditText_1.getText().toString().trim();
+                    nokphone_2 = nokPhoneEditText_2.getText().toString().trim();
+                    if (inputCheck(nokphone_1, nokphone_2)) {
+                        List<String> nokPhones = new ArrayList<>();
+                        nokPhones.add(nokphone_1);
+                        nokPhones.add(nokphone_2);
+
+                        userInfoDTO.setNokPhones(nokPhones);
+
+                        requestRegister();
+                    } else {
+                        Toast.makeText(getApplicationContext(), "보호자 연락처를 모두 입력해주세요.", Toast.LENGTH_LONG).show();
+                    }
                 } else {
-                    List<String> nokPhones = new ArrayList<>();
-                    if (!nokPhoneEditText_1.getText().toString().isEmpty()) {
-                        nokPhones.add(nokPhoneEditText_1.getText().toString());
-                    }
-                    if (!nokPhoneEditText_2.getText().toString().isEmpty()) {
-                        nokPhones.add(nokPhoneEditText_2.getText().toString());
-                    }
+                    nokphone_1 = nokPhoneEditText_1.getText().toString().trim();
+                    if (inputCheck(nokphone_1)) {
+                        List<String> nokPhones = new ArrayList<>();
+                        nokPhones.add(nokphone_1);
 
-                    userInfoDTO.setNokPhones(nokPhones);
+                        userInfoDTO.setNokPhones(nokPhones);
 
-                    requestRegister();
+                        requestRegister();
+                    } else {
+                        Toast.makeText(getApplicationContext(), "최소 한 개 이상의 보호자 연락처가 필요합니다.", Toast.LENGTH_LONG).show();
+                    }
                 }
             }
         });
+
+        addNokphoneButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                secondNokphone = true;
+                addNokphoneButton.setVisibility(View.GONE);
+                nokPhoneEditText_2.setVisibility(View.VISIBLE);
+            }
+        });
+    }
+
+    private boolean inputCheck(String nokphone_1) {
+        return !nokphone_1.isEmpty();
+    }
+
+    private boolean inputCheck(String nokphone_1, String nokphone_2) {
+        return !nokphone_1.isEmpty() && !nokphone_2.isEmpty();
     }
 
     private void requestRegister() {
         Gson gson = new GsonBuilder().setLenient().create();
 
         Retrofit retrofit = new Retrofit.Builder()
-                .baseUrl("http://10.0.2.2:10000/") // 기본으로 적용되는 서버 URL (반드시 / 로 마무리되게 설정)
+                .baseUrl(BuildConfig.SERVER_URL) // 기본으로 적용되는 서버 URL (반드시 / 로 마무리되게 설정)
                 .addConverterFactory(GsonConverterFactory.create(gson)) // JSON 데이터를 Gson 라이브러리로 파싱하고 데이터를 Model에 자동으로 담는 converter
                 .build();
 
