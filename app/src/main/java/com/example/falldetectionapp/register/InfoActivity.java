@@ -21,7 +21,6 @@ public class InfoActivity extends AppCompatActivity {
     private Button toAddressButton;
     private EditText nameEditText, phoneEditText, ageEditText, genderEditText, bloodTypeEditText;
     private UserInfoDTO userInfoDTO;
-    private String fcmDeviceToken;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -42,7 +41,6 @@ public class InfoActivity extends AppCompatActivity {
     private void getDataFromIntent() {
         Intent intent = getIntent();
         userInfoDTO = (UserInfoDTO) intent.getSerializableExtra("userInfo");
-        fcmDeviceToken = intent.getStringExtra("fcmDeviceToken");
     }
 
     private void setView() {
@@ -65,7 +63,6 @@ public class InfoActivity extends AppCompatActivity {
 
                 Intent intent = new Intent(InfoActivity.this, AddressActivity.class);
                 intent.putExtra("userInfo", userInfoDTO);
-                intent.putExtra("fcmDeviceToken", fcmDeviceToken);
                 startActivity(intent);
             }
         });

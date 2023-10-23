@@ -10,6 +10,7 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
 
+import com.example.falldetectionapp.BuildConfig;
 import com.example.falldetectionapp.DTO.BasicResponseDTO;
 import com.example.falldetectionapp.DTO.UserInfoDTO;
 import com.example.falldetectionapp.R;
@@ -33,7 +34,6 @@ public class RegisterActivity extends AppCompatActivity {
 
     private Button toInfoButton;
     private EditText cameraIdEditText, passwordEditText, passwordCheckEditText;
-    private String fcmDeviceToken;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -50,12 +50,6 @@ public class RegisterActivity extends AppCompatActivity {
         setTitle("회원가입");
         setView();
         setListener();
-        getDataFromIntent();
-    }
-
-    private void getDataFromIntent() {
-        Intent intent = getIntent();
-        fcmDeviceToken = intent.getStringExtra("fcmDeviceToken");
     }
 
     private void setView() {
@@ -73,17 +67,7 @@ public class RegisterActivity extends AppCompatActivity {
                 String cameraId = cameraIdEditText.getText().toString().trim();
 
                 // 존재하는 카메라 ID 인지 확인
-//                checkCameraId(cameraId);
-
-                // UI 구현을 위한 임시 인텐트 로직
-                UserInfoDTO userInfoDTO = new UserInfoDTO();
-                userInfoDTO.setCameraId(cameraId);
-                userInfoDTO.setUserPassword(passwordEditText.getText().toString());
-
-                Intent intent = new Intent(RegisterActivity.this, InfoActivity.class);
-                intent.putExtra("userInfo", userInfoDTO);
-                intent.putExtra("fcmDeviceToken", fcmDeviceToken);
-                startActivity(intent);
+                checkCameraId(cameraId);
             }
         });
     }
@@ -97,7 +81,7 @@ public class RegisterActivity extends AppCompatActivity {
         Gson gson = new GsonBuilder().setLenient().create();
 
         Retrofit retrofit = new Retrofit.Builder()
-        .baseUrl("http://10.0.2.2:10000/") // 기본으로 적용되는 서버 URL (반드시 / 로 마무리되게 설정)
+        .baseUrl(BuildConfig.SERVER_URL) // 기본으로 적용되는 서버 URL (반드시 / 로 마무리되게 설정)
         .addConverterFactory(GsonConverterFactory.create(gson)) // JSON 데이터를 Gson 라이브러리로 파싱하고 데이터를 Model에 자동으로 담는 converter
         .build();
 
@@ -116,7 +100,6 @@ public class RegisterActivity extends AppCompatActivity {
 
                         Intent intent = new Intent(RegisterActivity.this, InfoActivity.class);
                         intent.putExtra("userInfo", userInfoDTO);
-                        intent.putExtra("fcmDeviceToken", fcmDeviceToken);
                         startActivity(intent);
 
                     } else {

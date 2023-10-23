@@ -14,12 +14,21 @@ public class UserInfoDTO implements Serializable {
     @SerializedName("cameraId")
     @Expose
     private String cameraId;
-    @SerializedName("userName")
-    @Expose
-    private String userName;
     @SerializedName("userPassword")
     @Expose
     private String userPassword;
+    @SerializedName("userName")
+    @Expose
+    private String userName;
+    @SerializedName("userAge")
+    @Expose
+    private Integer userAge;
+    @SerializedName("userGender")
+    @Expose
+    private String userGender;
+    @SerializedName("userBloodType")
+    @Expose
+    private String userBloodType;
     @SerializedName("userPhone")
     @Expose
     private String userPhone;
@@ -34,44 +43,68 @@ public class UserInfoDTO implements Serializable {
         return cameraId;
     }
 
-    public String getUserName() {
-        return userName;
+    public void setCameraId(String cameraId) {
+        this.cameraId = cameraId;
     }
 
     public String getUserPassword() {
         return userPassword;
     }
 
-    public String getUserPhone() {
-        return userPhone;
+    public void setUserPassword(String userPassword) {
+        this.userPassword = userPassword;
     }
 
-    public String getUserAddress() {
-        return userAddress;
-    }
-
-    public List<String> getNokPhones() {
-        return nokPhones;
-    }
-
-    public void setCameraId(String cameraId) {
-        this.cameraId = cameraId;
+    public String getUserName() {
+        return userName;
     }
 
     public void setUserName(String userName) {
         this.userName = userName;
     }
 
-    public void setUserPassword(String userPassword) {
-        this.userPassword = userPassword;
+    public Integer getUserAge() {
+        return userAge;
+    }
+
+    public void setUserAge(Integer userAge) {
+        this.userAge = userAge;
+    }
+
+    public String getUserGender() {
+        return userGender;
+    }
+
+    public void setUserGender(String userGender) {
+        this.userGender = userGender;
+    }
+
+    public String getUserBloodType() {
+        return userBloodType;
+    }
+
+    public void setUserBloodType(String userBloodType) {
+        this.userBloodType = userBloodType;
+    }
+
+    public String getUserPhone() {
+        return userPhone;
     }
 
     public void setUserPhone(String userPhone) {
         this.userPhone = userPhone;
     }
 
+    public String getUserAddress() {
+        return userAddress;
+    }
+
     public void setUserAddress(String userAddress) {
         this.userAddress = userAddress;
+    }
+
+    public List<String> getNokPhones() {
+        return nokPhones;
     }
 
     public void setNokPhones(List<String> nokPhones) {

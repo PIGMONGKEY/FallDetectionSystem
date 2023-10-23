@@ -31,7 +31,6 @@ import com.google.firebase.messaging.FirebaseMessaging;
  * 로그인 화면 입니다.
  * activity_login.xml과 연결됩니다.
  */
-// TODO: 비밀번호 찾기, 자동 로그인 구현
 // TODO: 로그인 할 때, 기기 토큰 업데이트
 public class LoginActivity extends AppCompatActivity {
 
@@ -76,7 +75,6 @@ public class LoginActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 Intent intent = new Intent(LoginActivity.this, RegisterActivity.class);
-                intent.putExtra("fcmDeviceToken", fcmDeviceToken);
                 startActivity(intent);
             }
         });

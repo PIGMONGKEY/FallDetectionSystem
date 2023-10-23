@@ -17,6 +17,7 @@ import com.example.falldetectionapp.DTO.UserPhoneTokenDTO;
 import com.example.falldetectionapp.LoginActivity;
 import com.example.falldetectionapp.R;
 import com.example.falldetectionapp.retrofit.UserService;
+import com.google.firebase.messaging.FirebaseMessaging;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 
@@ -53,6 +54,7 @@ public class NokPhoneActivity extends AppCompatActivity {
 //    초기 설정을 넣어주세요
     private void init() {
         getDataFromIntent();
+        getFcmDeviceToken();
         setTitle("비상연락처 등록");
         setView();
         setListener();
@@ -61,7 +63,13 @@ public class NokPhoneActivity extends AppCompatActivity {
     private void getDataFromIntent() {
         Intent intent = getIntent();
         userInfoDTO = (UserInfoDTO) intent.getSerializableExtra("userInfo");
-        fcmDeviceToken = intent.getStringExtra("fcmDeviceToken");
+    }
+
+    // FCM 기기 토큰 읽어오기
+    private void getFcmDeviceToken() {
+        FirebaseMessaging.getInstance().getToken().addOnCompleteListener(task -> {
+            fcmDeviceToken = task.getResult();
+        });
     }
 
     private void setView() {
@@ -88,11 +96,7 @@ public class NokPhoneActivity extends AppCompatActivity {
 
                     userInfoDTO.setNokPhones(nokPhones);
 
-//                    requestRegister();
-
-                    // UI 구현을 위한 임시 인텐트 로직
-                    Intent intent = new Intent(NokPhoneActivity.this, LoginActivity.class);
-                    startActivity(intent);
+                    requestRegister();
                 }
             }
         });
@@ -108,10 +112,12 @@ public class NokPhoneActivity extends AppCompatActivity {
 
         UserService userService = retrofit.create(UserService.class);
 
+        // 사용자 핸드폰 FCM 토큰 DTO 객체 생성
         UserPhoneTokenDTO userPhoneTokenDTO = new UserPhoneTokenDTO();
         userPhoneTokenDTO.setCameraId(userInfoDTO.getCameraId());
         userPhoneTokenDTO.setToken(fcmDeviceToken);
 
+        // 회원가입 정보 DTO 객체 생성
         SignUpDTO signUpDTO = new SignUpDTO();
         signUpDTO.setUserInfo(userInfoDTO);
         signUpDTO.setPhoneToken(userPhoneTokenDTO);
