@@ -7,10 +7,7 @@ import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
-import android.widget.CheckBox;
-import android.widget.CompoundButton;
 import android.widget.EditText;
-import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.falldetectionapp.DTO.AuthTokenDTO;
@@ -32,7 +29,7 @@ import com.google.firebase.messaging.FirebaseMessaging;
 
 /**
  * 로그인 화면 입니다.
- * activity_log_in.xml과 연결됩니다.
+ * activity_login.xml과 연결됩니다.
  */
 // TODO: 비밀번호 찾기, 자동 로그인 구현
 // TODO: 로그인 할 때, 기기 토큰 업데이트
@@ -45,7 +42,7 @@ public class LoginActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_log_in);
+        setContentView(R.layout.activity_login);
 
         init();
     }
@@ -92,13 +89,7 @@ public class LoginActivity extends AppCompatActivity {
                 String password = passwordEditText.getText().toString().trim();
 
                 if (!cameraId.isEmpty() && !password.isEmpty()) {
-//                    requestLogin(cameraId, password);
-
-                    // UI 구현을 위한 인텐트 로직
-                    Intent intent = new Intent(LoginActivity.this, HomeActivity.class);
-                    intent.putExtra("personalToken", "token");
-                    intent.putExtra("cameraId", cameraId);
-                    startActivity(intent);
+                    requestLogin(cameraId, password);
                 } else if (cameraId.isEmpty()) {
                     Toast.makeText(getApplicationContext(), "아이디를 입력해 주세요", Toast.LENGTH_LONG).show();
                 } else {
@@ -117,7 +108,7 @@ public class LoginActivity extends AppCompatActivity {
         Gson gson = new GsonBuilder().setLenient().create();
 
         Retrofit retrofit = new Retrofit.Builder()
-                .baseUrl("http://10.0.2.2:10000/") // 기본으로 적용되는 서버 URL (반드시 / 로 마무리되게 설정)
+                .baseUrl(BuildConfig.SERVER_URL) // 기본으로 적용되는 서버 URL (반드시 / 로 마무리되게 설정)
                 .addConverterFactory(GsonConverterFactory.create(gson)) // JSON 데이터를 Gson 라이브러리로 파싱하고 데이터를 Model에 자동으로 담는 converter
                 .build();
 
@@ -138,7 +129,7 @@ public class LoginActivity extends AppCompatActivity {
                         ).convert(response.errorBody());
                         Toast.makeText(getApplicationContext(), basicResponseDTO.getMessage(), Toast.LENGTH_LONG).show();
                     } catch (IOException e) {
-                        throw new RuntimeException(e);
+                        Log.d("HTTP_ERROR", e.getMessage());
                     }
                 }
             }
