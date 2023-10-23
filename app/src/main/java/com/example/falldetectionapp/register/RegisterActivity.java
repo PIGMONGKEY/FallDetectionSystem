@@ -78,13 +78,13 @@ public class RegisterActivity extends AppCompatActivity {
     // 그렇지 않으면 False를 반환한다.
     private boolean inputCheck(String cameraId, String password, String passwordCheck) {
         if (cameraId.isEmpty() || password.isEmpty() || passwordCheck.isEmpty()) {
-            Toast.makeText(this, "모든 항목을 입력해주세요.", Toast.LENGTH_LONG).show();
+            Toast.makeText(this, "모든 항목을 입력해주세요.", Toast.LENGTH_SHORT).show();
             return false;
         } else {
             if (password.equals(passwordCheck)) {
                 return true;
             } else {
-                Toast.makeText(this, "비밀번호가 일치하지 않습니다.", Toast.LENGTH_LONG).show();
+                Toast.makeText(this, "비밀번호가 일치하지 않습니다.", Toast.LENGTH_SHORT).show();
                 return false;
             }
         }
@@ -123,7 +123,7 @@ public class RegisterActivity extends AppCompatActivity {
                         startActivity(intent);
 
                     } else {
-                        Toast.makeText(getApplicationContext(), "비밀번호가 일치하지 않습니다.", Toast.LENGTH_LONG).show();
+                        Toast.makeText(getApplicationContext(), "비밀번호가 일치하지 않습니다.", Toast.LENGTH_SHORT).show();
                     }
                 } else {
                     // 등록 불가능한 아이디
@@ -137,10 +137,10 @@ public class RegisterActivity extends AppCompatActivity {
 
                         if (basicResponseDTO.getCode() == 404) {
                             // 없는 카메라 아이디
-                            Toast.makeText(getApplicationContext(), basicResponseDTO.getMessage(), Toast.LENGTH_LONG).show();
+                            Toast.makeText(getApplicationContext(), basicResponseDTO.getMessage(), Toast.LENGTH_SHORT).show();
                         } else {
                             // 이미 등록된 카메라 아이디
-                            Toast.makeText(getApplicationContext(), basicResponseDTO.getMessage(), Toast.LENGTH_LONG).show();
+                            Toast.makeText(getApplicationContext(), basicResponseDTO.getMessage(), Toast.LENGTH_SHORT).show();
                         }
                     } catch (IOException e) {
                         throw new RuntimeException(e);
@@ -152,7 +152,7 @@ public class RegisterActivity extends AppCompatActivity {
             public void onFailure(Call<BasicResponseDTO> call, Throwable t) {
                 // 서버 연결에 실패한 경우 onFailure로 들어옴
                 Log.d("RETROFIT", t.getCause().toString());
-                Toast.makeText(getApplicationContext(), "서버 연결에 실패했습니다.", Toast.LENGTH_LONG).show();
+                Toast.makeText(getApplicationContext(), "서버 연결에 실패했습니다.", Toast.LENGTH_SHORT).show();
             }
         });
     }
