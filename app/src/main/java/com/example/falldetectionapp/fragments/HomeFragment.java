@@ -40,10 +40,11 @@ import retrofit2.converter.gson.GsonConverterFactory;
  * Java 코드를 작성하실 때, Fragment에 대해 조금 찾아보시면서 작성하셔야 할 듯 합니다.
  * Activity와는 다르게 독자적으로 존재할 수 없는 화면이고, 화면 안에 있는 화면이다보니, 로직을 짜는 방식이 조금 다를껍니다.
  */
+// TODO: 홈 화면 지금대로 한다면 주석 처리한 부분 삭제
 public class HomeFragment extends Fragment {
 
     private Button toGuideButton, toVideoButton, toMyPageButton;
-    private TextView nameTV, genderTV, ageTV, bloodTypeTV;
+//    private TextView nameTV, genderTV, ageTV, bloodTypeTV;
     private String cameraId, personalToken;
     private UserInfoDTO userInfoDTO;
 
@@ -69,7 +70,7 @@ public class HomeFragment extends Fragment {
         getDataFromBundle();
         setView(view);
         setListener();
-        requestUserInfo();
+//        requestUserInfo();
     }
 
     private void getDataFromBundle() {
@@ -81,10 +82,10 @@ public class HomeFragment extends Fragment {
         toGuideButton = view.findViewById(R.id.toGuideButton);
         toVideoButton = view.findViewById(R.id.toVideoButton);
         toMyPageButton = view.findViewById(R.id.toMyPageButton);
-        nameTV = view.findViewById(R.id.userName_home);
-        ageTV = view.findViewById(R.id.userAge_home);
-        genderTV = view.findViewById(R.id.userGender_home);
-        bloodTypeTV = view.findViewById(R.id.userBloodType_home);
+//        nameTV = view.findViewById(R.id.userName_home);
+//        ageTV = view.findViewById(R.id.userAge_home);
+//        genderTV = view.findViewById(R.id.userGender_home);
+//        bloodTypeTV = view.findViewById(R.id.userBloodType_home);
     }
 
     private void setListener() {
@@ -111,10 +112,10 @@ public class HomeFragment extends Fragment {
     }
 
     private void showUserInfo() {
-        nameTV.setText(userInfoDTO.getUserName());
-        genderTV.setText(userInfoDTO.getUserGender());
-        ageTV.setText(userInfoDTO.getUserAge().toString());
-        bloodTypeTV.setText(userInfoDTO.getUserBloodType());
+//        nameTV.setText(userInfoDTO.getUserName());
+//        genderTV.setText(userInfoDTO.getUserGender());
+//        ageTV.setText(userInfoDTO.getUserAge().toString());
+//        bloodTypeTV.setText(userInfoDTO.getUserBloodType());
     }
 
     private void requestUserInfo() {
