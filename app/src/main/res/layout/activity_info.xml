@@ -8,14 +8,27 @@
     android:orientation="vertical"
     tools:context=".register.InfoActivity">
 
+    <FrameLayout
+        android:layout_width="match_parent"
+        android:layout_height="30dp">
+    </FrameLayout>
+
+    <ImageView
+        android:layout_width="156dp"
+        android:layout_height="134dp"
+        android:layout_gravity="center"
+        app:srcCompat="@drawable/logo" />
+
     <TextView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_gravity="center"
-        android:layout_marginTop="150dp"
-        android:layout_marginBottom="30dp"
-        android:text="개인정보"
+        android:layout_marginTop="20dp"
+        android:layout_marginBottom="20dp"
+        android:fontFamily="sans-serif-condensed-medium"
+        android:text="긴급 상황 신고 서비스"
         android:textAlignment="center"
+        android:textColor="#F14559"
         android:textSize="30sp"
         android:textStyle="bold" />
 
@@ -23,111 +36,139 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_gravity="center"
-        android:orientation="horizontal"
-        android:padding="20dp">
-
-        <TextView
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_weight="0.6"
-            android:text="이름"
-            android:textAlignment="center"
-            android:textSize="20sp"
-            android:textStyle="bold" />
+        android:orientation="vertical">
 
         <EditText
             android:id="@+id/nameEditText_register"
-            android:layout_width="0dp"
+            android:layout_width="280dp"
             android:layout_height="wrap_content"
             android:layout_gravity="center"
-            android:layout_weight="1"
-            android:inputType="text"
-            android:textSize="20sp" />
+            android:layout_marginTop="20dp"
+            android:background="#B1B1B1"
+            android:drawableStart="@drawable/ic_name"
+            android:drawableLeft="@drawable/ic_name"
+            android:drawablePadding="10dp"
+            android:fontFamily="sans-serif-condensed-medium"
+            android:hint="이름"
+            android:padding="10dp"
+            android:textColor="#FFFFFF"
+            android:textColorHint="#ffffff"
+            android:textSize="20sp"
+            android:textStyle="bold" />
 
     </LinearLayout>
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:orientation="horizontal"
-        android:padding="20dp">
-
-        <TextView
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_weight="0.6"
-            android:text="전화번호"
-            android:textAlignment="center"
-            android:textSize="20sp"
-            android:textStyle="bold" />
+        android:layout_gravity="center"
+        android:orientation="vertical">
 
         <EditText
             android:id="@+id/phoneEditText_register"
-            android:layout_width="0dp"
+            android:layout_width="280dp"
             android:layout_height="wrap_content"
             android:layout_gravity="center"
-            android:layout_weight="1"
-            android:inputType="phone"
-            android:textSize="20sp" />
+            android:layout_marginTop="20dp"
+            android:background="#B1B1B1"
+            android:drawableStart="@drawable/ic_phone"
+            android:drawableLeft="@drawable/ic_phone"
+            android:drawablePadding="10dp"
+            android:fontFamily="sans-serif-condensed-medium"
+            android:hint="전화번호"
+            android:padding="10dp"
+            android:textColor="#FFFFFF"
+            android:textColorHint="#ffffff"
+            android:textSize="20sp"
+            android:textStyle="bold" />
     </LinearLayout>
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:orientation="horizontal"
-        android:padding="20dp">
-
-        <TextView
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_weight="0.6"
-            android:text="인증번호"
-            android:textAlignment="center"
-            android:textSize="20sp"
-            android:textStyle="bold" />
-
-        <LinearLayout
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_weight="1">
+        android:layout_gravity="center"
+        android:orientation="vertical">
 
             <EditText
-                android:id="@+id/phoneAuthEditText_register"
-                android:layout_width="0dp"
+                android:id="@+id/ageEditText_register"
+                android:layout_width="280dp"
                 android:layout_height="wrap_content"
-                android:layout_weight="1"
                 android:layout_gravity="center"
-                android:inputType="number"
-                android:textSize="20sp" />
-
-            <Button
-                android:id="@+id/phoneAuthButton_register"
-                android:layout_width="0dp"
-                android:layout_height="match_parent"
-                android:layout_weight="0.5"
-                android:background="#808080"
-                android:gravity="center"
-                android:text="전송"
-                android:textAlignment="center"
+                android:layout_marginTop="20dp"
+                android:background="#B1B1B1"
+                android:drawableStart="@drawable/ic_age"
+                android:drawableLeft="@drawable/ic_age"
+                android:drawablePadding="10dp"
+                android:fontFamily="sans-serif-condensed-medium"
+                android:hint="나이"
+                android:padding="10dp"
                 android:textColor="#FFFFFF"
-                android:textSize="15sp" />
+                android:textColorHint="#ffffff"
+                android:textSize="20sp"
+                android:textStyle="bold" />
+    </LinearLayout>
 
-        </LinearLayout>
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:orientation="vertical">
 
+        <EditText
+            android:id="@+id/genderEditText_register"
+            android:layout_width="280dp"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:layout_marginTop="20dp"
+            android:background="#B1B1B1"
+            android:drawableStart="@drawable/ic_gender"
+            android:drawableLeft="@drawable/ic_gender"
+            android:drawablePadding="10dp"
+            android:fontFamily="sans-serif-condensed-medium"
+            android:hint="성별"
+            android:padding="10dp"
+            android:textColor="#FFFFFF"
+            android:textColorHint="#ffffff"
+            android:textSize="20sp"
+            android:textStyle="bold" />
+    </LinearLayout>
 
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:orientation="vertical">
+
+        <EditText
+            android:id="@+id/bloodTypeEditText_register"
+            android:layout_width="280dp"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:layout_marginTop="20dp"
+            android:background="#B1B1B1"
+            android:drawableStart="@drawable/ic_blood"
+            android:drawableLeft="@drawable/ic_blood"
+            android:drawablePadding="10dp"
+            android:fontFamily="sans-serif-condensed-medium"
+            android:hint="혈액형"
+            android:padding="10dp"
+            android:textColor="#FFFFFF"
+            android:textColorHint="#ffffff"
+            android:textSize="20sp"
+            android:textStyle="bold" />
     </LinearLayout>
 
     <Button
         android:id="@+id/continueToAddressButton"
-        android:layout_width="250dp"
+        android:layout_width="280dp"
         android:layout_height="wrap_content"
         android:layout_gravity="center"
-        android:layout_marginTop="40dp"
-        android:background="#808080"
-        android:backgroundTint="#808080"
+        android:layout_marginTop="30dp"
+        android:backgroundTint="#F14559"
         android:gravity="center"
-        android:text="확인"
+        android:text="다음"
         android:textColor="#FFFFFF"
-        android:textSize="20sp" />
+        android:textSize="27sp"
+        android:textStyle="bold" />
 
 </LinearLayout>

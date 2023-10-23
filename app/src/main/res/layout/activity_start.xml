@@ -1,0 +1,83 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    tools:context=".StartActivity">
+
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@drawable/background"
+        android:orientation="vertical"
+        android:padding="25dp">
+
+        <FrameLayout
+            android:layout_width="match_parent"
+            android:layout_height="80dp"></FrameLayout>
+
+        <ImageView
+            android:layout_width="235dp"
+            android:layout_height="158dp"
+            android:layout_gravity="center"
+            app:srcCompat="@drawable/logowhite" />
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="10dp"
+            android:layout_marginBottom="20dp"
+            android:baselineAligned="false"
+            android:fontFamily="sans-serif-condensed-medium"
+            android:paddingTop="10dp"
+            android:text="긴급 상황 신고 서비스"
+            android:textAlignment="center"
+            android:textColor="#ffffff"
+            android:textSize="35sp"
+            android:textStyle="bold" />
+
+        <Button
+            android:id="@+id/toGuideButton_start"
+            android:layout_width="280dp"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:layout_marginTop="20dp"
+            android:backgroundTint="#ffffff"
+            android:gravity="center"
+            android:text="이용 가이드"
+            android:textColor="#F14559"
+            android:textSize="27sp"
+            android:textStyle="bold" />
+
+        <Button
+            android:id="@+id/toLogin_start"
+            android:layout_width="280dp"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:layout_marginTop="10dp"
+            android:backgroundTint="#ffffff"
+            android:gravity="center"
+            android:text="로그인"
+            android:textColor="#F14559"
+            android:textSize="27sp"
+            android:textStyle="bold" />
+
+        <Button
+            android:id="@+id/toRegisterButton_start"
+            android:layout_width="280dp"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:layout_marginTop="10dp"
+            android:backgroundTint="#ffffff"
+            android:gravity="center"
+            android:text="회원가입"
+            android:textColor="#F14559"
+            android:textSize="27sp"
+            android:textStyle="bold" />
+
+    </LinearLayout>
+
+</LinearLayout>
