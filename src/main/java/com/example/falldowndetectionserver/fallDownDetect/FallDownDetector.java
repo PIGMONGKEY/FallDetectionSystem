@@ -22,35 +22,50 @@ public class FallDownDetector {
 
     private final HashMap<String, Queue<PositionVO>> positionHash = new HashMap<>();
 
+    private boolean fallDownFlag = false;
+    private boolean emergencyFlag = false;
+
     public void checkFallDown(String cameraId, @NotNull PositionVO positionVO) {
         float ratio;
 
         try {
             ratio = (float) (positionVO.getMax_x() - positionVO.getMin_x()) / (positionVO.getMax_y() - positionVO.getMin_y());
-            if (ratio >= 1.0) {
-                checkEmergency(cameraId, positionVO);
-//                log.info("ratio : " + ratio);
-//                log.info(positionVO.toString());
+            positionVO.setRatio(ratio);
+            if (ratio >= 2.0) {
+                log.info("ratio : " + ratio);
+//                checkEmergency(cameraId, positionVO);
+                fallDownFlag = true;
             } else {
                 log.info("ratio : " + ratio);
-//                log.info(positionVO.toString());
-//                positionHash.get(cameraId).clear();
+                positionHash.get(cameraId).clear();
+                fallDownFlag = false;
             }
         } catch (ArithmeticException e) {
             e.printStackTrace();
+        }
+
+        if (fallDownFlag) {
+            checkEmergency(cameraId, positionVO);
         }
     }
 
     private void checkEmergency(String cameraId, PositionVO positionVO) {
         positionHash.get(cameraId).add(positionVO);
 
-        // 25 프레임 정도 나옴
-        // Thunder 사용하면 15 프레임으로 떨어짐
-        if (positionHash.get(cameraId).size() == 180) {
+        if (positionHash.get(cameraId).size() >= 30) {
             try {
                 firebaseMessageService.sendMessageTo(uPTokenDao.select(cameraId).get(), cameraId, "dangerous");
+                emergencyFlag = true;
             } catch (IOException e) {
                 e.printStackTrace();
+            }
+        } else {
+            // 비율이 0.5 이상 변했을 경우
+            if (positionHash.get(cameraId).peek().getRatio() - positionVO.getRatio() > 0.5 ||
+                    positionVO.getRatio() - positionHash.get(cameraId).peek().getRatio() < -0.5) {
+                positionHash.get(cameraId).clear();
+                fallDownFlag = false;
+                emergencyFlag = false;
             }
         }
     }
