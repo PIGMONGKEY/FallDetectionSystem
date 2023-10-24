@@ -33,4 +33,5 @@ public class PositionVO {
     private int min_y;
     private int max_x;
     private int max_y;
+    private float ratio;
 }
