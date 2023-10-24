@@ -44,6 +44,7 @@ public class AuthServiceImpl implements AuthService{
             SecurityContextHolder.getContext().setAuthentication(authentication);
             String jwt = tokenProvider.createToken(authentication);
 
+            // 핸드폰 FCM 토큰을 업데이트 한다.
             uPTokenDao.update(UserPhoneTokenVO.builder()
                     .cameraId(loginRequestDTO.getCameraId())
                     .token(loginRequestDTO.getDeviceToken())
