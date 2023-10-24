@@ -66,7 +66,7 @@ public class InfoActivity extends AppCompatActivity {
                 if (inputCheck(name, phone, age, gender, bloodType)) {
                     userInfoDTO.setUserPhone(phone);
                     userInfoDTO.setUserName(name);
-                    userInfoDTO.setUserAge(Integer.getInteger(age));
+                    userInfoDTO.setUserAge(Integer.parseInt(age));
                     userInfoDTO.setUserGender(gender);
                     userInfoDTO.setUserBloodType(bloodType);
 
