@@ -12,7 +12,7 @@
         app:layout_constraintTop_toTopOf="parent"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="위급상황이 감지되었습니다."
+        android:text="위급상황이 감지되었습니다.\n위급상황이 아니라면 3분 이내에 위급상황 해제 버튼을 누르세요"
         android:textSize="40sp" />
 
     <TextView
