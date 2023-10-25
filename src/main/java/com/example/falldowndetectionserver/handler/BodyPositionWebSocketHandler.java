@@ -37,7 +37,8 @@ public class BodyPositionWebSocketHandler extends TextWebSocketHandler {
         String cameraId = session.getHandshakeHeaders().get("camera_id").get(0).toString();
         sessions.put(sessionId, cameraId);
         fallDownDetector.getPositionHash().put(cameraId, new LinkedList<>());
-
+        fallDownDetector.getFallDownFlagHash().put(cameraId, false);
+        fallDownDetector.getEmergencyFlagHash().put(cameraId, false);
         log.info(cameraId + "'s detector connected");
     }
 
@@ -50,6 +51,11 @@ public class BodyPositionWebSocketHandler extends TextWebSocketHandler {
     @Override
     public void afterConnectionClosed(WebSocketSession session, CloseStatus status) throws Exception {
         log.info(sessions.get(session.getId()) + "'s detector disconnected");
+
+        fallDownDetector.getPositionHash().remove(sessions.get(session.getId()));
+        fallDownDetector.getFallDownTimeHash().remove(sessions.get(session.getId()));
+        fallDownDetector.getEmergencyFlagHash().remove(sessions.get(session.getId()));
+
         sessions.remove(session.getId());
     }
 }
