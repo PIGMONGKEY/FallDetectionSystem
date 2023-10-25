@@ -26,6 +26,10 @@ public class UPTokenDao {
         return uPTokenMapper.select(cameraId);
     }
 
+    public Optional<String> selectCameraId(String uptoken) {
+        return uPTokenMapper.selectCameraId(uptoken);
+    }
+
     public int update(UserPhoneTokenVO userPhoneTokenVO) {
         try {
             return uPTokenMapper.update(userPhoneTokenVO);

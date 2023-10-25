@@ -11,6 +11,11 @@
         WHERE CAMERA_ID = #{cameraId};
     </select>
 
+    <select id="selectCameraId" resultType="string">
+        SELECT CAMERA_ID FROM TBL_UPTOKEN
+        WHERE TOKEN = #{uptoken};
+    </select>
+
     <update id="update">
         UPDATE TBL_UPTOKEN
         SET TOKEN = #{token}

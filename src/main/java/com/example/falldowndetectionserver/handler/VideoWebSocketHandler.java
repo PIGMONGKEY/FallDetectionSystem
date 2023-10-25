@@ -46,8 +46,6 @@ public class VideoWebSocketHandler extends TextWebSocketHandler {
                 senderCameraIDs.put(sessionId, cameraId);
                 log.info("sender connected - " + cameraId);
 
-            // TODO: 안드로이드에서 웹 소켓 연결 시, 자신의 FCM 토큰을 전송하여 서버에서 토큰을 저장하거나 업데이트
-
             //        받는 쪽일 때 - receiverSessions에 put
             } else if (identifier.equals("receiver")) {
                 receiverSessions.put(cameraId, session);

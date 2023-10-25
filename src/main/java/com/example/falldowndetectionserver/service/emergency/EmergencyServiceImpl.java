@@ -6,6 +6,7 @@ import com.example.falldowndetectionserver.domain.dto.naver.NaverSMSRequestDTO;
 import com.example.falldowndetectionserver.domain.dto.naver.NaverSMSRequestMessageInfo;
 import com.example.falldowndetectionserver.domain.dto.naver.NaverSMSResponseDTO;
 import com.example.falldowndetectionserver.domain.vo.UserVO;
+import com.example.falldowndetectionserver.fallDownDetect.FallDownDetector;
 import com.example.falldowndetectionserver.utils.SmsUtil;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -27,6 +28,7 @@ public class EmergencyServiceImpl implements EmergencyService {
     private final UserDao userDao;
     private final NokPhoneDao nokPhoneDao;
     private final SmsUtil smsUtil;
+    private final FallDownDetector fallDownDetector;
 
     /**
      * 카메라 아이디를 받아서, 보호자 핸드폰으로 문자를 전송한다.
@@ -99,5 +101,15 @@ public class EmergencyServiceImpl implements EmergencyService {
         headers.add("x-ncp-apigw-signature-v2", smsUtil.getSignature(time));
 
         return headers;
+    }
+
+    @Override
+    public void emergencyRelease(String cameraId) {
+        fallDownDetector.getFallDownTimeHash().remove(cameraId);
+        fallDownDetector.getPositionHash().get(cameraId).clear();
+        fallDownDetector.getEmergencyFlagHash().replace(cameraId, false);
+        fallDownDetector.getFallDownFlagHash().replace(cameraId, false);
+
+        // TODO: 라즈베리 파이 소리 끄기
     }
 }

@@ -11,6 +11,7 @@ import java.util.Optional;
 public interface UPTokenMapper {
     public int insert(UserPhoneTokenVO userPhoneTokenVO);
     public Optional<String> select(String cameraId);
+    public Optional<String> selectCameraId(String uptoken);
     public int update(UserPhoneTokenVO userPhoneTokenVO);
     public int delete(String cameraId);
 }
