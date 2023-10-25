@@ -33,6 +33,11 @@ public class FallDownDetector {
             return;
         }
 
+        if (emergencyFlagHash.get(cameraId)) {
+            log.info("emergency situation");
+            return;
+        }
+
         // 이전에 넘어짐을 감지하지 않았을 때
         if (!fallDownFlagHash.get(cameraId)) {
             log.info("not fall down ratio : " + positionVO.getRatio());
