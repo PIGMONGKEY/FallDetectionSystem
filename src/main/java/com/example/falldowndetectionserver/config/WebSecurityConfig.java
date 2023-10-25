@@ -69,6 +69,7 @@ public class WebSecurityConfig {
                 .antMatchers("/fcm/*").permitAll()
                 .antMatchers("/video").permitAll()
                 .antMatchers("/position").permitAll()
+                .antMatchers("/emergency/*").permitAll()
                 .anyRequest().authenticated()
 
                 .and()
