@@ -59,6 +59,7 @@ dependencies {
     androidTestImplementation 'androidx.test.espresso:espresso-core:3.5.1'
 
     implementation 'com.github.denzcoskun:ImageSlideShow:0.0.6'
+
 }
 
 apply plugin: 'com.google.gms.google-services'
