@@ -16,11 +16,12 @@ EXTRA_HEADER = {
 
 print("Loading model...")
 model = hub.load(f"./movenet_singlepose_thunder_4")
+# model = hub.load(f"./movenet_singlepose_lightning_4")
 movenet = model.signatures['serving_default']
 print("Model load success")
 
 # 웹캡으로 영상 캡쳐
-cap = cv2.VideoCapture(0)
+cap = cv2.VideoCapture("rtsp://{addr}/cam")
 
 
 # WebSocket을 통해 서버로 연결하고, Opencv를 이용해 웹캠으로 찍은 영상을 프레임 단위로 전송
@@ -52,9 +53,9 @@ async def get_position_and_send(frame, position_socket):
     max_x = 0
     max_y = 0
 
-    pose_image = cv2.resize(frame, (256, 256))
-    pose_image = tf.expand_dims(pose_image, axis=0)
+    pose_image = tf.expand_dims(frame, axis=0)
     pose_image = tf.cast(tf.image.resize_with_pad(pose_image, 256, 256), dtype=tf.int32)
+    # pose_image = tf.cast(tf.image.resize_with_pad(pose_image, 192, 192), dtype=tf.int32)
     outputs = movenet(pose_image)['output_0']
 
     for keypoint in outputs.numpy()[0][0]:
