@@ -5,7 +5,7 @@ import lombok.Data;
 
 @Data
 @Builder
-public class SendResponseDTO {
+public class AligoSendSMSResponseDTO {
     private final Integer result_code;
     private final String message;
     private final Integer msg_id;
