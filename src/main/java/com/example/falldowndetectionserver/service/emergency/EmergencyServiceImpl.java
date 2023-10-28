@@ -2,24 +2,17 @@ package com.example.falldowndetectionserver.service.emergency;
 
 import com.example.falldowndetectionserver.dao.NokPhoneDao;
 import com.example.falldowndetectionserver.dao.UserDao;
-import com.example.falldowndetectionserver.domain.dto.aligo.AligoSendSMSRequestDTO;
 import com.example.falldowndetectionserver.domain.dto.aligo.AligoSendSMSResponseDTO;
-import com.example.falldowndetectionserver.domain.vo.UserVO;
 import com.example.falldowndetectionserver.fallDownDetect.FallDownDetector;
 import com.example.falldowndetectionserver.utils.AligoSmsUtil;
+import com.google.gson.Gson;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import okhttp3.*;
-import org.springframework.http.HttpHeaders;
-import org.springframework.http.MediaType;
-import org.springframework.http.RequestEntity;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
-import org.springframework.web.client.RestTemplate;
 
 import java.io.IOException;
-import java.net.URI;
-import java.util.ArrayList;
 import java.util.List;
 
 @Service
@@ -30,12 +23,14 @@ public class EmergencyServiceImpl implements EmergencyService {
     private final NokPhoneDao nokPhoneDao;
     private final FallDownDetector fallDownDetector;
     private final AligoSmsUtil smsUtil;
+    private final Gson gson;
 
     @Override
     public ResponseEntity<AligoSendSMSResponseDTO> sendEmergencySMS(String cameraId) {
         String requestURI = smsUtil.getSendRequestURI();
         OkHttpClient client = new OkHttpClient().newBuilder().build();
-        RequestBody body = makeMessgage(cameraId);
+        RequestBody body = makeRequestBody(cameraId);
+        AligoSendSMSResponseDTO responseDTO;
 
         Request request = new Request.Builder()
                 .url(requestURI)
@@ -44,6 +39,8 @@ public class EmergencyServiceImpl implements EmergencyService {
 
         try {
             Response response = client.newCall(request).execute();
+            responseDTO = gson.fromJson(response.body().string(), AligoSendSMSResponseDTO.class);
+            log.info(responseDTO.getSuccess_cnt() + "");
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -61,15 +58,10 @@ public class EmergencyServiceImpl implements EmergencyService {
         // TODO: 라즈베리 파이 소리 끄기
     }
 
-    private RequestBody makeMessgage(String cameraId) {
-        String receiver;
+    private RequestBody makeRequestBody(String cameraId) {
+        String receiver = getNokphones(cameraId);
 
-        List<String> nokphones = nokPhoneDao.selectAll(cameraId);
-        receiver = nokphones.get(0);
 
-        if (nokphones.size() > 1) {
-            receiver = receiver + "," + nokphones.get(1);
-        }
 
         RequestBody body = new MultipartBody.Builder()
                 .setType(MultipartBody.FORM)
@@ -80,9 +72,26 @@ public class EmergencyServiceImpl implements EmergencyService {
                 .addFormDataPart("msg", "테스트 메시지")
                 .addFormDataPart("msg_type", "SMS")
                 // 테스트 할 때는 주석 해제 해야 함
-//                .addFormDataPart("testmode_yn", "Y")
+                .addFormDataPart("testmode_yn", "Y")
                 .build();
 
         return body;
+    }
+
+    private String getNokphones(String cameraId) {
+        String receiver;
+
+        List<String> nokphones = nokPhoneDao.selectAll(cameraId);
+        receiver = nokphones.get(0);
+
+        if (nokphones.size() > 1) {
+            receiver = receiver + "," + nokphones.get(1);
+        }
+
+        return receiver;
+    }
+
+    private String makeMessage(String cameraId) {
+
     }
 }
