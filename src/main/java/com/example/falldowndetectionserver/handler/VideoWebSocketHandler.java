@@ -67,11 +67,13 @@ public class VideoWebSocketHandler extends TextWebSocketHandler {
     @Override
     protected void handleBinaryMessage(WebSocketSession session, BinaryMessage message) {
         try {
+            log.info("video get");
             String cameraId = session.getHandshakeHeaders().get("camera_id").get(0);
             if (receiverSessions.containsKey(cameraId)) {
                 receiverSessions
                         .get(cameraId)
                         .sendMessage(message);
+                log.info("video send");
             }
         } catch (Exception e) {
             e.printStackTrace();

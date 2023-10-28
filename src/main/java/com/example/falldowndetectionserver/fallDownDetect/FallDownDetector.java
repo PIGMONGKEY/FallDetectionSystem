@@ -43,7 +43,7 @@ public class FallDownDetector {
             }
         }
 
-        log.info("detected : " + detectedCount + "\n" + positionLog);
+//        log.info("detected : " + detectedCount + "\n" + positionLog);
 
 //        if (emergencyFlagHash.get(cameraId)) {
 //            log.info("emergency situation");
