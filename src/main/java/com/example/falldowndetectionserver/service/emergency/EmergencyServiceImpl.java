@@ -3,6 +3,7 @@ package com.example.falldowndetectionserver.service.emergency;
 import com.example.falldowndetectionserver.dao.NokPhoneDao;
 import com.example.falldowndetectionserver.dao.UserDao;
 import com.example.falldowndetectionserver.domain.dto.aligo.AligoSendSMSResponseDTO;
+import com.example.falldowndetectionserver.domain.vo.UserVO;
 import com.example.falldowndetectionserver.fallDownDetect.FallDownDetector;
 import com.example.falldowndetectionserver.utils.AligoSmsUtil;
 import com.google.gson.Gson;
@@ -41,6 +42,7 @@ public class EmergencyServiceImpl implements EmergencyService {
             Response response = client.newCall(request).execute();
             responseDTO = gson.fromJson(response.body().string(), AligoSendSMSResponseDTO.class);
             log.info(responseDTO.getSuccess_cnt() + "");
+            // TODO: 문자 여유가 된다면, 전송 실패 시 재전송 로직 추가
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -60,8 +62,7 @@ public class EmergencyServiceImpl implements EmergencyService {
 
     private RequestBody makeRequestBody(String cameraId) {
         String receiver = getNokphones(cameraId);
-
-
+        String message = makeMessage(cameraId);
 
         RequestBody body = new MultipartBody.Builder()
                 .setType(MultipartBody.FORM)
@@ -69,10 +70,10 @@ public class EmergencyServiceImpl implements EmergencyService {
                 .addFormDataPart("user_id", smsUtil.getUser_id())
                 .addFormDataPart("sender", smsUtil.getSender())
                 .addFormDataPart("receiver", receiver)
-                .addFormDataPart("msg", "테스트 메시지")
-                .addFormDataPart("msg_type", "SMS")
+                .addFormDataPart("msg", message)
+                .addFormDataPart("msg_type", "LMS")
                 // 테스트 할 때는 주석 해제 해야 함
-                .addFormDataPart("testmode_yn", "Y")
+//                .addFormDataPart("testmode_yn", "Y")
                 .build();
 
         return body;
@@ -92,6 +93,14 @@ public class EmergencyServiceImpl implements EmergencyService {
     }
 
     private String makeMessage(String cameraId) {
+        UserVO userVO = userDao.select(cameraId).orElseThrow();
 
+        String message = "[ 긴급상황 감지 시스템 ]" + "\n(" +
+                userVO.getUserName() + " / " + userVO.getUserGender() + " / " + userVO.getUserAge() + "세) 위급상황이 발생했습니다." +
+                "아래 링크에 접속하셔서 " + cameraId + "를 입력하시고, 상황을 확인하세요." +
+                "링크 넣어야 함";
+        // TODO: 넘어지는 영상 재생하는 화면 만들어야 함
+
+        return message;
     }
 }

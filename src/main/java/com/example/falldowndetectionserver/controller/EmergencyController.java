@@ -26,7 +26,6 @@ public class EmergencyController {
     @GetMapping("sos")
     public void sendEmergencySms(String uptoken) {
         String cameraId = uPTokenDao.selectCameraId(uptoken).get();
-        log.info("SOS SMS send");
-        // TODO: 메시지 전송 구현
+        emergencyService.sendEmergencySMS(cameraId);
     }
 }
