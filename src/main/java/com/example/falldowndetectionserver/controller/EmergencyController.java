@@ -9,6 +9,10 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+/**
+ * 위급상황 처리 API
+ * 위급 SMS 전송, 위급상황 해제
+ */
 @RestController
 @RequiredArgsConstructor
 @Slf4j
@@ -17,16 +21,28 @@ public class EmergencyController {
     private final EmergencyService emergencyService;
     private final UPTokenDao uPTokenDao;
 
+    /**
+     * 위급상황을 해제한다.
+     * 사용자 기기 토큰으로 cameraId를 조회한 후 위급상황을 해제한다.
+     * @param uptoken 사용자 기기 토큰을 파라미터로 받는다
+     */
     @GetMapping("release")
     public void releaseEmergencySituation(String uptoken) {
+        // 기기 토큰으로 cameraId를 받는다.
         String cameraId = uPTokenDao.selectCameraId(uptoken).get();
         emergencyService.emergencyRelease(cameraId);
     }
 
+    /**
+     * 위급 SMS를 전송한다.
+     * 사용자 기기 토큰으로 cameraId를 조횐한 후
+     * 해당 cameraId로 저장된 보호자 연락처에게 위급 메시지를 보낸다.
+     * @param uptoken 사용자 기기 토큰을 파라미터로 받는다
+     */
     @GetMapping("sos")
     public void sendEmergencySms(String uptoken) {
+        // 기기 토큰으로 cameraId를 받는다.
         String cameraId = uPTokenDao.selectCameraId(uptoken).get();
-        log.info("SOS SMS send");
-        // TODO: 메시지 전송 구현
+        emergencyService.sendEmergencySMS(cameraId);
     }
 }

@@ -13,11 +13,19 @@ import org.springframework.context.annotation.Configuration;
 import javax.sql.DataSource;
 import java.io.IOException;
 
+/**
+ * MyBatis를 사용하여 Mysql과 연결합니다.
+ * 연결 과정에서 필요한 요소를 설정합니다.
+ */
 @Configuration
 @RequiredArgsConstructor
 public class MyBatisConfig {
     private final ApplicationContext applicationContext;
 
+    /**
+     * HikariConfig를 사용합니다.
+     * @return
+     */
     @ConfigurationProperties(prefix = "spring.datasource.hikari")
     @Bean
     public HikariConfig hikariConfig() {
@@ -29,6 +37,9 @@ public class MyBatisConfig {
         return new HikariDataSource(hikariConfig());
     }
 
+    /**
+     * SqlSessionFactory 설정을 합니다.
+     */
     @Bean
     public SqlSessionFactory sqlSessionFactory() throws IOException {
         SqlSessionFactoryBean sqlSessionFactoryBean = new SqlSessionFactoryBean();
@@ -37,8 +48,10 @@ public class MyBatisConfig {
         sqlSessionFactoryBean.setConfigLocation(applicationContext.getResource("classpath:/config/config.xml"));
 
         try {
+            // SqlSessionFactory 를 Bean에서 받아온 후 필요한 설정을 한 뒤에 반환한다.
             SqlSessionFactory sqlSessionFactory = sqlSessionFactoryBean.getObject();
-//        setMapUnderscoreToCamelCase - 언더바를 카멜표기법으로 매핑
+
+            // setMapUnderscoreToCamelCase - 언더바를 카멜표기법으로 매핑
             sqlSessionFactory.getConfiguration().setMapUnderscoreToCamelCase(true);
             return sqlSessionFactory;
         } catch (Exception e) {

@@ -12,6 +12,9 @@ import java.io.IOException;
 import java.util.HashMap;
 import java.util.List;
 
+/**
+ * 넘어짐과 위급상황을 감지하고 판단하는 클래스
+ */
 @Getter
 @RequiredArgsConstructor
 @Component
@@ -20,83 +23,89 @@ public class FallDownDetector {
     private final FirebaseMessageService firebaseMessageService;
     private final UPTokenDao uPTokenDao;
 
+    // CameraId / List<PositionVO>
     private final HashMap<String, List<PositionVO>> positionHash = new HashMap<>();
+    // CameraId / 넘어진 시간
     private final HashMap<String, Long> fallDownTimeHash = new HashMap<>();
+    // CameraId / 넘어짐 Flag
     private final HashMap<String, Boolean> fallDownFlagHash = new HashMap<>();
+    // CameraId / 긴급상황 Flag
     private final HashMap<String, Boolean> emergencyFlagHash = new HashMap<>();
 
+    /**
+     * 넘어졌는지 확인한다.
+     * @param cameraId 카메라 아이디
+     * @param positionVO 인식한 각 keypoint 위치 정보
+     */
     public void checkFallDown(String cameraId, @NotNull PositionVO positionVO) {
         try {
+            // 세로 대비 가로 비율을 구한다.
             positionVO.setRatio((float) (positionVO.getMax_x() - positionVO.getMin_x()) / (positionVO.getMax_y() - positionVO.getMin_y()));
         } catch (ArithmeticException e) {
             e.printStackTrace();
             return;
         }
 
-        String positionLog = "";
-        int detectedCount = 0;
-
-        for (int i=0; i<17; i++) {
-            positionLog += PositionVO.keypoint[i] + " : " + positionVO.getPosition_x()[i] + "/" + positionVO.getPosition_y()[i] + "-" + positionVO.getPosition_trust()[i] + "\n";
-            if (positionVO.getPosition_trust()[i] > 35) {
-                detectedCount++;
-            }
-        }
-
+//        String positionLog = "";
+//        int detectedCount = 0;
+//
+//        for (int i=0; i<17; i++) {
+//            positionLog += PositionVO.keypoint[i] + " : " + positionVO.getPosition_x()[i] + "/" + positionVO.getPosition_y()[i] + "-" + positionVO.getPosition_trust()[i] + "\n";
+//            if (positionVO.getPosition_trust()[i] > 35) {
+//                detectedCount++;
+//            }
+//        }
+//
 //        log.info("detected : " + detectedCount + "\n" + positionLog);
 
-//        if (emergencyFlagHash.get(cameraId)) {
-//            log.info("emergency situation");
-//            return;
-//        }
-//
-//        // 이전에 넘어짐을 감지하지 않았을 때
-//        if (!fallDownFlagHash.get(cameraId)) {
-//            log.info("not fall down ratio : " + positionVO.getRatio());
-//
-//            // 넘어졌을 때
-//            if (positionVO.getRatio() >= 2.0) {
-//                log.info("falldownfalldownfalldownfalldownfalldownfalldownfalldown");
-//                log.info("falldownfalldownfalldownfalldownfalldownfalldownfalldown");
-//                log.info("falldownfalldownfalldownfalldownfalldownfalldownfalldown");
-//                log.info("falldownfalldownfalldownfalldownfalldownfalldownfalldown");
-//                // FallDownFlag를 true로 전환
-//                fallDownFlagHash.replace(cameraId, true);
-//                // 넘어진 시간을 저장
-//                fallDownTimeHash.put(cameraId, System.currentTimeMillis());
-//                // positionHash에 position 저장 시작
-//                positionHash.get(cameraId).add(positionVO);
-//            }
-//        }
-//
-//        // 이전에 넘어짐을 감지했을 때
-//        else {
-//            log.info("in falldown logic ratio : " + positionVO.getRatio());
-//            if (positionVO.getRatio() >= 2.0) {
-//                // 응급flag가 false라면 움직임 없음 감지
-//                // true라면 알림 해제 대기
-//                if (!emergencyFlagHash.get(cameraId)) {
-//                    // 움직임 없음 감지
-//                    falldownCheck(cameraId, positionVO);
-//                }
-//            } else {
-//                // 넘어졌었는데 지금 안넘어짐
-//                fallDownFlagHash.replace(cameraId, false);
-//                emergencyFlagHash.replace(cameraId, false);
-//                positionHash.get(cameraId).clear();
-//                fallDownTimeHash.remove(cameraId);
-//                log.info("release falldown logic");
-//                log.info("release falldown logic");
-//                log.info("release falldown logic");
-//                log.info("release falldown logic");
-//                log.info("release falldown logic");
-//                log.info("release falldown logic");
-//                log.info("release falldown logic");
-//            }
-//        }
+        // cameraId의 주인이 위급상황이라면 로직 스킵
+        if (emergencyFlagHash.get(cameraId)) {
+            log.info("emergency situation");
+            return;
+        }
+
+        // 이전에 넘어짐을 감지하지 않았을 때
+        if (!fallDownFlagHash.get(cameraId)) {
+            log.info("not fall down ratio : " + positionVO.getRatio());
+
+            // 넘어짐을 감지
+            // 세로 대비 가로 비율이 2.0을 넘음
+            if (positionVO.getRatio() >= 2.0) {
+                log.info("falldownfalldownfalldownfalldownfalldownfalldownfalldown");
+                log.info("falldownfalldownfalldownfalldownfalldownfalldownfalldown");
+                log.info("falldownfalldownfalldownfalldownfalldownfalldownfalldown");
+                log.info("falldownfalldownfalldownfalldownfalldownfalldownfalldown");
+                // FallDownFlag를 true로 전환
+                fallDownFlagHash.replace(cameraId, true);
+                // 넘어진 시간을 저장
+                fallDownTimeHash.put(cameraId, System.currentTimeMillis());
+                // positionHash에 position 저장 시작
+                positionHash.get(cameraId).add(positionVO);
+            }
+        } else {
+        // 이전에 넘어짐을 감지해서 움직임 없음 감지 중일 경우
+            log.info("in falldown logic ratio : " + positionVO.getRatio());
+            if (positionVO.getRatio() >= 2.0) {
+                // 움직임 없음 감지
+                moveDetect(cameraId, positionVO);
+            } else {
+                // 넘어졌었는데 지금 안넘어짐
+                fallDownFlagHash.replace(cameraId, false);
+                emergencyFlagHash.replace(cameraId, false);
+                positionHash.get(cameraId).clear();
+                fallDownTimeHash.remove(cameraId);
+                log.info("release falldown logic");
+                log.info("release falldown logic");
+                log.info("release falldown logic");
+                log.info("release falldown logic");
+                log.info("release falldown logic");
+                log.info("release falldown logic");
+                log.info("release falldown logic");
+            }
+        }
     }
 
-    private void falldownCheck(String cameraId, PositionVO positionVO) {
+    private void moveDetect(String cameraId, PositionVO positionVO) {
         // 넘어진 지 30초가 됨
         if (System.currentTimeMillis() - fallDownTimeHash.get(cameraId) >= 30000) {
             try {
@@ -119,12 +128,15 @@ public class FallDownDetector {
                 e.printStackTrace();
             }
         } else {
-            float lastRatio = positionHash.get(cameraId).get(positionHash.get(cameraId).size() - 1).getRatio();
+        // 넘어진 지 30초가 지나지 않음
+            int lastIndex = positionHash.size() - 4;
+            float lastRatio = positionHash.get(cameraId).get(lastIndex).getRatio();
 
+            // 3프레임 전과 비교하여 비율이 0.5 이상 달라졌는지 확인
             if (lastRatio - positionVO.getRatio() > 0.5 ||
                     positionVO.getRatio() - lastRatio < -0.5) {
-                // 비율이 크게 변할 만큼 움직임
-                // 넘어짐 감지 로직 해제
+            // 비율이 크게 변할 만큼 움직임이 있다면
+            // 넘어짐 감지 로직 해제
                 fallDownFlagHash.replace(cameraId, false);
                 emergencyFlagHash.replace(cameraId, false);
                 positionHash.get(cameraId).clear();
@@ -136,8 +148,6 @@ public class FallDownDetector {
                 log.info("release falldown logic");
                 log.info("release falldown logic");
                 log.info("release falldown logic");
-            } else {
-                log.info("still falldown");
             }
         }
     }

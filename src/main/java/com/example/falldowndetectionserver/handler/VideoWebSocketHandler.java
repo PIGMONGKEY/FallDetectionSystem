@@ -28,7 +28,7 @@ public class VideoWebSocketHandler extends TextWebSocketHandler {
 //    연결 되었을 때
     @Override
     public void afterConnectionEstablished(WebSocketSession session) throws Exception {
-//        소켓 통신 사이즈 제한 설정
+//        소켓 통신 사이즈 제한 늘리기
         session.setBinaryMessageSizeLimit(1000000);
     }
 
@@ -36,23 +36,24 @@ public class VideoWebSocketHandler extends TextWebSocketHandler {
     @Override
     protected void handleTextMessage(WebSocketSession session, TextMessage message) throws Exception {
         try {
+            // 연결 후 받은 TextMessage로 정보 확인 및 구분
             JSONObject object = (JSONObject) jsonParser.parse(message.getPayload());
             String identifier = object.get("identifier").toString();
             String cameraId = object.get("camera_id").toString();
             String sessionId = session.getId();
 
-            //        보내는 쪽일 때 - senderSessions에 put
+            // 보내는 쪽일 때 - senderSessions에 put
             if (identifier.equals("sender")) {
                 senderCameraIDs.put(sessionId, cameraId);
                 log.info("sender connected - " + cameraId);
 
-            //        받는 쪽일 때 - receiverSessions에 put
+            // 받는 쪽일 때 - receiverSessions에 put
             } else if (identifier.equals("receiver")) {
                 receiverSessions.put(cameraId, session);
                 log.info("receiver connected - " + cameraId);
 
-            //        이상한 놈일 때 - 연결 종료
-            //        TextMessage로 JSON이 아닌 메시지를 보내면 연결이 끊기게 되어 있음
+            // 이상한 놈일 때 - 연결 종료
+            // TextMessage로 JSON이 아닌 메시지를 보내면 연결이 끊기게 되어 있음
             } else {
                 session.close();
                 log.info("stranger");
@@ -63,7 +64,9 @@ public class VideoWebSocketHandler extends TextWebSocketHandler {
         }
     }
 
-//    Binary 메시지를 받았을 때
+    // Binary 메시지를 받았을 때
+    // 비디오를 프레임 단위로 끊은 사진으로 전송받는다.
+    // 같은 cameraId를 가진 receiver에게 전송한다.
     @Override
     protected void handleBinaryMessage(WebSocketSession session, BinaryMessage message) {
         try {

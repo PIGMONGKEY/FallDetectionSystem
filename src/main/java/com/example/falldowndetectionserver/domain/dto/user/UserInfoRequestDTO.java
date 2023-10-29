@@ -5,6 +5,9 @@ import lombok.Data;
 
 import java.util.List;
 
+/**
+ * 사용자 정보 DTO
+ */
 @Data
 @Builder
 public class UserInfoRequestDTO {

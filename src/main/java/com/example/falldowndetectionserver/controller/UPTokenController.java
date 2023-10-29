@@ -6,11 +6,15 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+/**
+ * FCM 발송을 위한 사용자 핸드폰 고유 token을 처리한다.
+ */
 @RestController
 @RequiredArgsConstructor
 @RequestMapping("/UPToken/")
 public class UPTokenController {
     private final UPTokenDao uPTokenDao;
+    // TODO: 필요한 지 확인하고 없어도 되면 삭제
 
     /**
      * Database에 사용자 핸드폰 Token을 등록함

@@ -2,23 +2,18 @@ package com.example.falldowndetectionserver.service.emergency;
 
 import com.example.falldowndetectionserver.dao.NokPhoneDao;
 import com.example.falldowndetectionserver.dao.UserDao;
-import com.example.falldowndetectionserver.domain.dto.naver.NaverSMSRequestDTO;
-import com.example.falldowndetectionserver.domain.dto.naver.NaverSMSRequestMessageInfo;
-import com.example.falldowndetectionserver.domain.dto.naver.NaverSMSResponseDTO;
+import com.example.falldowndetectionserver.domain.dto.aligo.AligoSendSMSResponseDTO;
 import com.example.falldowndetectionserver.domain.vo.UserVO;
 import com.example.falldowndetectionserver.fallDownDetect.FallDownDetector;
-import com.example.falldowndetectionserver.utils.SmsUtil;
+import com.example.falldowndetectionserver.utils.AligoSmsUtil;
+import com.google.gson.Gson;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.http.HttpHeaders;
-import org.springframework.http.MediaType;
-import org.springframework.http.RequestEntity;
+import okhttp3.*;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
-import org.springframework.web.client.RestTemplate;
 
-import java.net.URI;
-import java.util.ArrayList;
+import java.io.IOException;
 import java.util.List;
 
 @Service
@@ -27,82 +22,41 @@ import java.util.List;
 public class EmergencyServiceImpl implements EmergencyService {
     private final UserDao userDao;
     private final NokPhoneDao nokPhoneDao;
-    private final SmsUtil smsUtil;
     private final FallDownDetector fallDownDetector;
+    private final AligoSmsUtil smsUtil;
+    private final Gson gson;
 
     /**
-     * 카메라 아이디를 받아서, 보호자 핸드폰으로 문자를 전송한다.
-     * 카메라 아이디로 NokPhoneDao를 통해 보호자 핸드폰 번호 명단을 불러온 후,
-     * 문자를 전송한다.
-     * @param cameraId 카메라 아이디를 파라미터로 받는다
+     * 위급상황 SMS를 전송한다.
      */
     @Override
-    public void sendSMS(String cameraId) {
-        NaverSMSRequestDTO body = makeMessage(cameraId);
-        URI requestURI = smsUtil.getSendMessageURI();
-        HttpHeaders headers = makeHeader();
+    public void sendEmergencySMS(String cameraId) {
+        String requestURI = smsUtil.getSendRequestURI();
+        RequestBody body = makeRequestBody(cameraId);
+        AligoSendSMSResponseDTO responseDTO;
 
-        RequestEntity<NaverSMSRequestDTO> requestEntity = RequestEntity
-                .post(requestURI)
-                .contentType(MediaType.APPLICATION_JSON)
-                .headers(headers)
-                .body(body);
+        OkHttpClient client = new OkHttpClient().newBuilder().build();
 
-        ResponseEntity<NaverSMSResponseDTO> response = new RestTemplate().exchange(requestEntity, NaverSMSResponseDTO.class);
-
-        log.info(response.getBody().toString());
-    }
-
-    /**
-     * 카메라 아이디로 보호자 핸드폰 번호를 불러온 후,
-     * NaverSMSApi에 요청을 보낼 Body를 생성한다.
-     * @param cameraId 카메라 아이디를 파라미터로 받는다.
-     * @return NaverSMSRequestDTO 형태로 requestBody를 리턴한다.
-     */
-    private NaverSMSRequestDTO makeMessage(String cameraId) {
-        UserVO userVO = userDao.select(cameraId).orElseThrow();
-        List<String> nokPhones = nokPhoneDao.selectAll(cameraId);
-        List<NaverSMSRequestMessageInfo> messages = new ArrayList<>();
-
-        messages.add(NaverSMSRequestMessageInfo.builder().to(nokPhones.get(0)).build());
-        // 등록된 보호자 연락처가 2개인 경우, 2명 다 추가한다.
-        if (nokPhones.size() > 1) {
-            messages.add(NaverSMSRequestMessageInfo.builder().to(nokPhones.get(1)).build());
-        }
-
-        String address = userVO.getUserAddress();
-        String phone = userVO.getUserPhone();
-        String name = userVO.getUserName();
-
-        return NaverSMSRequestDTO.builder()
-                .type("SMS")
-                .from(smsUtil.getSender())
-                .content(name + "님의 자택에 설치된 위급상황 감지 시스템이 위급상황을 감지했습니다.\n" +
-                        "자택 주소 : " + address + "\n" +
-                        name + "님의 전화번호 : " + phone + "\n" +
-                        "감지된 영상을 보려면 링크를 클릭해주세요.\n" +
-                        "링크 : ")
-                .messages(messages)
+        Request request = new Request.Builder()
+                .url(requestURI)
+                .method("POST", body)
                 .build();
+
+        try {
+            Response response = client.newCall(request).execute();
+            responseDTO = gson.fromJson(response.body().string(), AligoSendSMSResponseDTO.class);
+            log.info(responseDTO.getSuccess_cnt() + "");
+            // TODO: 문자 여유가 된다면, 전송 실패 시 재전송 로직 추가
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 
     /**
-     * NaverSMSApi에 요청을 보내기 위한 헤더를 생성하여 리턴한다.
-     * SmsUtil에서 AccessKey와 Signature를 생성하여 헤더에 넣는다.
-     * @return 완성된 HttpHeaders를 리턴한다.
+     * 위급상황을 해제 한다.
+     * FallDownDetector에 설정된 Flag들을 수정하고, 일반 감지 상태로 되돌린다.
+     * @param cameraId
      */
-    private HttpHeaders makeHeader() {
-        long time = System.currentTimeMillis();
-
-        HttpHeaders headers = new HttpHeaders();
-        headers.setContentType(MediaType.APPLICATION_JSON);
-        headers.add("x-ncp-apigw-timestamp", time + "");
-        headers.add("x-ncp-iam-access-key", smsUtil.getAccessKey());
-        headers.add("x-ncp-apigw-signature-v2", smsUtil.getSignature(time));
-
-        return headers;
-    }
-
     @Override
     public void emergencyRelease(String cameraId) {
         fallDownDetector.getFallDownTimeHash().remove(cameraId);
@@ -110,6 +64,63 @@ public class EmergencyServiceImpl implements EmergencyService {
         fallDownDetector.getEmergencyFlagHash().replace(cameraId, false);
         fallDownDetector.getFallDownFlagHash().replace(cameraId, false);
 
-        // TODO: 라즈베리 파이 소리 끄기
+        // TODO: 라즈베리 파이 소리 끄기 - 소리 못 낼듯
+    }
+
+    /**
+     * Aligo SMS 전송 요청 Body를 생성하여 리턴한다.
+     */
+    private RequestBody makeRequestBody(String cameraId) {
+        String receiver = getNokphones(cameraId);
+        String message = makeMessage(cameraId);
+
+        RequestBody body = new MultipartBody.Builder()
+                .setType(MultipartBody.FORM)
+                .addFormDataPart("key", smsUtil.getKey())
+                .addFormDataPart("user_id", smsUtil.getUser_id())
+                .addFormDataPart("sender", smsUtil.getSender())
+                .addFormDataPart("receiver", receiver)
+                .addFormDataPart("msg", message)
+                .addFormDataPart("msg_type", "LMS")
+                // 테스트 할 때는 주석 해제 해야 함
+                .addFormDataPart("testmode_yn", "Y")
+                .build();
+
+        return body;
+    }
+
+    /**
+     * 보호자 연락저를 조회하여 ,로 구분된 문자열로 만든 후 리턴한다.
+     * @param cameraId
+     * @return
+     */
+    private String getNokphones(String cameraId) {
+        String receiver;
+
+        List<String> nokphones = nokPhoneDao.selectAll(cameraId);
+        receiver = nokphones.get(0);
+
+        if (nokphones.size() > 1) {
+            receiver = receiver + "," + nokphones.get(1);
+        }
+
+        return receiver;
+    }
+
+    /**
+     * SMS로 전송할 메시지 본문을 생성하여 리턴한다.
+     * @param cameraId
+     * @return
+     */
+    private String makeMessage(String cameraId) {
+        UserVO userVO = userDao.select(cameraId).orElseThrow();
+
+        String message = "[ 긴급상황 감지 시스템 ]" + "\n(" +
+                userVO.getUserName() + " / " + userVO.getUserGender() + " / " + userVO.getUserAge() + "세) 위급상황이 발생했습니다." +
+                "아래 링크에 접속하셔서 " + cameraId + "를 입력하시고, 상황을 확인하세요." +
+                "링크 넣어야 함";
+        // TODO: 넘어지는 영상 재생하는 화면 만들어야 함
+
+        return message;
     }
 }

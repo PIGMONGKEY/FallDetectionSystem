@@ -14,6 +14,9 @@ import java.util.List;
 public class NokPhoneDao {
     private final NokPhoneMapper nokPhoneMapper;
 
+    /**
+     * 보호자 연락저를 저장한다.
+     */
     public int insert(NokPhoneVO nokPhoneVO) {
         try {
             return nokPhoneMapper.insert(nokPhoneVO);
@@ -22,6 +25,9 @@ public class NokPhoneDao {
         }
     }
 
+    /**
+     * 같은 cameraId를 가진 보호자 연락처를 모두 삭제한다.
+     */
     public int delete(String cameraId) {
         try {
             return nokPhoneMapper.delete(cameraId);
@@ -30,6 +36,9 @@ public class NokPhoneDao {
         }
     }
 
+    /**
+     * 같은 카메라 아이디를 가진 보호자 연락처를 모두 조회한다.
+     */
     public List<String> selectAll(String cameraId) {
         return nokPhoneMapper.selectAll(cameraId);
     }
