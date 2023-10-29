@@ -28,6 +28,9 @@ public class UserServiceImpl implements UserService {
     private final CameraIdDao cameraIdDao;
     private final AuthService authService;
 
+    /**
+     * 가입 가능한 cameraId 인지 확인하는 서비스
+     */
     @Override
     public BasicResponseDTO checkCameraId(String cameraId) {
         if (cameraIdDao.select(cameraId) == 1) {
@@ -60,6 +63,7 @@ public class UserServiceImpl implements UserService {
      */
     @Override
     public BasicResponseDTO signup(SignUpRequestDTO signUpRequestDTO) {
+        // DTO로부터 VO를 생성한다.
         UserVO userVO = UserVO.builder()
                 .cameraId(signUpRequestDTO.getUserInfo().getCameraId())
                 .userPassword(passwordEncoder.encode(signUpRequestDTO.getUserInfo().getUserPassword()))
@@ -71,6 +75,7 @@ public class UserServiceImpl implements UserService {
                 .userPhone(signUpRequestDTO.getUserInfo().getUserPhone())
                 .build();
 
+        // 사용자 정보 저장 실패
         if (userDao.insert(userVO) != 1) {
             return BasicResponseDTO.builder()
                     .code(HttpStatus.INTERNAL_SERVER_ERROR.value())
@@ -83,8 +88,11 @@ public class UserServiceImpl implements UserService {
                 .cameraId(signUpRequestDTO.getUserInfo().getCameraId())
                 .build();
 
+        // 보호자 연락처 저장
         for (String nokPhone : signUpRequestDTO.getUserInfo().getNokPhones()) {
             nokPhoneVO.setNokPhone(nokPhone);
+
+            // 보호자 연락처 저장 실패
             if (nokPhoneDao.insert(nokPhoneVO) != 1) {
                 return BasicResponseDTO.builder()
                         .code(HttpStatus.INTERNAL_SERVER_ERROR.value())
@@ -94,6 +102,7 @@ public class UserServiceImpl implements UserService {
             }
         }
 
+        // 핸드폰 고유 토큰 저장 실패
         if (uPTokenDao.insert(signUpRequestDTO.getPhoneToken()) != 1) {
             return BasicResponseDTO.builder()
                     .code(HttpStatus.INTERNAL_SERVER_ERROR.value())
@@ -102,6 +111,7 @@ public class UserServiceImpl implements UserService {
                     .build();
         }
 
+        // 회원가입 성공
         return BasicResponseDTO.builder()
                 .code(HttpStatus.OK.value())
                 .httpStatus(HttpStatus.OK)
@@ -120,6 +130,7 @@ public class UserServiceImpl implements UserService {
         UserVO userVO = userDao.select(cameraId).orElse(null);
         List<String> nokPhones = nokPhoneDao.selectAll(cameraId);
 
+        // 사용자 정보가 있고 보호자 연락처가 등록되어 있다면 UserInfoDTO 생성하여 리턴
         if (userVO != null && !nokPhones.isEmpty()) {
             UserInfoRequestDTO userInfo = UserInfoRequestDTO.builder()
                     .cameraId(userVO.getCameraId())
@@ -140,6 +151,7 @@ public class UserServiceImpl implements UserService {
                     .data(userInfo)
                     .build();
         } else {
+        // 사용자 정보가 없다면 404 리턴
             return BasicResponseDTO.<UserInfoRequestDTO>builder()
                     .code(HttpStatus.NOT_FOUND.value())
                     .httpStatus(HttpStatus.NOT_FOUND)
@@ -155,6 +167,7 @@ public class UserServiceImpl implements UserService {
      */
     @Override
     public BasicResponseDTO removeUserInfo(String cameraId, String token) {
+        // 삭제 실패
         if (userDao.delete(cameraId) != 1) {
             return BasicResponseDTO.builder()
                     .code(HttpStatus.INTERNAL_SERVER_ERROR.value())
@@ -162,6 +175,7 @@ public class UserServiceImpl implements UserService {
                     .message("사용자 삭제에 실패했습니다.")
                     .build();
         } else {
+        // 삭제 성공
             // 토큰을 만료 시킨다.
             authService.logout(AuthTokenParam.builder().token(token.substring(7)).build());
             return BasicResponseDTO.builder()
@@ -180,8 +194,10 @@ public class UserServiceImpl implements UserService {
     @Override
     public BasicResponseDTO modifyUserInfo(UserInfoRequestDTO userInfoRequestDTO) {
         UserVO userVO;
-        // 비밀번호가 변경됨!
-        if (userDao.select(userInfoRequestDTO.getCameraId()).get().getUserPassword() != userInfoRequestDTO.getUserPassword()) {
+        String oldPassword = userDao.select(userInfoRequestDTO.getCameraId()).get().getUserPassword();
+        String newPassword = userInfoRequestDTO.getUserPassword();
+        // 비밀번호가 변경된 경우
+        if (!oldPassword.equals(newPassword)) {
             userVO = UserVO.builder()
                     .cameraId(userInfoRequestDTO.getCameraId())
                     .userPassword(passwordEncoder.encode(userInfoRequestDTO.getUserPassword()))
@@ -193,6 +209,7 @@ public class UserServiceImpl implements UserService {
                     .userPhone(userInfoRequestDTO.getUserPhone())
                     .build();
         } else {
+        // 비밀번호가 변경되지 않은 경우
             userVO = UserVO.builder()
                     .cameraId(userInfoRequestDTO.getCameraId())
                     .userPassword(userInfoRequestDTO.getUserPassword())
@@ -205,6 +222,7 @@ public class UserServiceImpl implements UserService {
                     .build();
         }
 
+        // 사용자 정보 수정 실패 - 500 리턴
         if (userDao.update(userVO) != 1) {
             return BasicResponseDTO.builder()
                     .code(HttpStatus.INTERNAL_SERVER_ERROR.value())
@@ -213,11 +231,15 @@ public class UserServiceImpl implements UserService {
                     .build();
         }
 
+        // 보호자 연락처 정보 모두 삭제
         nokPhoneDao.delete(userInfoRequestDTO.getCameraId());
         NokPhoneVO nokPhoneVO = NokPhoneVO.builder().cameraId(userInfoRequestDTO.getCameraId()).build();
 
+        // 보호자 연락처 정보 다시 삽입
         for (String nokPhone : userInfoRequestDTO.getNokPhones()) {
             nokPhoneVO.setNokPhone(nokPhone);
+
+            // 보호자 연락처 정보 삽입 실패 - 500 리턴
             if (nokPhoneDao.insert(nokPhoneVO) != 1) {
                 return BasicResponseDTO.builder()
                         .code(HttpStatus.INTERNAL_SERVER_ERROR.value())
@@ -227,6 +249,7 @@ public class UserServiceImpl implements UserService {
             }
         }
 
+        // 사용자 정보 수정 성공 - 200 리턴
         return BasicResponseDTO.builder()
                 .code(HttpStatus.OK.value())
                 .httpStatus(HttpStatus.OK)

@@ -4,6 +4,6 @@ import com.example.falldowndetectionserver.domain.dto.aligo.AligoSendSMSResponse
 import org.springframework.http.ResponseEntity;
 
 public interface EmergencyService {
-    public ResponseEntity<AligoSendSMSResponseDTO> sendEmergencySMS(String cameraId);
+    public void sendEmergencySMS(String cameraId);
     public void emergencyRelease(String cameraId);
 }

@@ -3,6 +3,9 @@ package com.example.falldowndetectionserver.domain.dto.aligo;
 import lombok.Builder;
 import lombok.Data;
 
+/**
+ * Aligo 문자전송 시스템에 SMS 전송 요청 후 응답 DTO
+ */
 @Data
 @Builder
 public class AligoSendSMSResponseDTO {

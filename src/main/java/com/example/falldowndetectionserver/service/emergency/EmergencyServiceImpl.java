@@ -26,12 +26,16 @@ public class EmergencyServiceImpl implements EmergencyService {
     private final AligoSmsUtil smsUtil;
     private final Gson gson;
 
+    /**
+     * 위급상황 SMS를 전송한다.
+     */
     @Override
-    public ResponseEntity<AligoSendSMSResponseDTO> sendEmergencySMS(String cameraId) {
+    public void sendEmergencySMS(String cameraId) {
         String requestURI = smsUtil.getSendRequestURI();
-        OkHttpClient client = new OkHttpClient().newBuilder().build();
         RequestBody body = makeRequestBody(cameraId);
         AligoSendSMSResponseDTO responseDTO;
+
+        OkHttpClient client = new OkHttpClient().newBuilder().build();
 
         Request request = new Request.Builder()
                 .url(requestURI)
@@ -46,10 +50,13 @@ public class EmergencyServiceImpl implements EmergencyService {
         } catch (IOException e) {
             e.printStackTrace();
         }
-
-        return null;
     }
 
+    /**
+     * 위급상황을 해제 한다.
+     * FallDownDetector에 설정된 Flag들을 수정하고, 일반 감지 상태로 되돌린다.
+     * @param cameraId
+     */
     @Override
     public void emergencyRelease(String cameraId) {
         fallDownDetector.getFallDownTimeHash().remove(cameraId);
@@ -57,9 +64,12 @@ public class EmergencyServiceImpl implements EmergencyService {
         fallDownDetector.getEmergencyFlagHash().replace(cameraId, false);
         fallDownDetector.getFallDownFlagHash().replace(cameraId, false);
 
-        // TODO: 라즈베리 파이 소리 끄기
+        // TODO: 라즈베리 파이 소리 끄기 - 소리 못 낼듯
     }
 
+    /**
+     * Aligo SMS 전송 요청 Body를 생성하여 리턴한다.
+     */
     private RequestBody makeRequestBody(String cameraId) {
         String receiver = getNokphones(cameraId);
         String message = makeMessage(cameraId);
@@ -73,12 +83,17 @@ public class EmergencyServiceImpl implements EmergencyService {
                 .addFormDataPart("msg", message)
                 .addFormDataPart("msg_type", "LMS")
                 // 테스트 할 때는 주석 해제 해야 함
-//                .addFormDataPart("testmode_yn", "Y")
+                .addFormDataPart("testmode_yn", "Y")
                 .build();
 
         return body;
     }
 
+    /**
+     * 보호자 연락저를 조회하여 ,로 구분된 문자열로 만든 후 리턴한다.
+     * @param cameraId
+     * @return
+     */
     private String getNokphones(String cameraId) {
         String receiver;
 
@@ -92,6 +107,11 @@ public class EmergencyServiceImpl implements EmergencyService {
         return receiver;
     }
 
+    /**
+     * SMS로 전송할 메시지 본문을 생성하여 리턴한다.
+     * @param cameraId
+     * @return
+     */
     private String makeMessage(String cameraId) {
         UserVO userVO = userDao.select(cameraId).orElseThrow();
 

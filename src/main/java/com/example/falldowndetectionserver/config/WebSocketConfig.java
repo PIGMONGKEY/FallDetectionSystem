@@ -8,6 +8,10 @@ import org.springframework.web.socket.config.annotation.EnableWebSocket;
 import org.springframework.web.socket.config.annotation.WebSocketConfigurer;
 import org.springframework.web.socket.config.annotation.WebSocketHandlerRegistry;
 
+/**
+ * 웹 소켓 설정
+ * Handler를 등록하고, 접근 주소를 지정한다.
+ */
 @Configuration
 @RequiredArgsConstructor
 @EnableWebSocket

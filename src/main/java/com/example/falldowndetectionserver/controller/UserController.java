@@ -16,6 +16,10 @@ import org.springframework.web.bind.annotation.*;
 
 import java.nio.charset.StandardCharsets;
 
+/**
+ * 사용자 정보 관리를 위한 API
+ * 회원가입, 정보 조회, 삭제, 수정을 담당한다.
+ */
 @RestController
 @RequiredArgsConstructor
 @Slf4j

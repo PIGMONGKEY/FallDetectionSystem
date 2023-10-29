@@ -34,13 +34,17 @@ public class AuthServiceImpl implements AuthService{
      */
     @Override
     public BasicResponseDTO<AuthTokenParam> login(LoginRequestDTO loginRequestDTO) {
+        // 인증 토큰 객체 생성
         UsernamePasswordAuthenticationToken authenticationToken =
                 new UsernamePasswordAuthenticationToken(loginRequestDTO.getCameraId(), loginRequestDTO.getPassword());
         try {
+            // 인증 시도
+            // 인증 실패 시 BadCredentialsException 발생
             Authentication authentication = authenticationManagerBuilder
                     .getObject()
                     .authenticate(authenticationToken);
 
+            // 토큰 생성
             SecurityContextHolder.getContext().setAuthentication(authentication);
             String jwt = tokenProvider.createToken(authentication);
 
@@ -73,6 +77,8 @@ public class AuthServiceImpl implements AuthService{
      */
     @Override
     public void logout(AuthTokenParam authTokenParam) {
+        // redis에 토큰을 저장한다.
+        // 삭제 시간은 토큰 만료시간과 동일하게 하여 토큰이 만료되면 자동으로 redis에서 삭제되게 한다.
         redisTemplate.opsForValue().set(authTokenParam.getToken(), "logout", tokenProvider.getExpiration(authTokenParam.getToken()) - new Date().getTime(), TimeUnit.MILLISECONDS);
     }
 }

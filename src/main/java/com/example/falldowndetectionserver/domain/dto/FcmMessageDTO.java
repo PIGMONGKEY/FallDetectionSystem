@@ -5,6 +5,9 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.Getter;
 
+/**
+ * FCM 발송을 요청을 위한 DTO
+ */
 @Builder
 @Data
 public class FcmMessageDTO {

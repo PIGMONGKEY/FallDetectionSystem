@@ -19,6 +19,10 @@ import org.springframework.web.bind.annotation.RestController;
 
 import java.nio.charset.StandardCharsets;
 
+/**
+ * 인증 API
+ * 로그인과 로그아웃을 담당한다.
+ */
 @RestController
 @RequiredArgsConstructor
 @RequestMapping("/auth/")

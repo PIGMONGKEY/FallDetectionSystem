@@ -11,6 +11,9 @@ import org.springframework.web.bind.annotation.*;
 
 import java.io.IOException;
 
+/**
+ * fcm 테스트 controller
+ */
 @RestController
 @Slf4j
 @RequiredArgsConstructor

@@ -4,6 +4,9 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.extern.slf4j.Slf4j;
 
+/**
+ * Aligo 문자전송 시스템에 SMS 전송 요청 DTO
+ */
 @Data
 @Builder
 public class AligoSendSMSRequestDTO {
