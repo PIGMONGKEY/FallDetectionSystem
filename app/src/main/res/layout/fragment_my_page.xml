@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@drawable/bg_img"
+    android:background="@drawable/background"
     tools:context=".fragments.MyPageFragment">
 
     <LinearLayout
@@ -22,18 +22,22 @@
             <TextView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:background="#F14559"
                 android:text="마이페이지"
                 android:textAlignment="center"
-                android:textStyle="bold"
-                android:textColor="#F14559"
-                android:textSize="30sp" />
+                android:textColor="#FFFFFF"
+                android:textSize="30sp"
+                android:textStyle="normal" />
         </LinearLayout>
 
         <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="30dp"
-            android:layout_marginBottom="50dp"
+            android:layout_height="160dp"
+            android:layout_marginLeft="8dp"
+            android:layout_marginTop="20dp"
+            android:layout_marginRight="8dp"
+            android:layout_marginBottom="20dp"
+            android:background="@drawable/button_shape_round"
             android:orientation="horizontal">
 
             <LinearLayout
@@ -46,333 +50,299 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_gravity="left"
-                    android:layout_margin="5dp"
+                    android:layout_margin="10dp"
                     tools:layout_editor_absoluteX="141dp"
                     tools:layout_editor_absoluteY="105dp"
-                    tools:srcCompat="@tools:sample/avatars" />
-
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:orientation="horizontal">
-
-                    <TextView
-                        android:layout_width="0dp"
-                        android:layout_height="match_parent"
-                        android:layout_weight="4"
-                        android:ems="10"
-                        android:text="이름:"
-                        android:textAlignment="center"
-                        android:textColor="#F14559"
-                        android:textSize="20sp"
-                        android:textStyle="bold" />
-
-                    <TextView
-                        android:id="@+id/nameTextView_myPage"
-                        android:layout_width="0dp"
-                        android:layout_height="match_parent"
-                        android:layout_weight="6"
-                        android:ems="10"
-                        android:textAlignment="textStart"
-                        android:textSize="20sp"
-                        android:textStyle="bold"
-                        tools:text="이원희" />
-
-                </LinearLayout>
-
+                    tools:srcCompat="@drawable/ic_profile" />
 
             </LinearLayout>
 
             <LinearLayout
                 android:layout_width="100dp"
                 android:layout_height="wrap_content"
+                android:layout_marginTop="10dp"
                 android:orientation="vertical">
 
                 <TextView
+                    android:id="@+id/nameTextView_myPage"
                     android:layout_width="100dp"
                     android:layout_height="match_parent"
-                    android:text="성별"
+                    android:layout_weight="6"
+                    android:ems="10"
                     android:textAlignment="center"
-                    android:textColor="#F14559"
-                    android:textSize="27sp"
-                    android:textStyle="bold" />
-
-                <TextView
-                    android:layout_width="100dp"
-                    android:layout_height="match_parent"
-                    android:layout_marginTop="15dp"
-                    android:layout_weight="1"
-                    android:text="나이"
-                    android:textAlignment="center"
-                    android:textColor="#F14559"
-                    android:textSize="27sp"
-                    android:textStyle="bold" />
-
-                <TextView
-                    android:layout_width="100dp"
-                    android:layout_height="match_parent"
-                    android:layout_marginTop="15dp"
-                    android:layout_weight="1"
-                    android:text="혈액형"
-                    android:textAlignment="center"
-                    android:textColor="#F14559"
-                    android:textSize="27sp"
-                    android:textStyle="bold" />
-
-            </LinearLayout>
-
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:orientation="vertical">
+                    android:textSize="30sp"
+                    android:textStyle="bold"
+                    tools:text="홍길동" />
 
                 <TextView
                     android:id="@+id/sexTextView_myPage"
                     android:layout_width="100dp"
                     android:layout_height="match_parent"
+                    android:layout_marginLeft="5dp"
+                    android:layout_marginTop="10dp"
                     android:layout_weight="1"
                     android:ems="10"
                     android:text="남성"
-                    android:textAlignment="center"
-                    android:textSize="27sp"
+                    android:textSize="20sp"
                     android:textStyle="bold" />
 
                 <TextView
                     android:id="@+id/ageTextView_myPage"
                     android:layout_width="100dp"
                     android:layout_height="match_parent"
-                    android:layout_marginTop="15dp"
+                    android:layout_marginLeft="5dp"
+                    android:layout_marginTop="5dp"
                     android:layout_weight="1"
                     android:ems="10"
                     android:text="60 세"
+                    android:textSize="20sp"
+                    android:textStyle="bold" />
+
+            </LinearLayout>
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="500dp"
+            android:background="@drawable/button_shape_round"
+            android:orientation="vertical">
+
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="50dp"
+                android:layout_gravity="center"
+                android:layout_margin="5dp"
+                android:layout_marginBottom="10dp"
+                android:orientation="horizontal">
+
+
+                <TextView
+                    android:layout_width="130dp"
+                    android:layout_height="match_parent"
+                    android:layout_gravity="center"
+                    android:padding="10sp"
+                    android:text="카 메 라 ID"
                     android:textAlignment="center"
-                    android:textSize="27sp"
+                    android:textColor="#FFD53C4E"
+                    android:textSize="20sp"
                     android:textStyle="bold" />
 
                 <TextView
-                    android:id="@+id/bloodTextView_myPage"
-                    android:layout_width="100dp"
+                    android:id="@+id/cameraIDTextView_myPage"
+                    android:layout_width="0dp"
                     android:layout_height="match_parent"
-                    android:layout_marginTop="15dp"
+                    android:layout_gravity="center"
                     android:layout_weight="1"
                     android:ems="10"
-                    android:text="AB 형"
-                    android:textAlignment="center"
-                    android:textSize="27sp"
-                    android:textStyle="bold" />
+                    android:padding="10sp"
+                    android:text="abcd1234"
+                    android:textColor="#353535"
+                    android:textSize="20sp" />
+
             </LinearLayout>
-        </LinearLayout>
 
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:layout_gravity="center"
-            android:layout_margin="5dp"
-            android:layout_marginBottom="10dp"
-            android:orientation="horizontal">
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="2px"
+                android:background="#B5B5B5" />
 
-
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="match_parent"
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="50dp"
                 android:layout_gravity="center"
-                android:background="@drawable/tv_left_round"
-                android:padding="10sp"
-                android:text="카메라 ID"
-                android:textAlignment="center"
-                android:textColor="#ffffff"
-                android:textSize="20sp"
-                android:textStyle="bold" />
+                android:layout_margin="5dp"
+                android:layout_marginBottom="10dp"
+                android:orientation="horizontal">
 
-            <TextView
-                android:id="@+id/cameraIDTextView_myPage"
-                android:layout_width="0dp"
-                android:layout_height="match_parent"
+
+                <TextView
+                    android:layout_width="130dp"
+                    android:layout_height="match_parent"
+                    android:layout_gravity="center"
+                    android:padding="10sp"
+                    android:text="전 화 번 호"
+                    android:textAlignment="center"
+                    android:textColor="#FFD53C4E"
+                    android:textSize="20sp"
+                    android:textStyle="bold" />
+
+                <TextView
+                    android:id="@+id/phoneTextView_myPage"
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:layout_gravity="center"
+                    android:layout_weight="1"
+                    android:ems="10"
+                    android:padding="10sp"
+                    android:text="010-1234-1234"
+                    android:textColor="#353535"
+                    android:textSize="20sp" />
+
+            </LinearLayout>
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="2px"
+                android:background="#B5B5B5" />
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="50dp"
                 android:layout_gravity="center"
-                android:layout_weight="1"
-                android:background="@drawable/tv_right_round"
-                android:ems="10"
-                android:padding="5sp"
-                android:textAlignment="center"
-                android:textSize="20sp" />
+                android:layout_margin="5dp"
+                android:layout_marginBottom="10dp"
+                android:orientation="horizontal">
 
-        </LinearLayout>
+                <TextView
+                    android:layout_width="130dp"
+                    android:layout_height="match_parent"
+                    android:layout_gravity="center"
+                    android:padding="10sp"
+                    android:text="주      소"
+                    android:textAlignment="center"
+                    android:textColor="#FFD53C4E"
+                    android:textSize="20sp"
+                    android:textStyle="bold" />
 
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:layout_gravity="center"
-            android:layout_margin="5dp"
-            android:layout_marginBottom="10dp"
-            android:orientation="horizontal">
+                <TextView
+                    android:id="@+id/addressTextView_myPage"
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:layout_gravity="center"
+                    android:layout_weight="1"
+                    android:ems="10"
+                    android:padding="10sp"
+                    android:text="경기도 의정부시 호암로 95"
+                    android:textColor="#353535"
+                    android:textSize="20sp" />
 
+            </LinearLayout>
 
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="match_parent"
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="2px"
+                android:background="#B5B5B5" />
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="50dp"
                 android:layout_gravity="center"
-                android:background="@drawable/tv_left_round"
-                android:padding="10sp"
-                android:text="전화번호"
-                android:textAlignment="center"
-                android:textColor="#ffffff"
-                android:textSize="20sp"
-                android:textStyle="bold" />
+                android:layout_margin="5dp"
+                android:layout_marginBottom="10dp"
+                android:orientation="horizontal">
 
-            <TextView
-                android:id="@+id/phoneTextView_myPage"
-                android:layout_width="0dp"
-                android:layout_height="match_parent"
+                <TextView
+                    android:layout_width="130dp"
+                    android:layout_height="match_parent"
+                    android:layout_gravity="center"
+                    android:padding="10sp"
+                    android:text="비상연락처 1"
+                    android:textAlignment="center"
+                    android:textColor="#FFD53C4E"
+                    android:textSize="20sp"
+                    android:textStyle="bold" />
+
+                <TextView
+                    android:id="@+id/nokPhone_1_TextView_myPage"
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:layout_gravity="center"
+                    android:layout_weight="1"
+                    android:ems="10"
+                    android:padding="10sp"
+                    android:text="010-1234-1234"
+                    android:textColor="#353535"
+                    android:textSize="20sp" />
+
+            </LinearLayout>
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="2px"
+                android:background="#B5B5B5" />
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="50dp"
                 android:layout_gravity="center"
-                android:layout_weight="1"
-                android:background="@drawable/tv_right_round"
-                android:ems="10"
-                android:padding="5sp"
-                android:textAlignment="center"
-                android:textSize="20sp" />
+                android:layout_margin="5dp"
+                android:layout_marginBottom="10dp"
+                android:orientation="horizontal">
 
-        </LinearLayout>
+                <TextView
+                    android:layout_width="130dp"
+                    android:layout_height="match_parent"
+                    android:layout_gravity="center"
+                    android:padding="10sp"
+                    android:text="비상연락처 2"
+                    android:textAlignment="center"
+                    android:textColor="#D53C4E"
+                    android:textSize="20sp"
+                    android:textStyle="bold" />
 
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:layout_gravity="center"
-            android:layout_margin="5dp"
-            android:layout_marginBottom="10dp"
-            android:orientation="horizontal">
+                <TextView
+                    android:id="@+id/nokPhone_2_TextView_myPage"
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:layout_gravity="center"
+                    android:layout_weight="1"
+                    android:ems="10"
+                    android:padding="10sp"
+                    android:text="010-1234-1234"
+                    android:textColor="#353535"
+                    android:textSize="20sp" />
 
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="match_parent"
-                android:layout_gravity="center"
-                android:background="@drawable/tv_left_round"
-                android:padding="10sp"
-                android:text="주소"
-                android:textAlignment="center"
-                android:textColor="@color/white"
-                android:textSize="20sp"
-                android:textStyle="bold" />
+            </LinearLayout>
 
-            <TextView
-                android:id="@+id/addressTextView_myPage"
-                android:layout_width="0dp"
-                android:layout_height="match_parent"
-                android:layout_gravity="center"
-                android:layout_weight="1"
-                android:background="@drawable/tv_right_round"
-                android:ems="10"
-                android:padding="5sp"
-                android:textAlignment="center"
-                android:textSize="20sp" />
-
-        </LinearLayout>
-
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:layout_gravity="center"
-            android:layout_margin="5dp"
-            android:layout_marginBottom="10dp"
-            android:orientation="horizontal">
-
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="match_parent"
-                android:layout_gravity="center"
-                android:background="@drawable/tv_left_round"
-                android:padding="10sp"
-                android:text="비상연락처 1"
-                android:textAlignment="center"
-                android:textColor="@color/white"
-                android:textSize="20sp"
-                android:textStyle="bold" />
-
-            <TextView
-                android:id="@+id/nokPhone_1_TextView_myPage"
-                android:layout_width="0dp"
-                android:layout_height="match_parent"
-                android:layout_gravity="center"
-                android:layout_weight="1"
-                android:background="@drawable/tv_right_round"
-                android:ems="10"
-                android:padding="5sp"
-                android:textAlignment="center"
-                android:textSize="20sp" />
-
-        </LinearLayout>
-
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:layout_gravity="center"
-            android:layout_margin="5dp"
-            android:layout_marginBottom="10dp"
-            android:orientation="horizontal">
-
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="match_parent"
-                android:layout_gravity="center"
-                android:background="@drawable/tv_left_round"
-                android:padding="10sp"
-                android:text="비상연락처 2"
-                android:textAlignment="center"
-                android:textColor="@color/white"
-                android:textSize="20sp"
-                android:textStyle="bold" />
-
-            <TextView
-                android:id="@+id/nokPhone_2_TextView_myPage"
-                android:layout_width="0dp"
-                android:layout_height="match_parent"
-                android:layout_gravity="center"
-                android:layout_weight="1"
-                android:background="@drawable/tv_right_round"
-                android:ems="10"
-                android:padding="5sp"
-                android:textAlignment="center"
-                android:textSize="20sp" />
-
-        </LinearLayout>
-
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="30dp"
-            android:layout_marginLeft="5dp"
-            android:layout_marginRight="5dp"
-            android:orientation="horizontal">
-
-            <android.widget.Button
-                android:id="@+id/signOutTextView_mypage"
-                android:layout_width="80dp"
-                android:layout_height="30dp"
-                android:background="#ff0000"
-                android:text="탈퇴하기"
-                android:textColor="@color/white"
-                android:textStyle="normal" />
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="2px"
+                android:background="#B5B5B5" />
 
             <android.widget.Button
                 android:id="@+id/modifyInfoTextView_mypage"
+                android:layout_width="100dp"
+                android:layout_height="wrap_content"
+                android:layout_gravity="right"
+                android:layout_marginRight="10dp"
+                android:text=" 정보 수정 "
+                android:textColor="@color/black"
+                android:textStyle="bold" />
+
+            <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginLeft="180dp"
-                android:background="@drawable/button_shape_round"
-                android:text=" 회원 정보 수정 "
-                android:textColor="@color/white"
-                android:textStyle="bold" />
-        </LinearLayout>
+                android:layout_marginLeft="5dp"
+                android:layout_marginTop="10dp"
+                android:layout_marginRight="5dp"
+                android:orientation="vertical">
 
-        <android.widget.Button
-            android:id="@+id/noticeButton_mypage"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginLeft="300dp"
-            android:layout_marginTop="20dp"
-            android:background="@drawable/button_shape_round"
-            android:text="공지사항"
-            android:textColor="#FFFFFF"
-            android:textStyle="bold" />
+
+                <android.widget.Button
+                    android:id="@+id/logoutButton_mypage"
+                    android:layout_width="wrap_content"
+                    android:layout_height="40dp"
+                    android:layout_marginLeft="300dp"
+                    android:background=""
+                    android:text="로그아웃"
+                    android:textColor="#919191"
+                    android:textStyle="normal" />
+
+                <android.widget.Button
+                    android:id="@+id/signOutTextView_mypage"
+                    android:layout_width="wrap_content"
+                    android:layout_height="40dp"
+                    android:layout_marginLeft="300dp"
+                    android:background=""
+                    android:text="탈퇴하기"
+                    android:textColor="#919191"
+                    android:textStyle="normal" />
+
+
+            </LinearLayout>
+        </LinearLayout>
     </LinearLayout>
 
 </FrameLayout>
