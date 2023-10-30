@@ -2,15 +2,21 @@ package com.example.falldowndetectionserver.fallDownDetect;
 
 import com.example.falldowndetectionserver.dao.UPTokenDao;
 import com.example.falldowndetectionserver.domain.vo.PositionVO;
+import com.example.falldowndetectionserver.handler.VideoWebSocketHandler;
 import com.example.falldowndetectionserver.service.FirebaseMessageService;
+import com.mysql.cj.util.TimeUtil;
 import lombok.*;
 import lombok.extern.slf4j.Slf4j;
 import org.jetbrains.annotations.NotNull;
 import org.springframework.stereotype.Component;
 
 import java.io.IOException;
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
+import java.util.TimeZone;
 
 /**
  * 넘어짐과 위급상황을 감지하고 판단하는 클래스
@@ -22,6 +28,7 @@ import java.util.List;
 public class FallDownDetector {
     private final FirebaseMessageService firebaseMessageService;
     private final UPTokenDao uPTokenDao;
+    private final VideoWebSocketHandler videoWebSocketHandler;
 
     // CameraId / List<PositionVO>
     private final HashMap<String, List<PositionVO>> positionHash = new HashMap<>();
@@ -31,6 +38,7 @@ public class FallDownDetector {
     private final HashMap<String, Boolean> fallDownFlagHash = new HashMap<>();
     // CameraId / 긴급상황 Flag
     private final HashMap<String, Boolean> emergencyFlagHash = new HashMap<>();
+    DateFormat formatter = new SimpleDateFormat("YYYY-MM-DD_HH:mm:ss");
 
     /**
      * 넘어졌는지 확인한다.
@@ -68,6 +76,7 @@ public class FallDownDetector {
         if (!fallDownFlagHash.get(cameraId)) {
             log.info("not fall down ratio : " + positionVO.getRatio());
 
+
             // 넘어짐을 감지
             // 세로 대비 가로 비율이 2.0을 넘음
             if (positionVO.getRatio() >= 2.0) {
@@ -81,6 +90,10 @@ public class FallDownDetector {
                 fallDownTimeHash.put(cameraId, System.currentTimeMillis());
                 // positionHash에 position 저장 시작
                 positionHash.get(cameraId).add(positionVO);
+                Date date = new Date(fallDownTimeHash.get(cameraId));
+                formatter.setTimeZone(TimeZone.getTimeZone("Asia/Seoul"));
+                // 넘어졌다고 비디오 전송지에 알려줌 - 넘어지는 영상 저장
+                videoWebSocketHandler.sendFalldownMessageToWaiter(cameraId, formatter.format(date));
             }
         } else {
         // 이전에 넘어짐을 감지해서 움직임 없음 감지 중일 경우
@@ -129,10 +142,10 @@ public class FallDownDetector {
             }
         } else {
         // 넘어진 지 30초가 지나지 않음
-            int lastIndex = positionHash.size() - 4;
+            int lastIndex = positionHash.size() - 1;
             float lastRatio = positionHash.get(cameraId).get(lastIndex).getRatio();
 
-            // 3프레임 전과 비교하여 비율이 0.5 이상 달라졌는지 확인
+            // 1프레임 전과 비교하여 비율이 0.5 이상 달라졌는지 확인
             if (lastRatio - positionVO.getRatio() > 0.5 ||
                     positionVO.getRatio() - lastRatio < -0.5) {
             // 비율이 크게 변할 만큼 움직임이 있다면

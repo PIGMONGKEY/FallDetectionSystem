@@ -11,6 +11,7 @@ import org.springframework.web.socket.TextMessage;
 import org.springframework.web.socket.WebSocketSession;
 import org.springframework.web.socket.handler.TextWebSocketHandler;
 
+import java.io.IOException;
 import java.util.*;
 
 @Component
@@ -24,6 +25,9 @@ public class VideoWebSocketHandler extends TextWebSocketHandler {
 
 //    세션ID(sender), 카메라ID
     private final HashMap<String, String> senderCameraIDs = new HashMap<>();
+
+//    카메라ID, 세션(waiter)
+    private final HashMap<String, WebSocketSession> waiterSessions = new HashMap<>();
 
 //    연결 되었을 때
     @Override
@@ -47,10 +51,15 @@ public class VideoWebSocketHandler extends TextWebSocketHandler {
                 senderCameraIDs.put(sessionId, cameraId);
                 log.info("sender connected - " + cameraId);
 
-            // 받는 쪽일 때 - receiverSessions에 put
             } else if (identifier.equals("receiver")) {
+            // 받는 쪽일 때 - receiverSessions에 put
                 receiverSessions.put(cameraId, session);
                 log.info("receiver connected - " + cameraId);
+
+            } else if (identifier.equals("waiter")) {
+            // 보내는 쪽의 받는 쪽일 때
+                waiterSessions.put(cameraId, session);
+                log.info("waiter connected - " + cameraId);
 
             // 이상한 놈일 때 - 연결 종료
             // TextMessage로 JSON이 아닌 메시지를 보내면 연결이 끊기게 되어 있음
@@ -97,6 +106,14 @@ public class VideoWebSocketHandler extends TextWebSocketHandler {
         } else {
             log.info("sender disconnected - " + senderCameraIDs.get(session.getId()));
             senderCameraIDs.remove(session.getId());
+        }
+    }
+
+    public void sendFalldownMessageToWaiter(String cameraId, String fallDownTime) {
+        try {
+            waiterSessions.get(cameraId).sendMessage(new TextMessage(fallDownTime));
+        } catch (IOException e) {
+            e.printStackTrace();
         }
     }
 }
