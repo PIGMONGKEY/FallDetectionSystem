@@ -80,18 +80,19 @@ public class FallDownDetector {
             // 넘어짐을 감지
             // 세로 대비 가로 비율이 2.0을 넘음
             if (positionVO.getRatio() >= 2.0) {
-                log.info("falldownfalldownfalldownfalldownfalldownfalldownfalldown");
-                log.info("falldownfalldownfalldownfalldownfalldownfalldownfalldown");
-                log.info("falldownfalldownfalldownfalldownfalldownfalldownfalldown");
-                log.info("falldownfalldownfalldownfalldownfalldownfalldownfalldown");
+                log.info("falldown-----------------------------------------------------");
+
                 // FallDownFlag를 true로 전환
                 fallDownFlagHash.replace(cameraId, true);
+
                 // 넘어진 시간을 저장
                 fallDownTimeHash.put(cameraId, System.currentTimeMillis());
+
                 // positionHash에 position 저장 시작
                 positionHash.get(cameraId).add(positionVO);
                 Date date = new Date(fallDownTimeHash.get(cameraId));
                 formatter.setTimeZone(TimeZone.getTimeZone("Asia/Seoul"));
+
                 // 넘어졌다고 비디오 전송지에 알려줌 - 넘어지는 영상 저장
                 videoWebSocketHandler.sendFalldownMessageToWaiter(cameraId, formatter.format(date));
             }
@@ -107,13 +108,7 @@ public class FallDownDetector {
                 emergencyFlagHash.replace(cameraId, false);
                 positionHash.get(cameraId).clear();
                 fallDownTimeHash.remove(cameraId);
-                log.info("release falldown logic");
-                log.info("release falldown logic");
-                log.info("release falldown logic");
-                log.info("release falldown logic");
-                log.info("release falldown logic");
-                log.info("release falldown logic");
-                log.info("release falldown logic");
+                log.info("release falldown logic-----------------------------------------------------");
             }
         }
     }
@@ -125,18 +120,7 @@ public class FallDownDetector {
                 // 사용자 핸드폰으로 알림을 울림
                 firebaseMessageService.sendMessageTo(uPTokenDao.select(cameraId).get(), "위험!!!", "위험!!!");
                 emergencyFlagHash.replace(cameraId, true);
-                log.info("EMERGENCY!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!");
-                log.info("EMERGENCY!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!");
-                log.info("EMERGENCY!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!");
-                log.info("EMERGENCY!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!");
-                log.info("EMERGENCY!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!");
-                log.info("EMERGENCY!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!");
-                log.info("EMERGENCY!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!");
-                log.info("EMERGENCY!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!");
-                log.info("EMERGENCY!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!");
-                log.info("EMERGENCY!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!");
-                log.info("EMERGENCY!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!");
-                log.info("EMERGENCY!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!");
+                log.info("EMERGENCY-----------------------------------------------------");
             } catch (IOException e) {
                 e.printStackTrace();
             }
@@ -154,13 +138,7 @@ public class FallDownDetector {
                 emergencyFlagHash.replace(cameraId, false);
                 positionHash.get(cameraId).clear();
                 fallDownTimeHash.remove(cameraId);
-                log.info("release falldown logic");
-                log.info("release falldown logic");
-                log.info("release falldown logic");
-                log.info("release falldown logic");
-                log.info("release falldown logic");
-                log.info("release falldown logic");
-                log.info("release falldown logic");
+                log.info("release falldown logic-----------------------------------------------------");
             }
         }
     }
