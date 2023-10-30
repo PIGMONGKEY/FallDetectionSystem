@@ -6,6 +6,7 @@ import com.example.falldetectionapp.DTO.UserInfoDTO;
 
 import retrofit2.Call;
 import retrofit2.http.Body;
+import retrofit2.http.DELETE;
 import retrofit2.http.Field;
 import retrofit2.http.GET;
 import retrofit2.http.Header;
@@ -23,4 +24,8 @@ public interface UserService {
 
     @POST("user")
     Call<BasicResponseDTO> signUp(@Body SignUpDTO signUpDTO);
+
+    @DELETE("user")
+    Call<BasicResponseDTO> signOut(@Header("Authorization") String personalToken,
+                                   @Query("cameraId") String cameraId);
 }

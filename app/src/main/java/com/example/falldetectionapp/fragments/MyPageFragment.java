@@ -9,14 +9,20 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
+import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.falldetectionapp.BuildConfig;
+import com.example.falldetectionapp.DTO.AuthTokenDTO;
 import com.example.falldetectionapp.DTO.BasicResponseDTO;
 import com.example.falldetectionapp.DTO.UserInfoDTO;
+import com.example.falldetectionapp.HomeActivity;
 import com.example.falldetectionapp.LoginActivity;
 import com.example.falldetectionapp.R;
+import com.example.falldetectionapp.StartActivity;
+import com.example.falldetectionapp.retrofit.AuthService;
 import com.example.falldetectionapp.retrofit.UserService;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
@@ -40,7 +46,9 @@ import retrofit2.converter.gson.GsonConverterFactory;
  */
 // TODO: 로그아웃, 탈퇴, 회원정보 수정 구현
 public class MyPageFragment extends Fragment {
-    private TextView nameTV, phoneTV, addressTV, nokPhone1TV, nokPhone2TV;
+    private ImageView profileImageView;
+    private TextView nameTV, genderTV, ageTV, cameraIdTV, phoneTV, addressTV, nokPhone1TV, nokPhone2TV;
+    private Button modifyUserInfoBTN, logoutBTN, signoutBTN;
     private String personalToken;
     private UserInfoDTO userInfoDTO;
 
@@ -64,15 +72,46 @@ public class MyPageFragment extends Fragment {
 
     private void init(View view) {
         setViews(view);
+        setListeners();
         getDataFromBundle();
     }
 
     private void setViews(View view) {
+        profileImageView = view.findViewById(R.id.profileImageView_myPage);
         nameTV = view.findViewById(R.id.nameTextView_myPage);
+        ageTV = view.findViewById(R.id.ageTextView_myPage);
+        genderTV = view.findViewById(R.id.sexTextView_myPage);
+        cameraIdTV = view.findViewById(R.id.cameraIDTextView_myPage);
         phoneTV = view.findViewById(R.id.phoneTextView_myPage);
         addressTV = view.findViewById(R.id.addressTextView_myPage);
         nokPhone1TV = view.findViewById(R.id.nokPhone_1_TextView_myPage);
         nokPhone2TV = view.findViewById(R.id.nokPhone_2_TextView_myPage);
+        modifyUserInfoBTN = view.findViewById(R.id.modifyInfoButton_mypage);
+        logoutBTN = view.findViewById(R.id.logoutButton_mypage);
+        signoutBTN = view.findViewById(R.id.signOutButton_mypage);
+    }
+
+    private void setListeners() {
+        modifyUserInfoBTN.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+            }
+        });
+
+        logoutBTN.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                requestLogout();
+            }
+        });
+
+        signoutBTN.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                requestSignOut();
+            }
+        });
     }
 
     private void getDataFromBundle() {
@@ -109,7 +148,7 @@ public class MyPageFragment extends Fragment {
 
                         // 오류 메시지 띄우고, 로그인 창으로 돌려보냄
                         Toast.makeText(getContext(), basicResponseDTO.getMessage(), Toast.LENGTH_SHORT).show();
-                        Intent intent = new Intent(getContext(), LoginActivity.class);
+                        Intent intent = new Intent(getActivity(), StartActivity.class);
                         startActivity(intent);
 
                     } catch (IOException e) {
@@ -126,13 +165,88 @@ public class MyPageFragment extends Fragment {
         });
     }
 
+    private void requestLogout() {
+        Gson gson = new GsonBuilder().setLenient().create();
+
+        Retrofit retrofit = new Retrofit.Builder()
+                .baseUrl(BuildConfig.SERVER_URL) // 기본으로 적용되는 서버 URL (반드시 / 로 마무리되게 설정)
+                .addConverterFactory(GsonConverterFactory.create(gson)) // JSON 데이터를 Gson 라이브러리로 파싱하고 데이터를 Model에 자동으로 담는 converter
+                .build();
+
+        AuthService authService = retrofit.create(AuthService.class);
+
+        authService.requestLogout(personalToken, new AuthTokenDTO(personalToken)).enqueue(new Callback<BasicResponseDTO<AuthTokenDTO>>() {
+            @Override
+            public void onResponse(Call<BasicResponseDTO<AuthTokenDTO>> call, Response<BasicResponseDTO<AuthTokenDTO>> response) {
+                Intent intent = new Intent(getActivity(), StartActivity.class);
+                startActivity(intent);
+            }
+
+            @Override
+            public void onFailure(Call<BasicResponseDTO<AuthTokenDTO>> call, Throwable t) {
+
+            }
+        });
+    }
+
+    private void requestSignOut() {
+        Gson gson = new GsonBuilder().setLenient().create();
+
+        Retrofit retrofit = new Retrofit.Builder()
+                .baseUrl(BuildConfig.SERVER_URL) // 기본으로 적용되는 서버 URL (반드시 / 로 마무리되게 설정)
+                .addConverterFactory(GsonConverterFactory.create(gson)) // JSON 데이터를 Gson 라이브러리로 파싱하고 데이터를 Model에 자동으로 담는 converter
+                .build();
+
+        UserService userService = retrofit.create(UserService.class);
+
+        userService.signOut(personalToken, userInfoDTO.getCameraId()).enqueue(new Callback<BasicResponseDTO>() {
+            @Override
+            public void onResponse(Call<BasicResponseDTO> call, Response<BasicResponseDTO> response) {
+                if (response.isSuccessful()) {
+                    Intent intent = new Intent(getActivity(), HomeActivity.class);
+                    startActivity(intent);
+                } else {
+                    try {
+                        BasicResponseDTO basicResponseDTO = (BasicResponseDTO) retrofit.responseBodyConverter(
+                                BasicResponseDTO.class,
+                                BasicResponseDTO.class.getAnnotations()
+                        ).convert(response.errorBody());
+
+                        // 오류 메시지 띄우고, 로그인 창으로 돌려보냄
+                        Toast.makeText(getContext(), basicResponseDTO.getMessage(), Toast.LENGTH_SHORT).show();
+                        Intent intent = new Intent(getActivity(), StartActivity.class);
+                        startActivity(intent);
+
+                    } catch (IOException e) {
+                        throw new RuntimeException(e);
+                    }
+                }
+            }
+
+            @Override
+            public void onFailure(Call<BasicResponseDTO> call, Throwable t) {
+
+            }
+        });
+    }
+
     private void showUserInfo() {
         nameTV.setText(userInfoDTO.getUserName());
+        ageTV.setText(userInfoDTO.getUserAge() + "");
+        genderTV.setText(userInfoDTO.getUserGender());
+        cameraIdTV.setText(userInfoDTO.getCameraId());
         phoneTV.setText(userInfoDTO.getUserPhone());
         addressTV.setText(userInfoDTO.getUserAddress());
         nokPhone1TV.setText(userInfoDTO.getNokPhones().get(0));
         if (userInfoDTO.getNokPhones().size() > 1) {
             nokPhone2TV.setText(userInfoDTO.getNokPhones().get(1));
+        } else {
+            nokPhone2TV.setText("null");
+        }
+        if (userInfoDTO.getUserGender().equals("남성")) {
+            profileImageView.setImageResource(R.drawable.profile_man);
+        } else {
+            profileImageView.setImageResource(R.drawable.profile_woman);
         }
     }
 }

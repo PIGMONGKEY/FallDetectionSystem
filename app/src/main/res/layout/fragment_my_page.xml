@@ -46,14 +46,11 @@
                 android:orientation="vertical">
 
                 <ImageView
-                    android:id="@+id/imageView"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
+                    android:id="@+id/profileImageView_myPage"
+                    android:layout_width="150dp"
+                    android:layout_height="match_parent"
                     android:layout_gravity="left"
-                    android:layout_margin="10dp"
-                    tools:layout_editor_absoluteX="141dp"
-                    tools:layout_editor_absoluteY="105dp"
-                    tools:srcCompat="@drawable/ic_profile" />
+                    android:layout_margin="10dp" />
 
             </LinearLayout>
 
@@ -302,7 +299,7 @@
                 android:background="#B5B5B5" />
 
             <android.widget.Button
-                android:id="@+id/modifyInfoTextView_mypage"
+                android:id="@+id/modifyInfoButton_mypage"
                 android:layout_width="100dp"
                 android:layout_height="wrap_content"
                 android:layout_gravity="right"
@@ -325,17 +322,15 @@
                     android:layout_width="wrap_content"
                     android:layout_height="40dp"
                     android:layout_marginLeft="300dp"
-                    android:background=""
                     android:text="로그아웃"
                     android:textColor="#919191"
                     android:textStyle="normal" />
 
                 <android.widget.Button
-                    android:id="@+id/signOutTextView_mypage"
+                    android:id="@+id/signOutButton_mypage"
                     android:layout_width="wrap_content"
                     android:layout_height="40dp"
                     android:layout_marginLeft="300dp"
-                    android:background=""
                     android:text="탈퇴하기"
                     android:textColor="#919191"
                     android:textStyle="normal" />

@@ -8,7 +8,15 @@ public class AuthTokenDTO {
     @Expose
     private String token;
 
+    public AuthTokenDTO() {
+    }
+
+    public AuthTokenDTO(String token) {
+        this.token = token;
+    }
+
     public String getToken() {
         return token;
     }
+
 }
