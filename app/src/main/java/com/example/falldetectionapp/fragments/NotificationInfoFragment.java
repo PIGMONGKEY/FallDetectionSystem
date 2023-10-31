@@ -96,11 +96,11 @@ public class NotificationInfoFragment extends Fragment {
     private void showNotificationContent(NotificationDTO notificationDTO) {
         titleTV.setText(notificationDTO.getTitle());
         contentTV.setText(notificationDTO.getNotiContent());
-        regdateTV.setText(notificationDTO.getRegdate());
+        regdateTV.setText("등록 " + notificationDTO.getRegdate());
         if (notificationDTO.getRegdate().equals(notificationDTO.getUpdatedate())) {
             updatedateTV.setVisibility(View.GONE);
         } else {
-            updatedateTV.setText(notificationDTO.getUpdatedate());
+            updatedateTV.setText("수정 " + notificationDTO.getUpdatedate());
         }
     }
 }
