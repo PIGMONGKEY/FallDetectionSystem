@@ -127,7 +127,8 @@ public class HomeFragment extends Fragment {
         toNotiBoardButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-
+                homeActivity.setFrame(R.id.notification);
+                homeActivity.bottomNavigationView.setSelectedItemId(R.id.notification);
             }
         });
     }

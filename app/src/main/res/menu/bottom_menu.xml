@@ -1,11 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
 <menu xmlns:android="http://schemas.android.com/apk/res/android">
-
     <item
-        android:id="@+id/home"
+        android:id="@+id/guide"
         android:enabled="true"
-        android:icon="@drawable/ic_home"
-        android:title="홈"/>
+        android:icon="@drawable/ic_book"
+        android:title="가이드" />
 
     <item
         android:id="@+id/video"
@@ -14,14 +13,20 @@
         android:title="영상"/>
 
     <item
+        android:id="@+id/home"
+        android:enabled="true"
+        android:icon="@drawable/ic_home"
+        android:title="홈"/>
+
+    <item
         android:id="@+id/myPage"
         android:enabled="true"
         android:icon="@drawable/ic_person"
         android:title="마이페이지" />
 
     <item
-        android:id="@+id/guide"
+        android:id="@+id/notification"
         android:enabled="true"
-        android:icon="@drawable/ic_book"
-        android:title="가이드" />
+        android:icon="@drawable/ic_noti"
+        android:title="공지사항" />
 </menu>

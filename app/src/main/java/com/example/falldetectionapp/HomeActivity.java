@@ -12,6 +12,7 @@ import android.view.MenuItem;
 import com.example.falldetectionapp.fragments.GuideFragment;
 import com.example.falldetectionapp.fragments.HomeFragment;
 import com.example.falldetectionapp.fragments.MyPageFragment;
+import com.example.falldetectionapp.fragments.NotificationFragment;
 import com.example.falldetectionapp.fragments.VideoFragment;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.android.material.navigation.NavigationBarView;
@@ -84,12 +85,33 @@ public class HomeActivity extends AppCompatActivity {
             bundle.putString("cameraId", cameraId);
             bundle.putString("personalToken", personalToken);
             newFragment.setArguments(bundle);
+        } else if (id == R.id.notification) {
+            newFragment = new NotificationFragment();
+            bundle.putString("cameraId", cameraId);
+            bundle.putString("personalToken", personalToken);
+            newFragment.setArguments(bundle);
         } else {
             newFragment = new GuideFragment();
         }
 
         FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
         transaction.replace(R.id.frameLayout, newFragment);
+        transaction.addToBackStack(null);
+
+        transaction.commit();
+    }
+
+    public void setFrameToNotificationInfo(Fragment fragment, int bno) {
+        Bundle bundle = new Bundle();
+
+        bundle.putString("cameraId", cameraId);
+        bundle.putString("personalToken", personalToken);
+        bundle.putInt("bno", bno);
+
+        fragment.setArguments(bundle);
+
+        FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
+        transaction.replace(R.id.frameLayout, fragment);
         transaction.addToBackStack(null);
 
         transaction.commit();
