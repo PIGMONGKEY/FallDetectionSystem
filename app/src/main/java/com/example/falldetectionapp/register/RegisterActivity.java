@@ -2,6 +2,8 @@ package com.example.falldetectionapp.register;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.app.AlertDialog;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
@@ -13,6 +15,7 @@ import android.widget.Toast;
 import com.example.falldetectionapp.BuildConfig;
 import com.example.falldetectionapp.DTO.BasicResponseDTO;
 import com.example.falldetectionapp.DTO.UserInfoDTO;
+import com.example.falldetectionapp.LoginActivity;
 import com.example.falldetectionapp.R;
 import com.example.falldetectionapp.retrofit.UserService;
 import com.google.gson.Gson;
@@ -123,7 +126,15 @@ public class RegisterActivity extends AppCompatActivity {
                         startActivity(intent);
 
                     } else {
-                        Toast.makeText(getApplicationContext(), "비밀번호가 일치하지 않습니다.", Toast.LENGTH_SHORT).show();
+                        new AlertDialog.Builder(getApplicationContext())
+                                .setTitle("회원가입")
+                                .setMessage("비밀번호가 서로 일치하지 않습니다.")
+                                .setPositiveButton("확인", new DialogInterface.OnClickListener() {
+                                    @Override
+                                    public void onClick(DialogInterface dialog, int which) {
+
+                                    }
+                                }).show();
                     }
                 } else {
                     // 등록 불가능한 아이디
@@ -135,13 +146,23 @@ public class RegisterActivity extends AppCompatActivity {
                                 BasicResponseDTO.class.getAnnotations()
                         ).convert(response.errorBody());
 
-                        if (basicResponseDTO.getCode() == 404) {
-                            // 없는 카메라 아이디
-                            Toast.makeText(getApplicationContext(), basicResponseDTO.getMessage(), Toast.LENGTH_SHORT).show();
-                        } else {
-                            // 이미 등록된 카메라 아이디
-                            Toast.makeText(getApplicationContext(), basicResponseDTO.getMessage(), Toast.LENGTH_SHORT).show();
-                        }
+                        new AlertDialog.Builder(getApplicationContext())
+                                .setTitle("회원가입")
+                                .setMessage(basicResponseDTO.getMessage())
+                                .setPositiveButton("확인", new DialogInterface.OnClickListener() {
+                                    @Override
+                                    public void onClick(DialogInterface dialog, int which) {
+
+                                    }
+                                }).show();
+
+//                        if (basicResponseDTO.getCode() == 404) {
+//                            // 없는 카메라 아이디
+//                            Toast.makeText(getApplicationContext(), basicResponseDTO.getMessage(), Toast.LENGTH_SHORT).show();
+//                        } else {
+//                            // 이미 등록된 카메라 아이디
+//                            Toast.makeText(getApplicationContext(), basicResponseDTO.getMessage(), Toast.LENGTH_SHORT).show();
+//                        }
                     } catch (IOException e) {
                         throw new RuntimeException(e);
                     }
@@ -151,7 +172,6 @@ public class RegisterActivity extends AppCompatActivity {
             @Override
             public void onFailure(Call<BasicResponseDTO> call, Throwable t) {
                 // 서버 연결에 실패한 경우 onFailure로 들어옴
-                Log.d("RETROFIT", t.getCause().toString());
                 Toast.makeText(getApplicationContext(), "서버 연결에 실패했습니다.", Toast.LENGTH_SHORT).show();
             }
         });

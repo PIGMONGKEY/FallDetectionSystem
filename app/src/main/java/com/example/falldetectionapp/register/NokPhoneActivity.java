@@ -2,6 +2,8 @@ package com.example.falldetectionapp.register;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.app.AlertDialog;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
@@ -163,8 +165,16 @@ public class NokPhoneActivity extends AppCompatActivity {
             @Override
             public void onResponse(Call<BasicResponseDTO> call, Response<BasicResponseDTO> response) {
                 if (response.isSuccessful()) {
-                    Intent intent = new Intent(NokPhoneActivity.this, LoginActivity.class);
-                    startActivity(intent);
+                    new AlertDialog.Builder(getApplicationContext())
+                            .setTitle("회원가입")
+                            .setMessage("회원가입 되었습니다!")
+                            .setPositiveButton("확인", new DialogInterface.OnClickListener() {
+                                @Override
+                                public void onClick(DialogInterface dialog, int which) {
+                                    Intent intent = new Intent(NokPhoneActivity.this, LoginActivity.class);
+                                    startActivity(intent);
+                                }
+                            }).show();
                 } else {
                     try {
                         BasicResponseDTO basicResponseDTO = (BasicResponseDTO) retrofit.responseBodyConverter(
@@ -172,7 +182,18 @@ public class NokPhoneActivity extends AppCompatActivity {
                                 BasicResponseDTO.class.getAnnotations()
                         ).convert(response.errorBody());
 
-                        Toast.makeText(getApplicationContext(), basicResponseDTO.getMessage(), Toast.LENGTH_LONG).show();
+                        new AlertDialog.Builder(getApplicationContext())
+                                .setTitle("회원가입")
+                                .setMessage("회원가입을 실패했습니다.\n" +
+                                        "오류 메시지 : " + basicResponseDTO.getMessage())
+                                .setPositiveButton("확인", new DialogInterface.OnClickListener() {
+                                    @Override
+                                    public void onClick(DialogInterface dialog, int which) {
+                                        Intent intent = new Intent(NokPhoneActivity.this, LoginActivity.class);
+                                        startActivity(intent);
+                                    }
+                                }).show();
+
                     } catch (IOException e) {
                         throw new RuntimeException(e);
                     }
