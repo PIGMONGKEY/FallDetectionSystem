@@ -6,6 +6,7 @@
     android:layout_height="match_parent"
     android:padding="30dp"
     android:orientation="vertical"
+    android:keepScreenOn="true"
     tools:context=".register.NokPhoneActivity">
 
     <ImageView
