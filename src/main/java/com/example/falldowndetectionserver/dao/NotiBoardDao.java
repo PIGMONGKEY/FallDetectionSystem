@@ -22,6 +22,10 @@ public class NotiBoardDao {
         }
     }
 
+    public NotiBoardVO select(int bno) {
+        return notiBoardMapper.select(bno);
+    }
+
     public List<NotiBoardVO> selectAll() {
         return notiBoardMapper.selectAll();
     }

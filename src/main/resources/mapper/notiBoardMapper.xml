@@ -6,6 +6,11 @@
         VALUES (#{title}, #{content});
     </insert>
 
+    <select id="select" resultType="notiBoardVO">
+        SELECT BNO, TITLE, CONTENT, REGDATE, UPDATEDATE FROM TBL_NOTI_BOARD
+        WHERE BNO = #{bno};
+    </select>
+
     <select id="selectAll" resultType="notiBoardVO">
         SELECT BNO, TITLE, CONTENT, REGDATE, UPDATEDATE FROM TBL_NOTI_BOARD;
     </select>

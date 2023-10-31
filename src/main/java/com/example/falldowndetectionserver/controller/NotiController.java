@@ -51,6 +51,24 @@ public class NotiController {
         return new ResponseEntity<>(response, httpHeaders, response.getHttpStatus());
     }
 
+    @GetMapping("/noti/{bno}")
+    public ResponseEntity<BasicResponseDTO<NotiBoardVO>> getNoti(@PathVariable int bno) {
+        BasicResponseDTO response;
+        HttpHeaders httpHeaders = new HttpHeaders();
+        httpHeaders.setContentType(new MediaType("application", "json", StandardCharsets.UTF_8));
+
+        NotiBoardVO notiBoardVO = notiBoardDao.select(bno);
+
+        response = BasicResponseDTO.builder()
+                .code(HttpStatus.OK.value())
+                .httpStatus(HttpStatus.OK)
+                .message("공지사항 조회 완료")
+                .data(notiBoardVO)
+                .build();
+
+        return new ResponseEntity<>(response, httpHeaders, response.getHttpStatus());
+    }
+
     /**
      * 모든 공지사항을 조회한다.
      * @return BasicResponseDTO에 NotiBoardVO를 리스트로 담아서 JSON으로 반환한다.

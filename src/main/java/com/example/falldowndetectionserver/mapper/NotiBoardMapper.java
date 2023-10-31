@@ -11,6 +11,7 @@ import java.util.List;
 public interface NotiBoardMapper {
     public int insert(NotiBoardVO notiBoardVO);
     public List<NotiBoardVO> selectAll();
+    public NotiBoardVO select(int bno);
     public int update(NotiBoardVO notiBoardVO);
     public int delete(int bno);
 }

@@ -72,6 +72,7 @@ public class WebSecurityConfig {
                 .antMatchers("/show").permitAll()
                 // 공지사항 api 인증 제외
                 .antMatchers("/noti").permitAll()
+                .antMatchers("/noti/*").permitAll()
                 // 카메라 아이디 확인 api 인증 제외
                 .antMatchers("/checkCameraId").permitAll()
                 // 로그인 인증 제외
