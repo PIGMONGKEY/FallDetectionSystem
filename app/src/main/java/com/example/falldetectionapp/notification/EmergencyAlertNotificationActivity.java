@@ -16,6 +16,7 @@ import android.widget.Button;
 import android.widget.TextView;
 
 import com.example.falldetectionapp.BuildConfig;
+import com.example.falldetectionapp.DTO.BasicResponseDTO;
 import com.example.falldetectionapp.R;
 import com.example.falldetectionapp.retrofit.EmergencyService;
 import com.google.firebase.messaging.FirebaseMessaging;
@@ -68,7 +69,6 @@ public class EmergencyAlertNotificationActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 timerStopFlag = true;
-                requestSOS();
             }
         });
 
@@ -78,7 +78,6 @@ public class EmergencyAlertNotificationActivity extends AppCompatActivity {
             public void onClick(View v) {
                 timerStopFlag = true;
                 emergencyFlag = false;
-                requestReleaseEmergency();
             }
         });
     }
@@ -138,14 +137,14 @@ public class EmergencyAlertNotificationActivity extends AppCompatActivity {
 
         EmergencyService emergencyService = retrofit.create(EmergencyService.class);
 
-        emergencyService.releaseEmergency(fcmDeviceToken).enqueue(new Callback<String>() {
+        emergencyService.releaseEmergency(fcmDeviceToken).enqueue(new Callback<BasicResponseDTO>() {
             @Override
-            public void onResponse(Call<String> call, Response<String> response) {
+            public void onResponse(Call<BasicResponseDTO> call, Response<BasicResponseDTO> response) {
                 showAlertDialog("위급상황이 해제되었습니다.");
             }
 
             @Override
-            public void onFailure(Call<String> call, Throwable t) {
+            public void onFailure(Call<BasicResponseDTO> call, Throwable t) {
                 alertTimerTextView.setText("failed");
                 Log.d("EMERGENCY", "failed");
             }
@@ -163,14 +162,14 @@ public class EmergencyAlertNotificationActivity extends AppCompatActivity {
 
         EmergencyService emergencyService = retrofit.create(EmergencyService.class);
 
-        emergencyService.sos(fcmDeviceToken).enqueue(new Callback<String>() {
+        emergencyService.sos(fcmDeviceToken).enqueue(new Callback<BasicResponseDTO>() {
             @Override
-            public void onResponse(Call<String> call, Response<String> response) {
+            public void onResponse(Call<BasicResponseDTO> call, Response<BasicResponseDTO> response) {
                 showAlertDialog("긴급 상황 도움 요청이 완료되었습니다.");
             }
 
             @Override
-            public void onFailure(Call<String> call, Throwable t) {
+            public void onFailure(Call<BasicResponseDTO> call, Throwable t) {
                 alertTimerTextView.setText("failed");
                 Log.d("EMERGENCY", "failed");
             }
@@ -194,6 +193,8 @@ public class EmergencyAlertNotificationActivity extends AppCompatActivity {
 
             if (emergencyFlag) {
                 requestSOS();
+            } else {
+                requestReleaseEmergency();
             }
         }
     }
@@ -209,9 +210,7 @@ public class EmergencyAlertNotificationActivity extends AppCompatActivity {
 
             while (mediaPlayer.isPlaying()) {
                 if (timerStopFlag) {
-                    if (!emergencyFlag) {
-                        mediaPlayer.stop();
-                    }
+                    mediaPlayer.stop();
                 }
             }
 
@@ -220,7 +219,7 @@ public class EmergencyAlertNotificationActivity extends AppCompatActivity {
     }
 
     private void showAlertDialog(String message) {
-        new AlertDialog.Builder(getApplicationContext())
+        new AlertDialog.Builder(this)
                 .setTitle("긴급 상황 감지 시스템")
                 .setMessage(message)
                 .setPositiveButton("확인", new DialogInterface.OnClickListener() {

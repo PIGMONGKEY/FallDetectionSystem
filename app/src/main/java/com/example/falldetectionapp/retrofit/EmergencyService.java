@@ -1,5 +1,7 @@
 package com.example.falldetectionapp.retrofit;
 
+import com.example.falldetectionapp.DTO.BasicResponseDTO;
+
 import retrofit2.Call;
 import retrofit2.http.GET;
 import retrofit2.http.Query;
@@ -7,8 +9,8 @@ import retrofit2.http.Query;
 public interface EmergencyService {
 
     @GET("emergency/release")
-    Call<String> releaseEmergency(@Query("uptoken") String uptoken);
+    Call<BasicResponseDTO> releaseEmergency(@Query("uptoken") String uptoken);
 
     @GET("emergency/sos")
-    Call<String> sos(@Query("uptoken") String uptoken);
+    Call<BasicResponseDTO> sos(@Query("uptoken") String uptoken);
 }
