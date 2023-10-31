@@ -2,7 +2,9 @@ package com.example.falldetectionapp.notification;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.app.AlertDialog;
 import android.app.KeyguardManager;
+import android.content.DialogInterface;
 import android.media.MediaPlayer;
 import android.os.Build;
 import android.os.Bundle;
@@ -139,7 +141,17 @@ public class EmergencyAlertNotificationActivity extends AppCompatActivity {
         emergencyService.releaseEmergency(fcmDeviceToken).enqueue(new Callback<String>() {
             @Override
             public void onResponse(Call<String> call, Response<String> response) {
-                Log.d("EMERGENCY", "requested");
+                new AlertDialog.Builder(getApplicationContext())
+                        .setTitle("긴급 상황 감지 시스템")
+                        .setMessage("긴급상황이 해제되었습니다.")
+                        .setPositiveButton("확인", new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialog, int which) {
+                                moveTaskToBack(true);
+                                finishAndRemoveTask();
+                                android.os.Process.killProcess(android.os.Process.myPid());
+                            }
+                        }).show();
             }
 
             @Override
@@ -164,7 +176,17 @@ public class EmergencyAlertNotificationActivity extends AppCompatActivity {
         emergencyService.sos(fcmDeviceToken).enqueue(new Callback<String>() {
             @Override
             public void onResponse(Call<String> call, Response<String> response) {
-                Log.d("EMERGENCY", "requested");
+                new AlertDialog.Builder(getApplicationContext())
+                        .setTitle("긴급 상황 감지 시스템")
+                        .setMessage("위급상황 도움 요청이 전송되었습니다.")
+                        .setPositiveButton("확인", new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialog, int which) {
+                                moveTaskToBack(true);
+                                finishAndRemoveTask();
+                                android.os.Process.killProcess(android.os.Process.myPid());
+                            }
+                        }).show();
             }
 
             @Override
@@ -182,7 +204,7 @@ public class EmergencyAlertNotificationActivity extends AppCompatActivity {
     private class TimerThread extends Thread {
         @Override
         public void run() {
-            int second = 180;
+            int second = 90;
 
             while (second > 0 && !timerStopFlag) {
                 SystemClock.sleep(980);
