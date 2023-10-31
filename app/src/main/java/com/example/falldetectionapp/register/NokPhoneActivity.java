@@ -18,8 +18,8 @@ import com.example.falldetectionapp.DTO.BasicResponseDTO;
 import com.example.falldetectionapp.DTO.SignUpDTO;
 import com.example.falldetectionapp.DTO.UserInfoDTO;
 import com.example.falldetectionapp.DTO.UserPhoneTokenDTO;
-import com.example.falldetectionapp.LoginActivity;
 import com.example.falldetectionapp.R;
+import com.example.falldetectionapp.StartActivity;
 import com.example.falldetectionapp.retrofit.UserService;
 import com.google.firebase.messaging.FirebaseMessaging;
 import com.google.gson.Gson;
@@ -165,16 +165,7 @@ public class NokPhoneActivity extends AppCompatActivity {
             @Override
             public void onResponse(Call<BasicResponseDTO> call, Response<BasicResponseDTO> response) {
                 if (response.isSuccessful()) {
-                    new AlertDialog.Builder(getApplicationContext())
-                            .setTitle("회원가입")
-                            .setMessage("회원가입 되었습니다!")
-                            .setPositiveButton("확인", new DialogInterface.OnClickListener() {
-                                @Override
-                                public void onClick(DialogInterface dialog, int which) {
-                                    Intent intent = new Intent(NokPhoneActivity.this, LoginActivity.class);
-                                    startActivity(intent);
-                                }
-                            }).show();
+                    showAlertDialog("회원가입", "회원가입이 완료되었습니다.");
                 } else {
                     try {
                         BasicResponseDTO basicResponseDTO = (BasicResponseDTO) retrofit.responseBodyConverter(
@@ -182,17 +173,8 @@ public class NokPhoneActivity extends AppCompatActivity {
                                 BasicResponseDTO.class.getAnnotations()
                         ).convert(response.errorBody());
 
-                        new AlertDialog.Builder(getApplicationContext())
-                                .setTitle("회원가입")
-                                .setMessage("회원가입을 실패했습니다.\n" +
-                                        "오류 메시지 : " + basicResponseDTO.getMessage())
-                                .setPositiveButton("확인", new DialogInterface.OnClickListener() {
-                                    @Override
-                                    public void onClick(DialogInterface dialog, int which) {
-                                        Intent intent = new Intent(NokPhoneActivity.this, LoginActivity.class);
-                                        startActivity(intent);
-                                    }
-                                }).show();
+                        showAlertDialog("회원가입", "회원가입에 실패했습니다." +
+                                "\n오류 메시지 : " + basicResponseDTO.getMessage());
 
                     } catch (IOException e) {
                         throw new RuntimeException(e);
@@ -206,5 +188,18 @@ public class NokPhoneActivity extends AppCompatActivity {
                 Toast.makeText(getApplicationContext(), "서버 연결에 실패했습니다.", Toast.LENGTH_LONG).show();
             }
         });
+    }
+
+    private void showAlertDialog(String title, String message) {
+        new AlertDialog.Builder(this)
+                .setTitle(title)
+                .setMessage(message)
+                .setPositiveButton("확인", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        Intent intent = new Intent(NokPhoneActivity.this, StartActivity.class);
+                        startActivity(intent);
+                    }
+                }).show();
     }
 }

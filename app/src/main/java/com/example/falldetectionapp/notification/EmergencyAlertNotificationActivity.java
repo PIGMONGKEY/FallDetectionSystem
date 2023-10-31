@@ -141,17 +141,7 @@ public class EmergencyAlertNotificationActivity extends AppCompatActivity {
         emergencyService.releaseEmergency(fcmDeviceToken).enqueue(new Callback<String>() {
             @Override
             public void onResponse(Call<String> call, Response<String> response) {
-                new AlertDialog.Builder(getApplicationContext())
-                        .setTitle("긴급 상황 감지 시스템")
-                        .setMessage("긴급상황이 해제되었습니다.")
-                        .setPositiveButton("확인", new DialogInterface.OnClickListener() {
-                            @Override
-                            public void onClick(DialogInterface dialog, int which) {
-                                moveTaskToBack(true);
-                                finishAndRemoveTask();
-                                android.os.Process.killProcess(android.os.Process.myPid());
-                            }
-                        }).show();
+                showAlertDialog("위급상황이 해제되었습니다.");
             }
 
             @Override
@@ -176,17 +166,7 @@ public class EmergencyAlertNotificationActivity extends AppCompatActivity {
         emergencyService.sos(fcmDeviceToken).enqueue(new Callback<String>() {
             @Override
             public void onResponse(Call<String> call, Response<String> response) {
-                new AlertDialog.Builder(getApplicationContext())
-                        .setTitle("긴급 상황 감지 시스템")
-                        .setMessage("위급상황 도움 요청이 전송되었습니다.")
-                        .setPositiveButton("확인", new DialogInterface.OnClickListener() {
-                            @Override
-                            public void onClick(DialogInterface dialog, int which) {
-                                moveTaskToBack(true);
-                                finishAndRemoveTask();
-                                android.os.Process.killProcess(android.os.Process.myPid());
-                            }
-                        }).show();
+                showAlertDialog("긴급 상황 도움 요청이 완료되었습니다.");
             }
 
             @Override
@@ -237,5 +217,19 @@ public class EmergencyAlertNotificationActivity extends AppCompatActivity {
 
             mediaPlayer.release();
         }
+    }
+
+    private void showAlertDialog(String message) {
+        new AlertDialog.Builder(getApplicationContext())
+                .setTitle("긴급 상황 감지 시스템")
+                .setMessage(message)
+                .setPositiveButton("확인", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        moveTaskToBack(true);
+                        finishAndRemoveTask();
+                        android.os.Process.killProcess(android.os.Process.myPid());
+                    }
+                }).show();
     }
 }

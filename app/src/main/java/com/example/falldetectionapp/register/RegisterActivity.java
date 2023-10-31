@@ -126,15 +126,7 @@ public class RegisterActivity extends AppCompatActivity {
                         startActivity(intent);
 
                     } else {
-                        new AlertDialog.Builder(getApplicationContext())
-                                .setTitle("회원가입")
-                                .setMessage("비밀번호가 서로 일치하지 않습니다.")
-                                .setPositiveButton("확인", new DialogInterface.OnClickListener() {
-                                    @Override
-                                    public void onClick(DialogInterface dialog, int which) {
-
-                                    }
-                                }).show();
+                        showAlertDialog("회원가입", "비밀번호가 서로 일치하지 않습니다.");
                     }
                 } else {
                     // 등록 불가능한 아이디
@@ -146,15 +138,7 @@ public class RegisterActivity extends AppCompatActivity {
                                 BasicResponseDTO.class.getAnnotations()
                         ).convert(response.errorBody());
 
-                        new AlertDialog.Builder(getApplicationContext())
-                                .setTitle("회원가입")
-                                .setMessage(basicResponseDTO.getMessage())
-                                .setPositiveButton("확인", new DialogInterface.OnClickListener() {
-                                    @Override
-                                    public void onClick(DialogInterface dialog, int which) {
-
-                                    }
-                                }).show();
+                        showAlertDialog("회원가입", basicResponseDTO.getMessage());
 
 //                        if (basicResponseDTO.getCode() == 404) {
 //                            // 없는 카메라 아이디
@@ -175,5 +159,17 @@ public class RegisterActivity extends AppCompatActivity {
                 Toast.makeText(getApplicationContext(), "서버 연결에 실패했습니다.", Toast.LENGTH_SHORT).show();
             }
         });
+    }
+
+    private void showAlertDialog(String title, String message) {
+        new AlertDialog.Builder(this)
+                .setTitle(title)
+                .setMessage(message)
+                .setPositiveButton("확인", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+
+                    }
+                }).show();
     }
 }

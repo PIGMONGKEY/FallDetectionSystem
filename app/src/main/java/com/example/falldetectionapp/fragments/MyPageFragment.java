@@ -209,7 +209,7 @@ public class MyPageFragment extends Fragment {
 
         AuthService authService = retrofit.create(AuthService.class);
 
-        authService.requestLogout(personalToken, new AuthTokenDTO(personalToken)).enqueue(new Callback<BasicResponseDTO<AuthTokenDTO>>() {
+        authService.requestLogout("Bearer " + personalToken, new AuthTokenDTO(personalToken)).enqueue(new Callback<BasicResponseDTO<AuthTokenDTO>>() {
             @Override
             public void onResponse(Call<BasicResponseDTO<AuthTokenDTO>> call, Response<BasicResponseDTO<AuthTokenDTO>> response) {
                 new AlertDialog.Builder(getContext())
@@ -242,7 +242,7 @@ public class MyPageFragment extends Fragment {
 
         UserService userService = retrofit.create(UserService.class);
 
-        userService.signOut(personalToken, userInfoDTO.getCameraId()).enqueue(new Callback<BasicResponseDTO>() {
+        userService.signOut("Bearer " + personalToken, userInfoDTO.getCameraId()).enqueue(new Callback<BasicResponseDTO>() {
             @Override
             public void onResponse(Call<BasicResponseDTO> call, Response<BasicResponseDTO> response) {
                 if (response.isSuccessful()) {
@@ -252,7 +252,7 @@ public class MyPageFragment extends Fragment {
                             .setPositiveButton("확인", new DialogInterface.OnClickListener() {
                                 @Override
                                 public void onClick(DialogInterface dialog, int which) {
-                                    Intent intent = new Intent(getActivity(), HomeActivity.class);
+                                    Intent intent = new Intent(getActivity(), StartActivity.class);
                                     startActivity(intent);
                                 }
                             }).show();
