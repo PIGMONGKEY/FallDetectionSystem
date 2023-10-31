@@ -9,11 +9,25 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
+import com.example.falldetectionapp.BuildConfig;
+import com.example.falldetectionapp.DTO.BasicResponseDTO;
+import com.example.falldetectionapp.DTO.NotificationDTO;
 import com.example.falldetectionapp.R;
+import com.example.falldetectionapp.retrofit.NotificationService;
+import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
+
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
+import retrofit2.Retrofit;
+import retrofit2.converter.gson.GsonConverterFactory;
 
 public class NotificationInfoFragment extends Fragment {
 
     private TextView titleTV, contentTV, regdateTV, updatedateTV;
+    private String cameraId, personalToken;
+    private int bno;
 
     public NotificationInfoFragment() {
         // Required empty public constructor
@@ -37,6 +51,8 @@ public class NotificationInfoFragment extends Fragment {
 
     private void init(View view) {
         setView(view);
+        getDateFromBundle();
+        requestNotificationInfo();
     }
 
     private void setView(View view) {
@@ -46,11 +62,45 @@ public class NotificationInfoFragment extends Fragment {
         updatedateTV = view.findViewById(R.id.updatedateTextView_notification_info);
     }
 
-    private void requestNotificationInfo() {
-
+    private void getDateFromBundle() {
+        cameraId = getArguments().getString("cameraId");
+        personalToken = getArguments().getString("personalToken");
+        bno = getArguments().getInt("bno");
     }
 
-    private void showNotificationContent() {
+    private void requestNotificationInfo() {
+        Gson gson = new GsonBuilder().setLenient().create();
 
+        Retrofit retrofit = new Retrofit.Builder()
+                .baseUrl(BuildConfig.SERVER_URL) // 기본으로 적용되는 서버 URL (반드시 / 로 마무리되게 설정)
+                .addConverterFactory(GsonConverterFactory.create(gson)) // JSON 데이터를 Gson 라이브러리로 파싱하고 데이터를 Model에 자동으로 담는 converter
+                .build();
+
+        NotificationService notificationService = retrofit.create(NotificationService.class);
+
+        notificationService.requestOneNotification(bno + 1).enqueue(new Callback<BasicResponseDTO<NotificationDTO>>() {
+            @Override
+            public void onResponse(Call<BasicResponseDTO<NotificationDTO>> call, Response<BasicResponseDTO<NotificationDTO>> response) {
+                if (response.isSuccessful()) {
+                    showNotificationContent(response.body().getData());
+                }
+            }
+
+            @Override
+            public void onFailure(Call<BasicResponseDTO<NotificationDTO>> call, Throwable t) {
+
+            }
+        });
+    }
+
+    private void showNotificationContent(NotificationDTO notificationDTO) {
+        titleTV.setText(notificationDTO.getTitle());
+        contentTV.setText(notificationDTO.getNotiContent());
+        regdateTV.setText(notificationDTO.getRegdate());
+        if (notificationDTO.getRegdate().equals(notificationDTO.getUpdatedate())) {
+            updatedateTV.setVisibility(View.GONE);
+        } else {
+            updatedateTV.setText(notificationDTO.getUpdatedate());
+        }
     }
 }
