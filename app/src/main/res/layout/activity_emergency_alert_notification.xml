@@ -15,7 +15,7 @@
         android:layout_height="wrap_content"
         android:layout_marginTop="16dp"
         android:gravity="center"
-        android:text="위급상황이 감지되었습니다\n\n위급상황이 아니라면\n3분 이내에 위급상황 해제 버튼을 눌러주세요 "
+        android:text="위급상황이 감지되었습니다\n\n위급상황이 아니라면\n1분 30초 이내에 위급상황 해제 버튼을 눌러주세요 "
         android:textColor="#000000"
         android:textSize="30sp"
         android:textStyle="bold"
@@ -32,7 +32,7 @@
         android:textStyle="bold"
         app:layout_constraintTop_toBottomOf="@id/alertMessageTextView"
         tools:layout_editor_absoluteX="30dp"
-        tools:text="3:00" />
+        tools:text="1:30" />
 
     <GridLayout
         android:layout_width="378dp"
