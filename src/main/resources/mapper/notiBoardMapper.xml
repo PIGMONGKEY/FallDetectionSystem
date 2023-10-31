@@ -8,7 +8,8 @@
 
     <select id="select" resultType="notiBoardVO">
         SELECT BNO, TITLE, CONTENT, REGDATE, UPDATEDATE FROM TBL_NOTI_BOARD
-        WHERE BNO = #{bno};
+        WHERE BNO = #{bno}
+        ORDER BY UPDATEDATE DESC;
     </select>
 
     <select id="selectAll" resultType="notiBoardVO">
