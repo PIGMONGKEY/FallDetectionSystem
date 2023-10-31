@@ -6,12 +6,14 @@
     android:layout_height="match_parent">
 
     <TextView
+        android:id="@+id/titleTextView_notification_item"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:textSize="30sp"
         tools:text="공지사항 제목입니다." />
 
     <TextView
+        android:id="@+id/regdateTextView_notification_item"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:textSize="25sp"
