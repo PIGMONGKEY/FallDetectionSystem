@@ -100,4 +100,20 @@ public class HomeActivity extends AppCompatActivity {
 
         transaction.commit();
     }
+
+    public void setFrameToNotificationInfo(Fragment fragment, int bno) {
+        Bundle bundle = new Bundle();
+
+        bundle.putString("cameraId", cameraId);
+        bundle.putString("personalToken", personalToken);
+        bundle.putInt("bno", bno);
+
+        fragment.setArguments(bundle);
+
+        FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
+        transaction.replace(R.id.frameLayout, fragment);
+        transaction.addToBackStack(null);
+
+        transaction.commit();
+    }
 }
