@@ -1,5 +1,7 @@
 package com.example.falldetectionapp.fragments;
 
+import android.app.AlertDialog;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 
@@ -92,6 +94,7 @@ public class MyPageFragment extends Fragment {
     }
 
     private void setListeners() {
+        // 개인정보 수정 버튼 클릭
         modifyUserInfoBTN.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -99,17 +102,47 @@ public class MyPageFragment extends Fragment {
             }
         });
 
+        // 로그아웃 버튼 클릭
         logoutBTN.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                requestLogout();
+                new AlertDialog.Builder(getContext())
+                        .setTitle("로그아웃")
+                        .setMessage("로그아웃 하시겠습니까?")
+                        .setPositiveButton("예", new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialog, int which) {
+                                requestLogout();
+                            }
+                        })
+                        .setNegativeButton("아니요", new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialog, int which) {
+
+                            }
+                        }).show();
             }
         });
 
+        // 탈퇴 버튼 클릭
         signoutBTN.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                requestSignOut();
+                new AlertDialog.Builder(getContext())
+                        .setTitle("서비스 탈퇴")
+                        .setMessage("정말 탈퇴 하시겠습니까?")
+                        .setPositiveButton("예", new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialog, int which) {
+                                requestSignOut();
+                            }
+                        })
+                        .setNegativeButton("아니요", new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialog, int which) {
+
+                            }
+                        }).show();
             }
         });
     }
@@ -165,6 +198,7 @@ public class MyPageFragment extends Fragment {
         });
     }
 
+    // 로그아웃 요청
     private void requestLogout() {
         Gson gson = new GsonBuilder().setLenient().create();
 
@@ -178,8 +212,16 @@ public class MyPageFragment extends Fragment {
         authService.requestLogout(personalToken, new AuthTokenDTO(personalToken)).enqueue(new Callback<BasicResponseDTO<AuthTokenDTO>>() {
             @Override
             public void onResponse(Call<BasicResponseDTO<AuthTokenDTO>> call, Response<BasicResponseDTO<AuthTokenDTO>> response) {
-                Intent intent = new Intent(getActivity(), StartActivity.class);
-                startActivity(intent);
+                new AlertDialog.Builder(getContext())
+                        .setTitle("로그아웃")
+                        .setMessage("로그아웃 되었습니다.")
+                        .setPositiveButton("확인", new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialog, int which) {
+                                Intent intent = new Intent(getActivity(), StartActivity.class);
+                                startActivity(intent);
+                            }
+                        }).show();
             }
 
             @Override
@@ -189,6 +231,7 @@ public class MyPageFragment extends Fragment {
         });
     }
 
+    // 탈퇴 요청
     private void requestSignOut() {
         Gson gson = new GsonBuilder().setLenient().create();
 
@@ -203,8 +246,16 @@ public class MyPageFragment extends Fragment {
             @Override
             public void onResponse(Call<BasicResponseDTO> call, Response<BasicResponseDTO> response) {
                 if (response.isSuccessful()) {
-                    Intent intent = new Intent(getActivity(), HomeActivity.class);
-                    startActivity(intent);
+                    new AlertDialog.Builder(getContext())
+                            .setTitle("탈퇴")
+                            .setMessage("탈퇴처리 되었습니다.")
+                            .setPositiveButton("확인", new DialogInterface.OnClickListener() {
+                                @Override
+                                public void onClick(DialogInterface dialog, int which) {
+                                    Intent intent = new Intent(getActivity(), HomeActivity.class);
+                                    startActivity(intent);
+                                }
+                            }).show();
                 } else {
                     try {
                         BasicResponseDTO basicResponseDTO = (BasicResponseDTO) retrofit.responseBodyConverter(
@@ -213,10 +264,16 @@ public class MyPageFragment extends Fragment {
                         ).convert(response.errorBody());
 
                         // 오류 메시지 띄우고, 로그인 창으로 돌려보냄
-                        Toast.makeText(getContext(), basicResponseDTO.getMessage(), Toast.LENGTH_SHORT).show();
-                        Intent intent = new Intent(getActivity(), StartActivity.class);
-                        startActivity(intent);
-
+                        new AlertDialog.Builder(getContext())
+                                .setTitle("탈퇴")
+                                .setMessage("오류가 발생했습니다.")
+                                .setPositiveButton("확인", new DialogInterface.OnClickListener() {
+                                    @Override
+                                    public void onClick(DialogInterface dialog, int which) {
+                                        Intent intent = new Intent(getActivity(), StartActivity.class);
+                                        startActivity(intent);
+                                    }
+                                }).show();
                     } catch (IOException e) {
                         throw new RuntimeException(e);
                     }
@@ -230,9 +287,10 @@ public class MyPageFragment extends Fragment {
         });
     }
 
+    // 사용자 정보 표시
     private void showUserInfo() {
         nameTV.setText(userInfoDTO.getUserName());
-        ageTV.setText(userInfoDTO.getUserAge() + "");
+        ageTV.setText(userInfoDTO.getUserAge().toString());
         genderTV.setText(userInfoDTO.getUserGender());
         cameraIdTV.setText(userInfoDTO.getCameraId());
         phoneTV.setText(userInfoDTO.getUserPhone());
@@ -241,7 +299,8 @@ public class MyPageFragment extends Fragment {
         if (userInfoDTO.getNokPhones().size() > 1) {
             nokPhone2TV.setText(userInfoDTO.getNokPhones().get(1));
         } else {
-            nokPhone2TV.setText("null");
+//            nokPhone2TV.setText("null");
+            nokPhone2TV.setVisibility(View.INVISIBLE);
         }
         if (userInfoDTO.getUserGender().equals("남성")) {
             profileImageView.setImageResource(R.drawable.profile_man);
