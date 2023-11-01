@@ -33,6 +33,8 @@ import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.List;
 
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -144,7 +146,18 @@ public class MyPageFragment extends Fragment {
         modifyConfirmInfoBTN.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                userInfoDTO.setUserPhone(phoneET.getText().toString());
+                userInfoDTO.setUserAddress(addressET.getText().toString());
 
+                List<String> tempNokPhones = new ArrayList<>();
+                tempNokPhones.add(nokPhone1ET.getText().toString().trim());
+                if (!nokPhone2ET.getText().toString().equals("")) {
+                    tempNokPhones.add(nokPhone2ET.getText().toString().trim());
+                }
+
+                userInfoDTO.setNokPhones(tempNokPhones);
+
+                requestModifyUserInfo();
             }
         });
 
@@ -192,6 +205,7 @@ public class MyPageFragment extends Fragment {
             }
         });
 
+        // 보호자 번호 추가 버튼
         addNokPhoneBTN.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -201,6 +215,7 @@ public class MyPageFragment extends Fragment {
             }
         });
 
+        // 보호자 번호 삭제 버튼
         dropNokPhoneBTN.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -361,10 +376,74 @@ public class MyPageFragment extends Fragment {
                 .build();
 
         UserService userService = retrofit.create(UserService.class);
+
+        userService.updateUserInfo("Bearer " + personalToken, userInfoDTO).enqueue(new Callback<BasicResponseDTO>() {
+            @Override
+            public void onResponse(Call<BasicResponseDTO> call, Response<BasicResponseDTO> response) {
+                if (response.isSuccessful()) {
+                    new AlertDialog.Builder(getActivity())
+                            .setTitle("개인정보 수정")
+                            .setMessage("수정 완료되었습니다.")
+                            .setPositiveButton("확인", new DialogInterface.OnClickListener() {
+                                @Override
+                                public void onClick(DialogInterface dialog, int which) {
+                                    showUserInfo();
+                                }
+                            }).show();
+                } else {
+                    try {
+                        BasicResponseDTO basicResponseDTO = (BasicResponseDTO) retrofit.responseBodyConverter(
+                                BasicResponseDTO.class,
+                                BasicResponseDTO.class.getAnnotations()
+                        ).convert(response.errorBody());
+
+                        // 오류 메시지 띄우고, 로그인 창으로 돌려보냄
+                        new AlertDialog.Builder(getActivity())
+                                .setTitle("개인정보 수정")
+                                .setMessage(basicResponseDTO.getMessage())
+                                .setPositiveButton("확인", new DialogInterface.OnClickListener() {
+                                    @Override
+                                    public void onClick(DialogInterface dialog, int which) {
+
+                                    }
+                                }).show();
+                    } catch (IOException e) {
+                        throw new RuntimeException(e);
+                    }
+                }
+            }
+
+            @Override
+            public void onFailure(Call<BasicResponseDTO> call, Throwable t) {
+                new AlertDialog.Builder(getActivity())
+                        .setTitle("개인정보 수정")
+                        .setMessage("서버 연결에 실패했습니다.")
+                        .setPositiveButton("확인", new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialog, int which) {
+
+                            }
+                        }).show();
+            }
+        });
     }
 
     // 사용자 정보 표시
     private void showUserInfo() {
+        phoneET.setVisibility(View.GONE);
+        phoneTV.setVisibility(View.VISIBLE);
+        addressET.setVisibility(View.GONE);
+        addressTV.setVisibility(View.VISIBLE);
+        nokPhone1ET.setVisibility(View.GONE);
+        nokPhone1TV.setVisibility(View.VISIBLE);
+        nokPhone2ET.setVisibility(View.GONE);
+        nokPhone2TV.setVisibility(View.VISIBLE);
+        dropNokPhoneBTN.setVisibility(View.GONE);
+        addNokPhoneBTN.setVisibility(View.GONE);
+
+        modifyConfirmInfoBTN.setVisibility(View.GONE);
+        modifyUserInfoBTN.setVisibility(View.VISIBLE);
+
         nameTV.setText(userInfoDTO.getUserName());
         ageTV.setText(userInfoDTO.getUserAge().toString());
         genderTV.setText(userInfoDTO.getUserGender());

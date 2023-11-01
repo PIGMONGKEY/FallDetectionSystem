@@ -11,6 +11,7 @@ import retrofit2.http.Field;
 import retrofit2.http.GET;
 import retrofit2.http.Header;
 import retrofit2.http.POST;
+import retrofit2.http.PUT;
 import retrofit2.http.Path;
 import retrofit2.http.Query;
 
@@ -28,4 +29,8 @@ public interface UserService {
     @DELETE("user")
     Call<BasicResponseDTO> signOut(@Header("Authorization") String personalToken,
                                    @Query("cameraId") String cameraId);
+
+    @PUT("user")
+    Call<BasicResponseDTO> updateUserInfo(@Header("Authorization") String personalToken,
+                                  @Body UserInfoDTO userInfoDTO);
 }
