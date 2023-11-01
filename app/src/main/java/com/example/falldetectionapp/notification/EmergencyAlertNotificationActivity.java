@@ -4,7 +4,9 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import android.app.AlertDialog;
 import android.app.KeyguardManager;
+import android.content.Context;
 import android.content.DialogInterface;
+import android.media.AudioManager;
 import android.media.MediaPlayer;
 import android.os.Build;
 import android.os.Bundle;
@@ -54,6 +56,7 @@ public class EmergencyAlertNotificationActivity extends AppCompatActivity {
         setView();
         setListener();
         getFcmDeviceToken();
+        setVolMax();
     }
 
     private void setView() {
@@ -230,5 +233,11 @@ public class EmergencyAlertNotificationActivity extends AppCompatActivity {
                         android.os.Process.killProcess(android.os.Process.myPid());
                     }
                 }).show();
+    }
+
+    // 알림 울릴 때 소리 최대로 키움
+    private void setVolMax() {
+        AudioManager audioManager = (AudioManager) getApplicationContext().getSystemService(Context.AUDIO_SERVICE);
+        audioManager.setStreamVolume(AudioManager.STREAM_MUSIC, 15, 0);
     }
 }
