@@ -93,8 +93,6 @@ public class EmergencyAlertNotificationActivity extends AppCompatActivity {
         });
     }
 
-    // TODO: 화면 켜져 있을 때도 울리도록 설정
-
     private void turnScreenOnAndKeyguardOff() {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O_MR1) {
             setShowWhenLocked(true);

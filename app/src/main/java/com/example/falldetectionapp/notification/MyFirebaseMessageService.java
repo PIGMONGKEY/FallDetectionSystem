@@ -48,10 +48,11 @@ public class MyFirebaseMessageService extends FirebaseMessagingService {
         NotificationCompat.Builder builder = new NotificationCompat.Builder(getApplicationContext(), "Detection_Channel")
                 .setContentTitle(title)
                 .setContentText(body)
-                .setSmallIcon(R.drawable.ic_home)
+                .setSmallIcon(R.drawable.logo)
                 .setPriority(NotificationCompat.PRIORITY_HIGH | NotificationCompat.FLAG_HIGH_PRIORITY)
                 .setAutoCancel(true)
-                .setFullScreenIntent(pendingIntent, true);
+                .setFullScreenIntent(pendingIntent, true)
+                .setContentIntent(pendingIntent);
 
         NotificationManagerCompat notificationManagerCompat = NotificationManagerCompat.from(getApplicationContext());
 
