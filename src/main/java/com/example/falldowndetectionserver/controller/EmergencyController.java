@@ -2,7 +2,6 @@ package com.example.falldowndetectionserver.controller;
 
 import com.example.falldowndetectionserver.dao.UPTokenDao;
 import com.example.falldowndetectionserver.domain.dto.BasicResponseDTO;
-import com.example.falldowndetectionserver.fallDownDetect.FallDownDetector;
 import com.example.falldowndetectionserver.service.emergency.EmergencyService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -13,7 +12,9 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.servlet.mvc.method.annotation.StreamingResponseBody;
 
+import java.io.*;
 import java.nio.charset.StandardCharsets;
 
 /**
@@ -73,5 +74,37 @@ public class EmergencyController {
                 .build();
 
         return new ResponseEntity<>(responseBody, httpHeaders, responseBody.getHttpStatus());
+    }
+
+    @GetMapping("video")
+    public ResponseEntity<StreamingResponseBody> testVideo() {
+        File file = new File("/Users/pigmong0202/test.mp4");
+
+        StreamingResponseBody streamingResponseBody = new StreamingResponseBody() {
+            @Override
+            public void writeTo(OutputStream outputStream) throws IOException {
+                try {
+                    final InputStream inputStream = new FileInputStream(file);
+
+                    byte[] bytes = new byte[2048];
+                    int length;
+
+                    while ((length = inputStream.read(bytes)) >= 0) {
+                        outputStream.write(bytes, 0, length);
+                    }
+
+                    inputStream.close();
+                    outputStream.flush();
+                } catch (Exception e) {
+                    log.error("Exception while reading streaming data");
+                }
+            }
+        };
+
+        HttpHeaders httpHeaders = new HttpHeaders();
+        httpHeaders.add("Content-Type", "video/mp4");
+        httpHeaders.add("Content-Length", Long.toString(file.length()));
+
+        return ResponseEntity.ok().headers(httpHeaders).body(streamingResponseBody);
     }
 }
