@@ -32,8 +32,11 @@ movenet = model.signatures['serving_default']
 
 print("Model load success")
 
-# 영상 캡쳐
-cap = cv2.VideoCapture("rtsp://{addr}/cam")
+file = open("./streaming_url.txt", 'r')
+url = file.readline()
+
+# 영상 캡처
+cap = cv2.VideoCapture(f"rtsp://{url}/cam")
 
 # 영상 저장 writer queue
 video_writer_queue = []
