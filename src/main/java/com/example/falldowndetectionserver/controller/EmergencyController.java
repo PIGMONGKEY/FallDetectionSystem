@@ -2,6 +2,7 @@ package com.example.falldowndetectionserver.controller;
 
 import com.example.falldowndetectionserver.dao.UPTokenDao;
 import com.example.falldowndetectionserver.domain.dto.BasicResponseDTO;
+import com.example.falldowndetectionserver.fallDownDetect.FallDownDetector;
 import com.example.falldowndetectionserver.service.emergency.EmergencyService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -9,25 +10,31 @@ import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
+import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.servlet.mvc.method.annotation.StreamingResponseBody;
 
 import java.io.*;
 import java.nio.charset.StandardCharsets;
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
+import java.util.Date;
+import java.util.TimeZone;
 
 /**
  * 위급상황 처리 API
  * 위급 SMS 전송, 위급상황 해제
  */
-@RestController
+@Controller
 @RequiredArgsConstructor
 @Slf4j
 @RequestMapping("/emergency/")
 public class EmergencyController {
     private final EmergencyService emergencyService;
     private final UPTokenDao uPTokenDao;
+    private final FallDownDetector detector;
 
     /**
      * 위급상황을 해제한다.
@@ -76,9 +83,27 @@ public class EmergencyController {
         return new ResponseEntity<>(responseBody, httpHeaders, responseBody.getHttpStatus());
     }
 
+    @GetMapping("check")
+    public String toCheckPage() {
+        return "emergency-check";
+    }
+
     @GetMapping("video")
-    public ResponseEntity<StreamingResponseBody> testVideo() {
-        File file = new File("/Users/pigmong0202/test.mp4");
+    public String toVideoPage(String cameraId, Model model) {
+        model.addAttribute("video_path",  "/emergency/getvid?cameraId=" + cameraId);
+
+        return "emergency-video";
+    }
+
+    @GetMapping("getvid")
+    public ResponseEntity<StreamingResponseBody> responseFallDownVideo(String cameraId) {
+        DateFormat formatter = new SimpleDateFormat("YYYY-MM-DD_HH:mm:ss");
+        Date date = new Date(detector.getFallDownTimeHash().get(cameraId));
+        formatter.setTimeZone(TimeZone.getTimeZone("Asia/Seoul"));
+
+        String fileName = formatter.format(date);
+
+        File file = new File("~/falldown/video/" + fileName + ".mp4");
 
         StreamingResponseBody streamingResponseBody = new StreamingResponseBody() {
             @Override
