@@ -83,11 +83,19 @@ public class EmergencyController {
         return new ResponseEntity<>(responseBody, httpHeaders, responseBody.getHttpStatus());
     }
 
+    /**
+     * 위급상황 시 영상을 확인하기 위한 페이지로 이동
+     */
     @GetMapping("check")
     public String toCheckPage() {
         return "emergency-check";
     }
 
+    /**
+     * 영상 재생 페이지로 이동
+     * @param cameraId 이전 페이지에서 입력받은 cameraId
+     * @param model 값을 넘겨주기 위한 model
+     */
     @GetMapping("video")
     public String toVideoPage(String cameraId, Model model) {
         model.addAttribute("video_path",  "/emergency/getvid?cameraId=" + cameraId);
@@ -95,6 +103,9 @@ public class EmergencyController {
         return "emergency-video";
     }
 
+    /**
+     * 쓰러짐 영상을 스트리밍하는 API
+     */
     @GetMapping("getvid")
     public ResponseEntity<StreamingResponseBody> responseFallDownVideo(String cameraId) {
         DateFormat formatter = new SimpleDateFormat("YYYY-MM-DD_HH:mm:ss");

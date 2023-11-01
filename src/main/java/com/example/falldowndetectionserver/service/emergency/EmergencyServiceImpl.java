@@ -91,8 +91,6 @@ public class EmergencyServiceImpl implements EmergencyService {
 
     /**
      * 보호자 연락저를 조회하여 ,로 구분된 문자열로 만든 후 리턴한다.
-     * @param cameraId
-     * @return
      */
     private String getNokphones(String cameraId) {
         String receiver;
@@ -109,17 +107,14 @@ public class EmergencyServiceImpl implements EmergencyService {
 
     /**
      * SMS로 전송할 메시지 본문을 생성하여 리턴한다.
-     * @param cameraId
-     * @return
      */
     private String makeMessage(String cameraId) {
         UserVO userVO = userDao.select(cameraId).orElseThrow();
 
         String message = "[ 긴급상황 감지 시스템 ]" + "\n(" +
                 userVO.getUserName() + " / " + userVO.getUserGender() + " / " + userVO.getUserAge() + "세) 위급상황이 발생했습니다." +
-                "아래 링크에 접속하셔서 " + cameraId + "를 입력하시고, 상황을 확인하세요." +
-                "링크 넣어야 함";
-        // TODO: 넘어지는 영상 재생하는 화면 만들어야 함
+                "아래 링크에 접속하셔서 " + cameraId + "를 입력하시고, 상황을 확인하세요.\n" +
+                "링크 주소";
 
         return message;
     }
