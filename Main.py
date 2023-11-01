@@ -33,7 +33,7 @@ movenet = model.signatures['serving_default']
 print("Model load success")
 
 # 영상 캡쳐
-cap = cv2.VideoCapture("rtsp://{addr}/cam")
+cap = cv2.VideoCapture("rtsp://192.168.0.12:8554/cam")
 
 # 영상 저장 writer queue
 video_writer_queue = []
@@ -228,7 +228,7 @@ async def receive_message():
                 height = round(cap.get(cv2.CAP_PROP_FRAME_HEIGHT))
                 # 영상 저장 경로, 파일명 설정
                 # 파일명은 넘어진 시간
-                video_name = f"/home/serverid/falldown/video/{falldown_time}.avi"
+                video_name = f"~/falldown/video/{falldown_time}.mp4"
                 video_writer = cv2.VideoWriter(video_name, fourcc, fps, (width, height))
 
                 # 비디오 저장기 queue에 넣기
