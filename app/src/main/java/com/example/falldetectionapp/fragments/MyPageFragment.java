@@ -54,7 +54,7 @@ import retrofit2.converter.gson.GsonConverterFactory;
 // TODO: 회원정보 수정 구현
 public class MyPageFragment extends Fragment {
     private ImageView profileImageView;
-    private TextView nameTV, genderTV, ageTV, cameraIdTV, phoneTV, addressTV, nokPhone1TV, nokPhone2TV;
+    private TextView nameTV, genderTV, ageTV, bloodTypeTV, cameraIdTV, phoneTV, addressTV, nokPhone1TV, nokPhone2TV;
     private EditText phoneET, addressET, nokPhone1ET, nokPhone2ET;
     private Button modifyUserInfoBTN, logoutBTN, signoutBTN, modifyConfirmInfoBTN;
     private LinearLayout nokPhone_2_LinearLayout;
@@ -92,6 +92,7 @@ public class MyPageFragment extends Fragment {
         nameTV = view.findViewById(R.id.nameTextView_myPage);
         ageTV = view.findViewById(R.id.ageTextView_myPage);
         genderTV = view.findViewById(R.id.sexTextView_myPage);
+        bloodTypeTV = view.findViewById(R.id.bloodTypeTextView_myPage);
         cameraIdTV = view.findViewById(R.id.cameraIDTextView_myPage);
         phoneTV = view.findViewById(R.id.phoneTextView_myPage);
         addressTV = view.findViewById(R.id.addressTextView_myPage);
@@ -445,8 +446,9 @@ public class MyPageFragment extends Fragment {
         modifyUserInfoBTN.setVisibility(View.VISIBLE);
 
         nameTV.setText(userInfoDTO.getUserName());
-        ageTV.setText(userInfoDTO.getUserAge().toString());
+        ageTV.setText(userInfoDTO.getUserAge().toString() + "세");
         genderTV.setText(userInfoDTO.getUserGender());
+        bloodTypeTV.setText(userInfoDTO.getUserBloodType());
         cameraIdTV.setText(userInfoDTO.getCameraId());
         phoneTV.setText(userInfoDTO.getUserPhone());
         phoneET.setText(userInfoDTO.getUserPhone());
