@@ -26,7 +26,6 @@ import retrofit2.converter.gson.GsonConverterFactory;
 public class NotificationInfoFragment extends Fragment {
 
     private TextView titleTV, contentTV, regdateTV, updatedateTV;
-    private String cameraId, personalToken;
     private int bno;
 
     public NotificationInfoFragment() {
@@ -63,8 +62,6 @@ public class NotificationInfoFragment extends Fragment {
     }
 
     private void getDateFromBundle() {
-        cameraId = getArguments().getString("cameraId");
-        personalToken = getArguments().getString("personalToken");
         bno = getArguments().getInt("bno");
     }
 

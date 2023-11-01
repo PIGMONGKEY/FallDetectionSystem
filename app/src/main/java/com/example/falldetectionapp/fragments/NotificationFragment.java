@@ -37,9 +37,6 @@ import retrofit2.converter.gson.GsonConverterFactory;
 public class NotificationFragment extends Fragment {
 
     private ListView notificationListView;
-    private String personalToken;
-    private String cameraId;
-
     private HomeActivity homeActivity;
 
     public NotificationFragment() {
@@ -78,7 +75,6 @@ public class NotificationFragment extends Fragment {
     private void init(View view) {
         setView(view);
         setListener();
-        getDataFromBundle();
         requestNotificationBoard();
     }
 
@@ -92,15 +88,10 @@ public class NotificationFragment extends Fragment {
         notificationListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                homeActivity.setFrameToNotificationInfo(new NotificationInfoFragment(), position);
+                NotificationListAdapter adapter = (NotificationListAdapter) notificationListView.getAdapter();
+                homeActivity.setFrameToNotificationInfo(new NotificationInfoFragment(), adapter.getItem(position).getBno() - 1);
             }
         });
-    }
-
-    // Bundle로 넘어온 데이터를 받는다.
-    private void getDataFromBundle() {
-        personalToken = getArguments().getString("personalToken");
-        cameraId = getArguments().getString("cameraId");
     }
 
     // 서버에 공지사항 글 목록을 요청하고 화면에 띄운다.
