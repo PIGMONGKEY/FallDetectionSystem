@@ -7,6 +7,7 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.RadioGroup;
 import android.widget.Toast;
 
 import com.example.falldetectionapp.DTO.UserInfoDTO;
@@ -20,7 +21,8 @@ import com.example.falldetectionapp.R;
 // TODO: 혈액형 입력 방식 변경
 public class InfoActivity extends AppCompatActivity {
     private Button toAddressButton;
-    private EditText nameEditText, phoneEditText, ageEditText, genderEditText, bloodTypeEditText;
+    private EditText nameEditText, phoneEditText, ageEditText;
+    private RadioGroup genderRadioGroup, bloodRadioGroup;
     private UserInfoDTO userInfoDTO;
 
     @Override
@@ -49,8 +51,8 @@ public class InfoActivity extends AppCompatActivity {
         nameEditText = findViewById(R.id.nameEditText_register);
         phoneEditText = findViewById(R.id.phoneEditText_register);
         ageEditText = findViewById(R.id.ageEditText_register);
-        genderEditText = findViewById(R.id.genderEditText_register);
-        bloodTypeEditText = findViewById(R.id.bloodTypeEditText_register);
+        genderRadioGroup = findViewById(R.id.genderRadioGroup_register);
+        bloodRadioGroup = findViewById(R.id.bloodTypeRadioGroup_register);
     }
 
 //    리스너는 여기에 모아주세요
@@ -62,15 +64,11 @@ public class InfoActivity extends AppCompatActivity {
                 String name = nameEditText.getText().toString().trim();
                 String phone = phoneEditText.getText().toString().trim();
                 String age = ageEditText.getText().toString().trim();
-                String gender = genderEditText.getText().toString().trim();
-                String bloodType = bloodTypeEditText.getText().toString().trim();
 
-                if (inputCheck(name, phone, age, gender, bloodType)) {
+                if (inputCheck(name, phone, age)) {
                     userInfoDTO.setUserPhone(phone);
                     userInfoDTO.setUserName(name);
                     userInfoDTO.setUserAge(Integer.parseInt(age));
-                    userInfoDTO.setUserGender(gender);
-                    userInfoDTO.setUserBloodType(bloodType);
 
                     Intent intent = new Intent(InfoActivity.this, AddressActivity.class);
                     intent.putExtra("userInfo", userInfoDTO);
@@ -80,10 +78,38 @@ public class InfoActivity extends AppCompatActivity {
                 }
             }
         });
+
+        genderRadioGroup.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(RadioGroup group, int checkedId) {
+                if (checkedId == R.id.MALE) {
+                    userInfoDTO.setUserGender("남성");
+                } else if (checkedId == R.id.FEMALE) {
+                    userInfoDTO.setUserGender("여성");
+                }
+            }
+        });
+
+        bloodRadioGroup.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(RadioGroup group, int checkedId) {
+                if (checkedId == R.id.A) {
+                    userInfoDTO.setUserBloodType("A형");
+                } else if (checkedId == R.id.B) {
+                    userInfoDTO.setUserBloodType("B형");
+                } else if (checkedId == R.id.O) {
+                    userInfoDTO.setUserBloodType("O형");
+                } else if (checkedId == R.id.AB) {
+                    userInfoDTO.setUserBloodType("AB형");
+                }
+            }
+        });
     }
 
-    private boolean inputCheck(String name, String phone, String age, String gender, String bloodType) {
-        if (name.isEmpty() || phone.isEmpty() || age.isEmpty() || gender.isEmpty() || bloodType.isEmpty()) {
+    private boolean inputCheck(String name, String phone, String age) {
+        if ((name.isEmpty() || phone.isEmpty() || age.isEmpty())
+                && !genderRadioGroup.isSelected()
+                && !bloodRadioGroup.isSelected()) {
             return false;
         } else {
             return true;
