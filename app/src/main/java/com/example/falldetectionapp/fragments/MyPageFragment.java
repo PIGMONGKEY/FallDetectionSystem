@@ -12,7 +12,10 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.EditText;
+import android.widget.ImageButton;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -50,7 +53,11 @@ import retrofit2.converter.gson.GsonConverterFactory;
 public class MyPageFragment extends Fragment {
     private ImageView profileImageView;
     private TextView nameTV, genderTV, ageTV, cameraIdTV, phoneTV, addressTV, nokPhone1TV, nokPhone2TV;
-    private Button modifyUserInfoBTN, logoutBTN, signoutBTN;
+    private EditText phoneET, addressET, nokPhone1ET, nokPhone2ET;
+    private Button modifyUserInfoBTN, logoutBTN, signoutBTN, modifyConfirmInfoBTN;
+    private LinearLayout nokPhone_2_LinearLayout;
+    private ImageButton addNokPhoneBTN, dropNokPhoneBTN;
+    private View lineUnderNokphone2;
     private String personalToken;
     private UserInfoDTO userInfoDTO;
 
@@ -91,11 +98,50 @@ public class MyPageFragment extends Fragment {
         modifyUserInfoBTN = view.findViewById(R.id.modifyInfoButton_mypage);
         logoutBTN = view.findViewById(R.id.logoutButton_mypage);
         signoutBTN = view.findViewById(R.id.signOutButton_mypage);
+        nokPhone_2_LinearLayout = view.findViewById(R.id.nokPhone_2_LinearLayout_mypage);
+
+        phoneET = view.findViewById(R.id.phoneEditTExt_myPage);
+        addressET = view.findViewById(R.id.addressEditText_myPage);
+        nokPhone1ET = view.findViewById(R.id.nokPhone_1_EditText_myPage);
+        nokPhone2ET = view.findViewById(R.id.nokPhone_2_EditText_myPage);
+
+        modifyConfirmInfoBTN = view.findViewById(R.id.confirmModifyInfoButton_mypage);
+
+        addNokPhoneBTN = view.findViewById(R.id.add_nokphone_button_mypage);
+        dropNokPhoneBTN = view.findViewById(R.id.dropNokPhone2Button_myPage);
+        lineUnderNokphone2 = view.findViewById(R.id.lineUnderNokPhone2);
     }
 
     private void setListeners() {
         // 개인정보 수정 버튼 클릭
         modifyUserInfoBTN.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                addressTV.setVisibility(View.GONE);
+                addressET.setVisibility(View.VISIBLE);
+
+                phoneTV.setVisibility(View.GONE);
+                phoneTV.setVisibility(View.VISIBLE);
+
+                nokPhone1TV.setVisibility(View.GONE);
+                nokPhone1ET.setVisibility(View.VISIBLE);
+
+                if (nokPhone_2_LinearLayout.getVisibility() != View.VISIBLE) {
+                    lineUnderNokphone2.setVisibility(View.GONE);
+                    addNokPhoneBTN.setVisibility(View.VISIBLE);
+                }
+
+                nokPhone2ET.setVisibility(View.VISIBLE);
+                nokPhone2TV.setVisibility(View.GONE);
+                dropNokPhoneBTN.setVisibility(View.VISIBLE);
+
+                modifyConfirmInfoBTN.setVisibility(View.VISIBLE);
+                modifyUserInfoBTN.setVisibility(View.GONE);
+            }
+        });
+
+        // 수정 완료 버튼 클릭
+        modifyConfirmInfoBTN.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
 
@@ -143,6 +189,25 @@ public class MyPageFragment extends Fragment {
 
                             }
                         }).show();
+            }
+        });
+
+        addNokPhoneBTN.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                nokPhone_2_LinearLayout.setVisibility(View.VISIBLE);
+                lineUnderNokphone2.setVisibility(View.VISIBLE);
+                addNokPhoneBTN.setVisibility(View.GONE);
+            }
+        });
+
+        dropNokPhoneBTN.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                nokPhone_2_LinearLayout.setVisibility(View.GONE);
+                nokPhone2ET.setText("");
+                lineUnderNokphone2.setVisibility(View.GONE);
+                addNokPhoneBTN.setVisibility(View.VISIBLE);
             }
         });
     }
@@ -287,6 +352,17 @@ public class MyPageFragment extends Fragment {
         });
     }
 
+    private void requestModifyUserInfo() {
+        Gson gson = new GsonBuilder().setLenient().create();
+
+        Retrofit retrofit = new Retrofit.Builder()
+                .baseUrl(BuildConfig.SERVER_URL) // 기본으로 적용되는 서버 URL (반드시 / 로 마무리되게 설정)
+                .addConverterFactory(GsonConverterFactory.create(gson)) // JSON 데이터를 Gson 라이브러리로 파싱하고 데이터를 Model에 자동으로 담는 converter
+                .build();
+
+        UserService userService = retrofit.create(UserService.class);
+    }
+
     // 사용자 정보 표시
     private void showUserInfo() {
         nameTV.setText(userInfoDTO.getUserName());
@@ -294,13 +370,17 @@ public class MyPageFragment extends Fragment {
         genderTV.setText(userInfoDTO.getUserGender());
         cameraIdTV.setText(userInfoDTO.getCameraId());
         phoneTV.setText(userInfoDTO.getUserPhone());
+        phoneET.setText(userInfoDTO.getUserPhone());
         addressTV.setText(userInfoDTO.getUserAddress());
+        addressET.setText(userInfoDTO.getUserAddress());
         nokPhone1TV.setText(userInfoDTO.getNokPhones().get(0));
+        nokPhone1ET.setText(userInfoDTO.getNokPhones().get(0));
         if (userInfoDTO.getNokPhones().size() > 1) {
             nokPhone2TV.setText(userInfoDTO.getNokPhones().get(1));
+            nokPhone2ET.setText(userInfoDTO.getNokPhones().get(1));
         } else {
-//            nokPhone2TV.setText("null");
-            nokPhone2TV.setVisibility(View.INVISIBLE);
+            nokPhone_2_LinearLayout.setVisibility(View.GONE);
+            lineUnderNokphone2.setVisibility(View.GONE);
         }
         if (userInfoDTO.getUserGender().equals("남성")) {
             profileImageView.setImageResource(R.drawable.profile_man);
