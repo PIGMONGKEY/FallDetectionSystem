@@ -87,6 +87,51 @@
         android:textSize="20sp"
         android:textStyle="bold" />
 
+    <LinearLayout
+        android:id="@+id/genderLinearLayout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:layout_marginTop="20dp"
+        app:layout_constraintTop_toBottomOf="@id/ageEditText_register">
+
+        <RadioGroup
+            android:id="@+id/genderRadioGroup_register"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
+
+            <RadioButton
+                android:id="@+id/genderMaleRadioButton_register"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:background="@drawable/radio_left_selector"
+                android:button="@null"
+                android:text="남성"
+                android:textColor="@drawable/radio_text_select"
+                android:fontFamily="sans-serif-condensed-medium"
+                android:textAlignment="center"
+                android:textSize="20sp"
+                android:textStyle="bold"/>
+
+            <RadioButton
+                android:id="@+id/genderFemaleRadioButton_register"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:background="@drawable/radio_right_selector"
+                android:button="@null"
+                android:text="여성"
+                android:textColor="@drawable/radio_text_select"
+                android:fontFamily="sans-serif-condensed-medium"
+                android:textAlignment="center"
+                android:textSize="20sp"
+                android:textStyle="bold"/>
+
+        </RadioGroup>
+    </LinearLayout>
+
     <EditText
         android:id="@+id/genderEditText_register"
         android:layout_width="match_parent"
@@ -100,10 +145,84 @@
         android:fontFamily="sans-serif-condensed-medium"
         android:hint="성별"
         android:padding="10dp"
+        android:visibility="invisible"
         android:textColor="#FFFFFF"
         android:textColorHint="#ffffff"
         android:textSize="20sp"
         android:textStyle="bold" />
+
+    <LinearLayout
+        android:id="@+id/bloodTypeLinearLayout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:layout_marginTop="20dp"
+        app:layout_constraintTop_toBottomOf="@id/genderLinearLayout">
+
+        <RadioGroup
+            android:id="@+id/bloodTypeRadioGroup_register"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
+
+            <RadioButton
+                android:id="@+id/bloodTypeARadioButton_register"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:background="@drawable/radio_left_selector"
+                android:button="@null"
+                android:text="A형"
+                android:textColor="@drawable/radio_text_select"
+                android:fontFamily="sans-serif-condensed-medium"
+                android:textAlignment="center"
+                android:textSize="20sp"
+                android:textStyle="bold"/>
+
+            <RadioButton
+                android:id="@+id/bloodTypeBRadioButton_register"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:background="@drawable/radio_center_selector"
+                android:button="@null"
+                android:text="B형"
+                android:textColor="@drawable/radio_text_select"
+                android:fontFamily="sans-serif-condensed-medium"
+                android:textAlignment="center"
+                android:textSize="20sp"
+                android:textStyle="bold"/>
+
+            <RadioButton
+                android:id="@+id/bloodTypeORadioButton_register"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:background="@drawable/radio_center_selector"
+                android:button="@null"
+                android:text="O형"
+                android:textColor="@drawable/radio_text_select"
+                android:fontFamily="sans-serif-condensed-medium"
+                android:textAlignment="center"
+                android:textSize="20sp"
+                android:textStyle="bold"/>
+
+            <RadioButton
+                android:id="@+id/bloodTypeABRadioButton_register"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:background="@drawable/radio_right_selector"
+                android:button="@null"
+                android:text="AB형"
+                android:textColor="@drawable/radio_text_select"
+                android:fontFamily="sans-serif-condensed-medium"
+                android:textAlignment="center"
+                android:textSize="20sp"
+                android:textStyle="bold"/>
+
+        </RadioGroup>
+    </LinearLayout>
 
     <EditText
         android:id="@+id/bloodTypeEditText_register"
@@ -117,6 +236,7 @@
         android:drawablePadding="10dp"
         android:fontFamily="sans-serif-condensed-medium"
         android:hint="혈액형"
+        android:visibility="invisible"
         android:padding="10dp"
         android:textColor="#FFFFFF"
         android:textColorHint="#ffffff"
