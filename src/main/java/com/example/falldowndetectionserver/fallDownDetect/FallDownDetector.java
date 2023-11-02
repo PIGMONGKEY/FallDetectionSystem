@@ -131,7 +131,7 @@ public class FallDownDetector {
 
             // 1프레임 전과 비교하여 비율이 0.5 이상 달라졌는지 확인
             if (lastRatio - positionVO.getRatio() > 0.5 ||
-                    positionVO.getRatio() - lastRatio < -0.5) {
+                    lastRatio - positionVO.getRatio() < -0.5) {
             // 비율이 크게 변할 만큼 움직임이 있다면
             // 넘어짐 감지 로직 해제
                 fallDownFlagHash.replace(cameraId, false);
