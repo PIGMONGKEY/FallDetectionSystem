@@ -103,7 +103,8 @@ public class FallDownDetector {
                 // 움직임 없음 감지
                 moveDetect(cameraId, positionVO);
             } else {
-                // 넘어졌었는데 지금 안넘어짐
+                // 넘어졌었는데 지금 안넘어짐 - positionVO.getRatio() < 2.0
+                // 넘어진 상태 해제
                 fallDownFlagHash.replace(cameraId, false);
                 emergencyFlagHash.replace(cameraId, false);
                 positionHash.get(cameraId).clear();
@@ -119,6 +120,7 @@ public class FallDownDetector {
             try {
                 // 사용자 핸드폰으로 알림을 울림
                 firebaseMessageService.sendMessageTo(uPTokenDao.select(cameraId).get(), "위험!!!", "위험!!!");
+                // 위급상황 플래그 True
                 emergencyFlagHash.replace(cameraId, true);
                 log.info("EMERGENCY-----------------------------------------------------");
             } catch (IOException e) {
