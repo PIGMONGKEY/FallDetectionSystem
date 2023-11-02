@@ -83,7 +83,7 @@ public class EmergencyServiceImpl implements EmergencyService {
                 .addFormDataPart("msg", message)
                 .addFormDataPart("msg_type", "LMS")
                 // 테스트 할 때는 주석 해제 해야 함
-                .addFormDataPart("testmode_yn", "Y")
+//                .addFormDataPart("testmode_yn", "Y")
                 .build();
 
         return body;
