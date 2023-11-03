@@ -114,7 +114,7 @@ public class EmergencyController {
 
         String fileName = formatter.format(date);
 
-        File file = new File("~/falldown/video/" + fileName + ".mp4");
+        File file = new File("절대경로 필요함/falldown/video/" + fileName + ".mp4");
 
         StreamingResponseBody streamingResponseBody = new StreamingResponseBody() {
             @Override
