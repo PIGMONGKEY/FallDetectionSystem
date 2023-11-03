@@ -34,28 +34,87 @@ print("Model load success")
 
 file = open("./streaming_url.txt", 'r')
 url = file.readline()
+video_save_path = file.readline()
 
 # 영상 캡처
 cap = cv2.VideoCapture(f"rtsp://{url}/cam")
 
-# 영상 저장 writer queue
-video_writer_queue = []
-# 넘어짐 플래그
-FALL_DOWN_FLAG = False
+
+async def save_video(falldown_time, temp_queue):
+    # 비디오 저장기? VideoWriter를 생성
+    fps = cap.get(cv2.CAP_PROP_FPS)
+    fourcc = cv2.VideoWriter_fourcc(*'mp4v')
+    width = round(cap.get(cv2.CAP_PROP_FRAME_WIDTH))
+    height = round(cap.get(cv2.CAP_PROP_FRAME_HEIGHT))
+    # 영상 저장 경로, 파일명 설정
+    # 파일명은 넘어진 시간
+    video_name = f"{video_save_path}{falldown_time}.mp4"
+    video_writer = cv2.VideoWriter(video_name, fourcc, fps, (width, height))
+
+    # 비디오 저장
+    for f in temp_queue:
+        video_writer.write(f)
+
+    # 메모리 해제
+    video_writer.release()
+
+
+class FallDown:
+    def __init__(self):
+        self.frame_queue = []
+        self.temp_frames = []
+        self.falldown_time_list = []
+        self.save_flag = False
+
+    # 기본 버퍼에 프레임 추가
+    def append_frame(self, frame):
+        if self.frame_queue.__len__() < 75:
+            self.frame_queue.append(frame)
+        else:
+            self.frame_queue.pop(0)
+            self.frame_queue.append(frame)
+
+    # 저장을 위한 버퍼에 리스트 추가
+    # 기본 버퍼를 복사하여 추가
+    def append_new_temp_frame_list(self):
+        temp_frame_list = self.frame_queue.copy()
+        self.temp_frames.append(temp_frame_list)
+        print("new temp list appended", self.temp_frames.__len__())
+
+    # 새로운 비디오 저장기를 만들어서 추가
+    def append_new_video_writer(self, falldown_time):
+        # 비디오 저장기 queue에 넣기
+        self.falldown_time_list.append(falldown_time)
+        print("video writer appended", self.falldown_time_list)
+
+    # 넘어짐 이후 5초 추가 녹화
+    # 5초(75프레임) 경과하면 저장
+    async def append_new_temp_frame(self, frame):
+        if self.temp_frames.__len__() > 1:
+            self.temp_frames.pop(0)
+            self.falldown_time_list.pop(0)
+            print("not used writer, list popped", self.temp_frames.__len__())
+
+        for temp_list in self.temp_frames:
+            if temp_list.__len__() < 150:
+                temp_list.append(frame)
+            else:
+                self.save_flag = True
+
+        if self.save_flag:
+            await save_video(self.falldown_time_list.pop(0), self.temp_frames.pop(0))
+            self.save_flag = False
 
 
 # WebSocket을 통해 서버로 연결하고, Opencv를 이용해 웹캠으로 찍은 영상을 프레임 단위로 전송
-async def send_video_position():
+async def send_video_position(falldown: FallDown):
     async with websockets.connect("ws://localhost:10000/position", extra_headers=EXTRA_HEADER) as position_socket:
         async with websockets.connect("ws://localhost:10000/video", extra_headers=EXTRA_HEADER) as video_socket:
 
             # 연결되면 연결 정보를 TextMessage로 보냄
             await video_socket.send(CONNECTION_INFO_SENDER)
 
-            # 일반 프레임 큐(버퍼)
-            frame_queue = []
-            # 넘어짐 영상 저장을 위한 프레임 큐(버퍼)
-            temp_queue = []
+            await asyncio.sleep(1)
 
             # 웹캡이 켜져 있는동안 반복
             while cap.isOpened():
@@ -64,35 +123,17 @@ async def send_video_position():
                 if not ret:
                     break
 
-                # 일반 프레임 버퍼는 75프레임 (5초)로 설정 - 현재 설정 fps = 15
-                if frame_queue.__len__() < 75:
-                    frame_queue.append(frame)
-                else:
-                    frame_queue.pop(0)
-                    frame_queue.append(frame)
+                falldown.append_frame(frame)
 
-                # 넘어짐 플래그 True
-                if FALL_DOWN_FLAG:
-                    # 넘어짐 플래그가 True가 되고 첫 진입이라면
-                    # 넘어짐 영상 저장 버퍼에 현제 프레임 버퍼 복사
-                    if temp_queue.__len__() == 0:
-                        temp_queue = frame_queue.copy()
-
-                    # 이후 5초 동안 추가 녹화
-                    elif temp_queue.__len__() < 150:
-                        temp_queue.append(frame)
-
-                    # 영상 저장 후 버퍼 초기화
-                    else:
-                        await asyncio.create_task(save_video(video_writer_queue.pop(0), temp_queue))
-                        temp_queue.clear()
-
+                # 저장을 위한 버퍼에 프레임 추가, 비디오 저장
+                save_task = asyncio.create_task(falldown.append_new_temp_frame(frame))
                 # Movenet 적용하여 포지션 정보 전송하는 Task 생성
                 position_task = asyncio.create_task(get_position_and_send(frame, position_socket))
                 # frame을 jpg로 인코딩 하여 전송하는 Task 생성
                 video_task = asyncio.create_task(encode_image_and_send(frame, video_socket))
 
-                # 두 Task를 동시에 실행 - 둘 다 끝나길 기다림
+                # 세개의 Task를 동시에 실행 - 셋 다 끝나길 기다림
+                await save_task
                 await position_task
                 await video_task
 
@@ -206,13 +247,11 @@ async def encode_image_and_send(frame, video_socket):
 
 
 # 서버에서 넘어짐을 알리는 메시지를 받는다.
-async def receive_message():
+async def receive_message(falldown: FallDown):
     async with websockets.connect("ws://localhost:10000/video", extra_headers=EXTRA_HEADER) as video_socket:
-        # 넘어짐 플래그 전역변수 사용
-        global FALL_DOWN_FLAG
 
         # 충돌을 방지하기 위하여 0.5초 대기
-        await asyncio.sleep(0.5)
+        await asyncio.sleep(1)
         # 소켓에 연결 정보 전송
         await video_socket.send(CONNECTION_INFO_RECEIVER)
 
@@ -220,41 +259,15 @@ async def receive_message():
             # 서버에서 오는 메시지 기다리기
             falldown_time = await video_socket.recv()
 
-            # 메시지가 왔는데 넘어짐 영상을 저장하는 중이 아니면 영상 저장 시작
-            if not FALL_DOWN_FLAG:
-                FALL_DOWN_FLAG = True
-
-                # 비디오 저장기? VideoWriter를 생성
-                fps = cap.get(cv2.CAP_PROP_FPS)
-                fourcc = cv2.VideoWriter_fourcc(*'DIVX')
-                width = round(cap.get(cv2.CAP_PROP_FRAME_WIDTH))
-                height = round(cap.get(cv2.CAP_PROP_FRAME_HEIGHT))
-                # 영상 저장 경로, 파일명 설정
-                # 파일명은 넘어진 시간
-                video_name = f"/home/serverid/falldown/video/{falldown_time}.avi"
-                video_writer = cv2.VideoWriter(video_name, fourcc, fps, (width, height))
-
-                # 비디오 저장기 queue에 넣기
-                video_writer_queue.append(video_writer)
-
-
-async def save_video(video_writer, temp_queue):
-    # 넘어짐 플래그 전역변수 사용
-    global FALL_DOWN_FLAG
-
-    # 비디오 저장
-    for f in temp_queue:
-        video_writer.write(f)
-
-    # 메모리 해제
-    video_writer.release()
-
-    FALL_DOWN_FLAG = False
+            falldown.append_new_video_writer(falldown_time=falldown_time)
+            falldown.append_new_temp_frame_list()
 
 
 async def main():
-    main_task = asyncio.create_task(send_video_position())
-    receive_task = asyncio.create_task(receive_message())
+    falldown = FallDown()
+
+    main_task = asyncio.create_task(send_video_position(falldown=falldown))
+    receive_task = asyncio.create_task(receive_message(falldown=falldown))
 
     await asyncio.gather(main_task, receive_task)
 
