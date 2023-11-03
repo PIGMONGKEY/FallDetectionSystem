@@ -25,6 +25,14 @@ public class NokPhoneDao {
         }
     }
 
+    public int updateToken(NokPhoneVO nokPhoneVO) {
+        try {
+            return nokPhoneMapper.updateToken(nokPhoneVO);
+        } catch (Exception e) {
+            return -1;
+        }
+    }
+
     /**
      * 같은 cameraId를 가진 보호자 연락처를 모두 삭제한다.
      */
@@ -39,7 +47,7 @@ public class NokPhoneDao {
     /**
      * 같은 카메라 아이디를 가진 보호자 연락처를 모두 조회한다.
      */
-    public List<String> selectAll(String cameraId) {
+    public List<NokPhoneVO> selectAll(String cameraId) {
         return nokPhoneMapper.selectAll(cameraId);
     }
 }

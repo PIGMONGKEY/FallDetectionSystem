@@ -10,6 +10,7 @@ import java.util.List;
 @Component
 public interface NokPhoneMapper {
     public int insert(NokPhoneVO nokPhoneVO);
+    public int updateToken(NokPhoneVO nokPhoneVO);
     public int delete(String cameraId);
-    public List<String> selectAll(String cameraId);
+    public List<NokPhoneVO> selectAll(String cameraId);
 }

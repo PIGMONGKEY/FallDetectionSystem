@@ -9,4 +9,5 @@ import org.springframework.stereotype.Component;
 public class NokPhoneVO {
     private String cameraId;
     private String nokPhone;
+    private String token;
 }

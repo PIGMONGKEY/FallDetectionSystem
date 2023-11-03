@@ -16,6 +16,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @Service
@@ -128,7 +129,13 @@ public class UserServiceImpl implements UserService {
     @Override
     public BasicResponseDTO<UserInfoRequestDTO> getUserInfo(String cameraId) {
         UserVO userVO = userDao.select(cameraId).orElse(null);
-        List<String> nokPhones = nokPhoneDao.selectAll(cameraId);
+        List<NokPhoneVO> nokPhoneVOs = nokPhoneDao.selectAll(cameraId);
+
+        List<String> nokPhones = new ArrayList<>();
+
+        for (NokPhoneVO nokPhoneVO : nokPhoneVOs) {
+            nokPhones.add(nokPhoneVO.getNokPhone());
+        }
 
         // 사용자 정보가 있고 보호자 연락처가 등록되어 있다면 UserInfoDTO 생성하여 리턴
         if (userVO != null && !nokPhones.isEmpty()) {

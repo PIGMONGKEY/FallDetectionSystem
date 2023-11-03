@@ -6,6 +6,11 @@
                VALUES (#{cameraId}, #{nokPhone});
     </insert>
 
+    <update id="updateToken">
+        UPDATE TBL_NOKPHONE SET TOKEN=#{token}
+        WHERE NOK_PHONE = #{nokPhone};
+    </update>
+
     <delete id="delete">
         DELETE FROM TBL_NOKPHONE
         WHERE CAMERA_ID = #{cameraId};

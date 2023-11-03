@@ -3,6 +3,7 @@ package com.example.falldowndetectionserver.service.emergency;
 import com.example.falldowndetectionserver.dao.NokPhoneDao;
 import com.example.falldowndetectionserver.dao.UserDao;
 import com.example.falldowndetectionserver.domain.dto.aligo.AligoSendSMSResponseDTO;
+import com.example.falldowndetectionserver.domain.vo.NokPhoneVO;
 import com.example.falldowndetectionserver.domain.vo.UserVO;
 import com.example.falldowndetectionserver.fallDownDetect.FallDownDetector;
 import com.example.falldowndetectionserver.utils.AligoSmsUtil;
@@ -95,11 +96,11 @@ public class EmergencyServiceImpl implements EmergencyService {
     private String getNokphones(String cameraId) {
         String receiver;
 
-        List<String> nokphones = nokPhoneDao.selectAll(cameraId);
-        receiver = nokphones.get(0);
+        List<NokPhoneVO> nokphones = nokPhoneDao.selectAll(cameraId);
+        receiver = nokphones.get(0).getNokPhone();
 
         if (nokphones.size() > 1) {
-            receiver = receiver + "," + nokphones.get(1);
+            receiver = receiver + "," + nokphones.get(1).getNokPhone();
         }
 
         return receiver;

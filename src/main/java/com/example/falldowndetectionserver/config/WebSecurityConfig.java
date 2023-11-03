@@ -85,6 +85,8 @@ public class WebSecurityConfig {
                 .antMatchers("/position").permitAll()
                 // 비상 대처 api 인증 제외
                 .antMatchers("/emergency/*").permitAll()
+                // 보호자 핸드폰 토큰 저장 api 인증 제외
+                .antMatchers("/nok").permitAll()
                 // 나머지는 모두 인증 필요
                 .anyRequest().authenticated()
 
