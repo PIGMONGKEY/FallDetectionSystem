@@ -17,8 +17,6 @@ import com.example.falldetectionapp.R;
  * 회원가입 시, 사용자 정보를 입력하는 창입니다.
  * activity_info.xml과 연결됩니다.
  */
-// TODO: 성별 radio로 변경
-// TODO: 혈액형 입력 방식 변경
 public class InfoActivity extends AppCompatActivity {
     private Button toAddressButton;
     private EditText nameEditText, phoneEditText, ageEditText;

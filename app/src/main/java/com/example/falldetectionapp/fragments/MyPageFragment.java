@@ -51,7 +51,6 @@ import retrofit2.converter.gson.GsonConverterFactory;
  * Java 코드를 작성하실 때, Fragment에 대해 조금 찾아보시면서 작성하셔야 할 듯 합니다.
  * Activity와는 다르게 독자적으로 존재할 수 없는 화면이고, 화면 안에 있는 화면이다보니, 로직을 짜는 방식이 조금 다를껍니다.
  */
-// TODO: 회원정보 수정 구현
 public class MyPageFragment extends Fragment {
     private ImageView profileImageView;
     private TextView nameTV, genderTV, ageTV, bloodTypeTV, cameraIdTV, phoneTV, addressTV, nokPhone1TV, nokPhone2TV;
