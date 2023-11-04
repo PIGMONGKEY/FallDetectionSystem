@@ -4,6 +4,7 @@ import com.example.falldowndetectionserver.dao.UPTokenDao;
 import com.example.falldowndetectionserver.domain.dto.BasicResponseDTO;
 import com.example.falldowndetectionserver.fallDownDetect.FallDownDetector;
 import com.example.falldowndetectionserver.service.emergency.EmergencyService;
+import com.example.falldowndetectionserver.utils.ImpUtil;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpHeaders;
@@ -114,7 +115,7 @@ public class EmergencyController {
 
         String fileName = formatter.format(date);
 
-        File file = new File("절대경로 필요함/falldown/video/" + fileName + ".mp4");
+        File file = new File(ImpUtil.videoPath + fileName + ".mp4");
 
         StreamingResponseBody streamingResponseBody = new StreamingResponseBody() {
             @Override

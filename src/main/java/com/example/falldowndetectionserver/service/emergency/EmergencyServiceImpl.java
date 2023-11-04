@@ -8,6 +8,7 @@ import com.example.falldowndetectionserver.domain.vo.UserVO;
 import com.example.falldowndetectionserver.fallDownDetect.FallDownDetector;
 import com.example.falldowndetectionserver.service.FirebaseMessageService;
 import com.example.falldowndetectionserver.utils.AligoSmsUtil;
+import com.example.falldowndetectionserver.utils.ImpUtil;
 import com.google.gson.Gson;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -116,7 +117,7 @@ public class EmergencyServiceImpl implements EmergencyService {
         String message = "[ 긴급상황 감지 시스템 ]" + "\n(" +
                 userVO.getUserName() + " / " + userVO.getUserGender() + " / " + userVO.getUserAge() + "세) 위급상황이 발생했습니다." +
                 "아래 링크에 접속하셔서 " + cameraId + "를 입력하시고, 상황을 확인하세요.\n" +
-                "링크 주소";
+                ImpUtil.serverUrl + "/emergency/check";
 
         return message;
     }
