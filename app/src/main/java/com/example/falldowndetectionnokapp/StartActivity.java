@@ -80,7 +80,8 @@ public class StartActivity extends AppCompatActivity {
 
     private void checkAutoLogin() {
         if (!getSharedPreferences().isEmpty()) {
-            // TODO: 홈 만들어서 거기로 이동
+            Intent intent = new Intent(StartActivity.this, HomeActivity.class);
+            startActivity(intent);
         }
     }
 
@@ -109,7 +110,8 @@ public class StartActivity extends AppCompatActivity {
                             .setPositiveButton("확인", new DialogInterface.OnClickListener() {
                                 @Override
                                 public void onClick(DialogInterface dialog, int which) {
-                                    // TODO: 홈으로 이동
+                                    Intent intent = new Intent(StartActivity.this, HomeActivity.class);
+                                    startActivity(intent);
                                 }
                             })
                             .show();
