@@ -16,8 +16,8 @@
         WHERE CAMERA_ID = #{cameraId};
     </delete>
 
-    <select id="selectAll" resultType="string">
-        SELECT NOK_PHONE FROM TBL_NOKPHONE
+    <select id="selectAll" resultType="nokPhoneVO">
+        SELECT CAMERA_ID, NOK_PHONE, TOKEN FROM TBL_NOKPHONE
         WHERE CAMERA_ID = #{cameraId};
     </select>
 </mapper>
