@@ -59,6 +59,8 @@ public class GuideFragment extends Fragment {
         slideModels.add(new SlideModel(R.drawable.guide1));
         slideModels.add(new SlideModel(R.drawable.guide2));
         slideModels.add(new SlideModel(R.drawable.guide3));
+        slideModels.add(new SlideModel(R.drawable.guide4));
+        slideModels.add(new SlideModel(R.drawable.guide5));
 
         guideSlider.setImageList(slideModels, true);
     }
