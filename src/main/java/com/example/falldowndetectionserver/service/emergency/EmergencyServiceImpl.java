@@ -6,6 +6,7 @@ import com.example.falldowndetectionserver.domain.dto.aligo.AligoSendSMSResponse
 import com.example.falldowndetectionserver.domain.vo.NokPhoneVO;
 import com.example.falldowndetectionserver.domain.vo.UserVO;
 import com.example.falldowndetectionserver.fallDownDetect.FallDownDetector;
+import com.example.falldowndetectionserver.service.FirebaseMessageService;
 import com.example.falldowndetectionserver.utils.AligoSmsUtil;
 import com.google.gson.Gson;
 import lombok.RequiredArgsConstructor;
@@ -21,6 +22,7 @@ import java.util.List;
 @RequiredArgsConstructor
 @Slf4j
 public class EmergencyServiceImpl implements EmergencyService {
+    private final FirebaseMessageService firebaseMessageService;
     private final UserDao userDao;
     private final NokPhoneDao nokPhoneDao;
     private final FallDownDetector fallDownDetector;
@@ -43,11 +45,12 @@ public class EmergencyServiceImpl implements EmergencyService {
                 .method("POST", body)
                 .build();
 
+        sendFCMtoNok(cameraId);
+
         try {
             Response response = client.newCall(request).execute();
             responseDTO = gson.fromJson(response.body().string(), AligoSendSMSResponseDTO.class);
             log.info(responseDTO.getSuccess_cnt() + "");
-            // TODO: 문자 여유가 된다면, 전송 실패 시 재전송 로직 추가
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -64,8 +67,6 @@ public class EmergencyServiceImpl implements EmergencyService {
         fallDownDetector.getPositionHash().get(cameraId).clear();
         fallDownDetector.getEmergencyFlagHash().replace(cameraId, false);
         fallDownDetector.getFallDownFlagHash().replace(cameraId, false);
-
-        // TODO: 라즈베리 파이 소리 끄기 - 소리 못 낼듯
     }
 
     /**
@@ -118,5 +119,26 @@ public class EmergencyServiceImpl implements EmergencyService {
                 "링크 주소";
 
         return message;
+    }
+
+    /**
+     * 보호자 핸드폰에 알림을 보낸다.
+     * 보호자 핸드폰 기기토큰이 저장되어있지 않은 경우,
+     * 보호자용 앱이 설치되어 있지 않은것이니, 발송하지 않는다.
+     * @param cameraId
+     */
+    private void sendFCMtoNok(String cameraId) {
+        UserVO userVO = userDao.select(cameraId).get();
+        List<NokPhoneVO> nokPhones = nokPhoneDao.selectAll(cameraId);
+        for (NokPhoneVO nokPhoneVO : nokPhones) {
+            if (nokPhoneVO.getToken().equals("none")) {
+                continue;
+            }
+            try {
+                firebaseMessageService.sendMessageTo(nokPhoneVO.getToken(), "위급상황 발생!!!", userVO.getUserName() + "님께 위급상황이 발생했습니다.");
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        }
     }
 }
