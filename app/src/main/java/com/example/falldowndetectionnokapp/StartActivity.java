@@ -83,7 +83,7 @@ public class StartActivity extends AppCompatActivity {
 
     // SharedPreferences에 저장된 로그인 정보가 있으면, 홈으로 넘어감
     private void checkAutoLogin() {
-        if (!getSharedPreferences().isEmpty()) {
+        if (getSharedPreferences() != null) {
             Intent intent = new Intent(StartActivity.this, HomeActivity.class);
             startActivity(intent);
         }

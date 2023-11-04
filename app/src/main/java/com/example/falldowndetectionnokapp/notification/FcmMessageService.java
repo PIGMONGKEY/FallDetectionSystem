@@ -19,14 +19,6 @@ import com.example.falldowndetectionnokapp.R;
 import com.google.firebase.messaging.FirebaseMessagingService;
 import com.google.firebase.messaging.RemoteMessage;
 
-/**
- * An {@link IntentService} subclass for handling asynchronous task requests in
- * a service on a separate handler thread.
- * <p>
- * <p>
- * TODO: Customize class - update intent actions, extra parameters and static
- * helper methods.
- */
 public class FcmMessageService extends FirebaseMessagingService {
     @Override
     public void onNewToken(@NonNull String token) {
