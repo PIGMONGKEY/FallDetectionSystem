@@ -4,7 +4,58 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:padding="30dp"
     android:keepScreenOn="true"
+    android:background="@drawable/background"
     tools:context=".HomeActivity">
+
+    <ImageView
+        android:id="@+id/logo_home"
+        android:layout_width="match_parent"
+        android:layout_height="80dp"
+        android:layout_marginTop="130dp"
+        android:src="@drawable/logo"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <TextView
+        android:id="@+id/appNameTextView_home"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="10dp"
+        android:baselineAligned="false"
+        android:fontFamily="sans-serif-condensed-medium"
+        android:text="긴급 상황 신고 서비스"
+        android:textAlignment="center"
+        android:textColor="#ffffff"
+        android:textSize="35sp"
+        android:textStyle="bold"
+        app:layout_constraintTop_toBottomOf="@id/logo_home" />
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="50dp"
+        android:baselineAligned="false"
+        android:fontFamily="sans-serif-condensed-medium"
+        android:text="이 앱은 위급상황 발생시,\n알림을 받기 위한 앱 입니다."
+        android:textAlignment="center"
+        android:textColor="#ffffff"
+        android:textSize="35sp"
+        android:textStyle="bold"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent" />
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="0dp"
+        android:text="KillerFingerZoo"
+        android:textColor="#ffffff"
+        android:textSize="27sp"
+        android:textStyle="bold"
+        android:textAlignment="center"
+        app:layout_constraintBottom_toBottomOf="parent" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
