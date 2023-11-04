@@ -16,6 +16,7 @@ import android.widget.EditText;
 import com.example.falldowndetectionnokapp.DTO.BasicResponseDTO;
 import com.example.falldowndetectionnokapp.DTO.NokPhoneRegisterDTO;
 import com.example.falldowndetectionnokapp.retrofit.HttpService;
+import com.google.firebase.messaging.FirebaseMessaging;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 
@@ -31,6 +32,7 @@ public class StartActivity extends AppCompatActivity {
 
     private Button confirmButton;
     private EditText phoneET;
+    private String fcmDeviceToken;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -43,6 +45,7 @@ public class StartActivity extends AppCompatActivity {
     private void init() {
         setViews();
         setListeners();
+        getFcmDeviceToken();
         checkAutoLogin();
     }
 
@@ -78,6 +81,7 @@ public class StartActivity extends AppCompatActivity {
         });
     }
 
+    // SharedPreferences에 저장된 로그인 정보가 있으면, 홈으로 넘어감
     private void checkAutoLogin() {
         if (!getSharedPreferences().isEmpty()) {
             Intent intent = new Intent(StartActivity.this, HomeActivity.class);
@@ -85,10 +89,19 @@ public class StartActivity extends AppCompatActivity {
         }
     }
 
+    // AlertDialog 반환
     private AlertDialog.Builder getAlertDialog() {
         return new AlertDialog.Builder(this);
     }
 
+    // FCM 기기 토큰 읽어오기
+    private void getFcmDeviceToken() {
+        FirebaseMessaging.getInstance().getToken().addOnCompleteListener(task -> {
+            fcmDeviceToken = task.getResult();
+        });
+    }
+
+    // 보호자 핸드폰 등록 요청
     private void requestRegisterNokPhoneToken() {
         Gson gson = new GsonBuilder().setLenient().create();
 
@@ -99,7 +112,7 @@ public class StartActivity extends AppCompatActivity {
 
         HttpService httpService = retrofit.create(HttpService.class);
 
-        NokPhoneRegisterDTO nokPhoneRegisterDTO = new NokPhoneRegisterDTO(phoneET.getText().toString().trim(), "tokentoken");
+        NokPhoneRegisterDTO nokPhoneRegisterDTO = new NokPhoneRegisterDTO(phoneET.getText().toString().trim(), fcmDeviceToken);
 
         httpService.requestRegisterToken(nokPhoneRegisterDTO).enqueue(new Callback<BasicResponseDTO>() {
             @Override
@@ -110,6 +123,12 @@ public class StartActivity extends AppCompatActivity {
                             .setPositiveButton("확인", new DialogInterface.OnClickListener() {
                                 @Override
                                 public void onClick(DialogInterface dialog, int which) {
+                                    // SharedPreferences에 핸드폰 번호 저장
+                                    SharedPreferences sp = getSharedPreferences("autoLogin", Activity.MODE_PRIVATE);
+                                    SharedPreferences.Editor editor = sp.edit();
+                                    editor.putString("phone", phoneET.getText().toString().trim());
+                                    editor.commit();
+
                                     Intent intent = new Intent(StartActivity.this, HomeActivity.class);
                                     startActivity(intent);
                                 }
@@ -131,6 +150,15 @@ public class StartActivity extends AppCompatActivity {
             @Override
             public void onFailure(Call<BasicResponseDTO> call, Throwable t) {
                 Log.d("HTTP", t.getMessage());
+                getAlertDialog()
+                        .setMessage("서버 연결에 실패했습니다.")
+                        .setPositiveButton("확인", new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialog, int which) {
+
+                            }
+                        })
+                        .show();
             }
         });
     }
