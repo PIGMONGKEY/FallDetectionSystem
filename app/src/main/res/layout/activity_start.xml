@@ -6,6 +6,7 @@
     android:layout_height="match_parent"
     android:padding="30dp"
     android:background="@drawable/background"
+    android:keepScreenOn="true"
     tools:context=".StartActivity">
 
     <LinearLayout
