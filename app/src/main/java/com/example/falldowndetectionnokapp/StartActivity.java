@@ -2,9 +2,11 @@ package com.example.falldowndetectionnokapp;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
@@ -16,6 +18,8 @@ import com.example.falldowndetectionnokapp.DTO.NokPhoneRegisterDTO;
 import com.example.falldowndetectionnokapp.retrofit.HttpService;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
+
+import java.util.HashMap;
 
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -39,6 +43,7 @@ public class StartActivity extends AppCompatActivity {
     private void init() {
         setViews();
         setListeners();
+        checkAutoLogin();
     }
 
     private void setViews() {
@@ -59,7 +64,6 @@ public class StartActivity extends AppCompatActivity {
                         .setPositiveButton("확인", new DialogInterface.OnClickListener() {
                             @Override
                             public void onClick(DialogInterface dialog, int which) {
-                                // TODO: 저장 HTTP 요청
                                 requestRegisterNokPhoneToken();
                             }
                         })
@@ -72,6 +76,12 @@ public class StartActivity extends AppCompatActivity {
                         .show();
             }
         });
+    }
+
+    private void checkAutoLogin() {
+        if (!getSharedPreferences().isEmpty()) {
+            // TODO: 홈 만들어서 거기로 이동
+        }
     }
 
     private AlertDialog.Builder getAlertDialog() {
@@ -99,7 +109,7 @@ public class StartActivity extends AppCompatActivity {
                             .setPositiveButton("확인", new DialogInterface.OnClickListener() {
                                 @Override
                                 public void onClick(DialogInterface dialog, int which) {
-
+                                    // TODO: 홈으로 이동
                                 }
                             })
                             .show();
@@ -121,5 +131,14 @@ public class StartActivity extends AppCompatActivity {
                 Log.d("HTTP", t.getMessage());
             }
         });
+    }
+
+    /**
+     * SharedPreferences에서 자동로그인 정보를 가져옴
+     * @return HashMap 형태로 로그인 정보를 반환함
+     */
+    private String getSharedPreferences() {
+        SharedPreferences sp = getSharedPreferences("autoLogin", Activity.MODE_PRIVATE);
+        return sp.getString("phone", null);
     }
 }
