@@ -36,7 +36,8 @@ public class StartActivity extends AppCompatActivity {
         toGuide.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-
+                Intent intent = new Intent(StartActivity.this, GuideActivity.class);
+                startActivity(intent);
             }
         });
 

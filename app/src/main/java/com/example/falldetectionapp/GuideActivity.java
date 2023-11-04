@@ -14,6 +14,7 @@ import android.widget.ImageButton;
 import android.widget.Toast;
 
 import com.denzcoskun.imageslider.ImageSlider;
+import com.denzcoskun.imageslider.constants.ScaleTypes;
 import com.denzcoskun.imageslider.models.SlideModel;
 import com.example.falldetectionapp.register.RegisterActivity;
 
@@ -48,15 +49,17 @@ public class GuideActivity extends AppCompatActivity {
 
     private void setView() {
         backButton = findViewById(R.id.imageButton4);
-        guideSlider = findViewById(R.id.slider);
+        guideSlider = findViewById(R.id.slider_activity);
 
         slideModels = new ArrayList<>();
 
-        slideModels.add(new SlideModel(R.drawable.guide1));
-        slideModels.add(new SlideModel(R.drawable.guide2));
-        slideModels.add(new SlideModel(R.drawable.guide3));
+        slideModels.add(new SlideModel(R.drawable.guide1, ScaleTypes.FIT));
+        slideModels.add(new SlideModel(R.drawable.guide2, ScaleTypes.FIT));
+        slideModels.add(new SlideModel(R.drawable.guide3, ScaleTypes.FIT));
+        slideModels.add(new SlideModel(R.drawable.guide4, ScaleTypes.FIT));
+        slideModels.add(new SlideModel(R.drawable.guide5, ScaleTypes.FIT));
 
-        guideSlider.setImageList(slideModels, true);
+        guideSlider.setImageList(slideModels);
     }
 
     //    리스너는 여기 모아주세요

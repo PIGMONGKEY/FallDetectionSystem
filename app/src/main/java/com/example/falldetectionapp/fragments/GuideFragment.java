@@ -9,8 +9,10 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageButton;
+import android.widget.ImageView;
 
 import com.denzcoskun.imageslider.ImageSlider;
+import com.denzcoskun.imageslider.constants.ScaleTypes;
 import com.denzcoskun.imageslider.models.SlideModel;
 import com.example.falldetectionapp.GuideActivity;
 import com.example.falldetectionapp.HomeActivity;
@@ -52,17 +54,17 @@ public class GuideFragment extends Fragment {
 
     private void setView(View view) {
         backButton = view.findViewById(R.id.imageButton4);
-        guideSlider = view.findViewById(R.id.slider);
+        guideSlider = view.findViewById(R.id.slider_fragment);
 
         slideModels = new ArrayList<>();
 
-        slideModels.add(new SlideModel(R.drawable.guide1));
-        slideModels.add(new SlideModel(R.drawable.guide2));
-        slideModels.add(new SlideModel(R.drawable.guide3));
-        slideModels.add(new SlideModel(R.drawable.guide4));
-        slideModels.add(new SlideModel(R.drawable.guide5));
+        slideModels.add(new SlideModel(R.drawable.guide1, ScaleTypes.FIT));
+        slideModels.add(new SlideModel(R.drawable.guide2, ScaleTypes.FIT));
+        slideModels.add(new SlideModel(R.drawable.guide3, ScaleTypes.FIT));
+        slideModels.add(new SlideModel(R.drawable.guide4, ScaleTypes.FIT));
+        slideModels.add(new SlideModel(R.drawable.guide5, ScaleTypes.FIT));
 
-        guideSlider.setImageList(slideModels, true);
+        guideSlider.setImageList(slideModels);
     }
 
 }
