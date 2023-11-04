@@ -156,7 +156,7 @@ async def get_position_and_send(frame, position_socket):
     # 인식 기준 신뢰도 0.35로 설정
     # x, y 최대 최소 값 구함
     for keypoint in outputs.numpy()[0][0]:
-        if keypoint[2] <= 0.35:
+        if keypoint[2] <= 0.5:
             continue
         if keypoint[0] <= min_y:
             min_y = keypoint[0]
