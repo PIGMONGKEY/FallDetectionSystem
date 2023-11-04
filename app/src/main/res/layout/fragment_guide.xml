@@ -12,11 +12,10 @@
         android:id="@+id/slider_fragment"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        app:iss_auto_cycle="true"
+        app:iss_auto_cycle="false"
         app:iss_delay="0"
         app:iss_corner_radius="20"
         app:iss_error_image="@color/white"
-        app:iss_period="3000"
         app:iss_placeholder="@color/black"
         app:iss_no_dots="true" />
 

@@ -4,6 +4,7 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Intent;
 import android.media.Image;
+import android.os.Build;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
@@ -27,10 +28,10 @@ import java.util.List;
  */
 public class GuideActivity extends AppCompatActivity {
 
-    private ImageButton backButton;
     private ImageSlider guideSlider;
-
     private List<SlideModel> slideModels;
+    private View decorView;
+    private int uiOption;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -44,11 +45,10 @@ public class GuideActivity extends AppCompatActivity {
     private void init() {
         setTitle("가이드");
         setView();
-        setListener();
+        hideUnderBar();
     }
 
     private void setView() {
-        backButton = findViewById(R.id.imageButton4);
         guideSlider = findViewById(R.id.slider_activity);
 
         slideModels = new ArrayList<>();
@@ -62,14 +62,17 @@ public class GuideActivity extends AppCompatActivity {
         guideSlider.setImageList(slideModels);
     }
 
-    //    리스너는 여기 모아주세요
-    private void setListener() {
-        backButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent intent = new Intent(GuideActivity.this, HomeActivity.class);
-                startActivity(intent);
-            }
-        });
+    // 하단바 숨기기
+    private void hideUnderBar() {
+        decorView = getWindow().getDecorView();
+        uiOption = getWindow().getDecorView().getSystemUiVisibility();
+        if( Build.VERSION.SDK_INT >= Build.VERSION_CODES.ICE_CREAM_SANDWICH )
+            uiOption |= View.SYSTEM_UI_FLAG_HIDE_NAVIGATION;
+        if( Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN )
+            uiOption |= View.SYSTEM_UI_FLAG_FULLSCREEN;
+        if( Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT )
+            uiOption |= View.SYSTEM_UI_FLAG_IMMERSIVE_STICKY;
+
+        decorView.setSystemUiVisibility( uiOption );
     }
 }

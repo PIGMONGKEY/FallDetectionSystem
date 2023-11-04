@@ -23,7 +23,6 @@ import java.util.List;
 
 public class GuideFragment extends Fragment {
 
-    private ImageButton backButton;
     private ImageSlider guideSlider;
 
     private List<SlideModel> slideModels;
@@ -53,7 +52,6 @@ public class GuideFragment extends Fragment {
     }
 
     private void setView(View view) {
-        backButton = view.findViewById(R.id.imageButton4);
         guideSlider = view.findViewById(R.id.slider_fragment);
 
         slideModels = new ArrayList<>();
