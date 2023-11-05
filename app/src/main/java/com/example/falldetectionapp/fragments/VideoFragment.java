@@ -1,31 +1,28 @@
 package com.example.falldetectionapp.fragments;
 
-import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
+import android.media.MediaPlayer;
+import android.net.Uri;
 import android.os.Bundle;
 
-import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ImageView;
+import android.widget.VideoView;
 
 import com.example.falldetectionapp.BuildConfig;
+import com.example.falldetectionapp.DTO.BasicResponseDTO;
 import com.example.falldetectionapp.R;
+import com.example.falldetectionapp.retrofit.VideoService;
+import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
 
-import org.json.JSONException;
-import org.json.JSONObject;
-
-import okhttp3.OkHttpClient;
-import okhttp3.Request;
-import okhttp3.Response;
-import okhttp3.WebSocket;
-import okhttp3.WebSocketListener;
-import okio.ByteString;
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
+import retrofit2.Retrofit;
+import retrofit2.converter.gson.GsonConverterFactory;
 
 /**
  * HomeActivity의 FrameLayout에 들어가는 VideoFragment입니다.
@@ -38,9 +35,8 @@ import okio.ByteString;
  */
 public class VideoFragment extends Fragment {
 
-    private WebSocket socket;
-    private final JSONObject CONNECTION_INFO = new JSONObject();
-    private ImageView videoImageView;
+    private VideoView videoView;
+    private String personalToken, cameraId;
 
 //    빈 생성자가 있어야 합니다. 삭제하면 안됩니다.
     public VideoFragment() { }
@@ -50,7 +46,7 @@ public class VideoFragment extends Fragment {
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_video, container, false);
-        setView(view);
+        init(view);
 
         return view;
     }
@@ -60,95 +56,56 @@ public class VideoFragment extends Fragment {
         super.onCreate(savedInstanceState);
     }
 
-    @Override
-    public void onResume() {
-        super.onResume();
-
-//        비디오 출력은 주석 처리해놓겠습니다.
-        init();
-    }
-
-    @Override
-    public void onPause() {
-        super.onPause();
-
-        if (socket != null) {
-            socket.close(1000, "close");
-        }
-    }
-
-    @Override
-    public void onDestroy() {
-        super.onDestroy();
-
-        if (socket != null) {
-            socket.close(1000, "close");
-        }
-    }
-
-    private void init() {
-        try {
-            videoReceive();
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
+    private void init(View view) {
+        setView(view);
+        setListeners();
+        getDataFromBundle();
+        requestStreamingURL();
     }
 
     private void setView(View view) {
-        videoImageView = view.findViewById(R.id.videoImageView);
+        videoView = view.findViewById(R.id.videoImageView);
     }
 
-    private void videoReceive() throws InterruptedException {
-        OkHttpClient client = new OkHttpClient();
-        Request request = new Request.Builder().url(BuildConfig.SOCKET_URL).build();
+    private void getDataFromBundle() {
+        personalToken = getArguments().getString("personalToken");
+        cameraId = getArguments().getString("cameraId");
+    }
 
-        socket = client.newWebSocket(request, new WebSocketListener() {
-            @Override
-            public void onClosed(@NonNull WebSocket webSocket, int code, @NonNull String reason) {
-                Log.d("video", "closed");
-            }
+    private void requestStreamingURL() {
+        Gson gson = new GsonBuilder().setLenient().create();
 
-            @Override
-            public void onClosing(@NonNull WebSocket webSocket, int code, @NonNull String reason) {
-                Log.d("video", "closing");
-            }
+        Retrofit retrofit = new Retrofit.Builder()
+                .baseUrl(BuildConfig.SERVER_URL) // 기본으로 적용되는 서버 URL (반드시 / 로 마무리되게 설정)
+                .addConverterFactory(GsonConverterFactory.create(gson)) // JSON 데이터를 Gson 라이브러리로 파싱하고 데이터를 Model에 자동으로 담는 converter
+                .build();
 
-            @Override
-            public void onFailure(@NonNull WebSocket webSocket, @NonNull Throwable t, @Nullable Response response) {
-                Log.d("video", "failure : " + t.getCause() + " / " + t.getMessage() + " / " + t);
-            }
+        VideoService videoService = retrofit.create(VideoService.class);
 
+        videoService.requestStreamingUrl("Bearer " + personalToken, cameraId).enqueue(new Callback<BasicResponseDTO<String>>() {
             @Override
-            public void onMessage(@NonNull WebSocket webSocket, @NonNull String text) {
-                Log.d("video", "get message : " + text);
-            }
+            public void onResponse(Call<BasicResponseDTO<String>> call, Response<BasicResponseDTO<String>> response) {
+                if (response.isSuccessful()) {
+                    videoView.setVideoURI(Uri.parse(response.body().getData().trim()));
+                } else {
 
-            @Override
-            public void onMessage(@NonNull WebSocket webSocket, @NonNull ByteString bytes) {
-                getActivity().runOnUiThread(new Runnable() {
-                    @Override
-                    public void run() {
-                        showImage(BitmapFactory.decodeByteArray(bytes.toByteArray(), 0, bytes.toByteArray().length));
-                    }
-                });
-            }
-
-            @Override
-            public void onOpen(@NonNull WebSocket webSocket, @NonNull Response response) {
-                Log.d("video", "connected");
-                try {
-                    CONNECTION_INFO.put("identifier", "receiver");
-                    CONNECTION_INFO.put("camera_id", "cam01");
-                } catch (JSONException e) {
-                    throw new RuntimeException(e);
                 }
-                webSocket.send(CONNECTION_INFO.toString());
+            }
+
+            @Override
+            public void onFailure(Call<BasicResponseDTO<String>> call, Throwable t) {
+
             }
         });
     }
 
-
-    private void showImage(Bitmap bitmap) {
-        videoImageView.setImageBitmap(bitmap);
+    private void setListeners() {
+        videoView.setOnPreparedListener(new MediaPlayer.OnPreparedListener() {
+            @Override
+            public void onPrepared(MediaPlayer mp) {
+                videoView.start();
+            }
+        });
     }
+
 }
