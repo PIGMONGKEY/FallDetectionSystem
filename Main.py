@@ -5,16 +5,19 @@ import json
 import tensorflow as tf
 import tensorflow_hub as hub
 
-# 비디오를 전송할 때 사용하는 소켓 연결 정보
-CONNECTION_INFO_SENDER = json.dumps({
-    "camera_id": "cam01",
-    "identifier": "sender"
-})
+# 파일에서 설정 정보 읽어옴
+print("Loading settings...")
+file = open("./setting.txt", 'r')
+url = file.readline().strip()
+video_save_path = file.readline()
+file.close()
+print("Load setting success")
 
-# 넘어짐 알림을 받기 위해 사용하는 소켓 연결 정보
-CONNECTION_INFO_RECEIVER = json.dumps({
+# 비디오를 전송할 때 사용하는 소켓 연결 정보
+CONNECTION_INFO = json.dumps({
     "camera_id": "cam01",
-    "identifier": "waiter"
+    "identifier": "sender",
+    "streaming_url": url
 })
 
 # 비디오 또는 포지션 정보를 전송할 때 추가하는 헤더
@@ -22,24 +25,20 @@ EXTRA_HEADER = {
     "camera_id": "cam01"
 }
 
+
 # movenet 모델 로드
 print("Loading model...")
-
 model = hub.load(f"./movenet_singlepose_thunder_4")
-# model = hub.load(f"./movenet_singlepose_lightning_4")
-
 movenet = model.signatures['serving_default']
-
 print("Model load success")
 
-file = open("./streaming_url.txt", 'r')
-url = file.readline()
-video_save_path = file.readline()
-
 # 영상 캡처
-cap = cv2.VideoCapture(f"rtsp://{url}/cam")
+print("Loading streaming...")
+cap = cv2.VideoCapture(url)
+print("Streaming load success")
 
 
+# 영상 저장
 async def save_video(falldown_time, temp_queue):
     # 비디오 저장기? VideoWriter를 생성
     fps = cap.get(cv2.CAP_PROP_FPS)
@@ -109,33 +108,39 @@ class FallDown:
 # WebSocket을 통해 서버로 연결하고, Opencv를 이용해 웹캠으로 찍은 영상을 프레임 단위로 전송
 async def send_video_position(falldown: FallDown):
     async with websockets.connect("ws://localhost:10000/position", extra_headers=EXTRA_HEADER) as position_socket:
-        async with websockets.connect("ws://localhost:10000/video", extra_headers=EXTRA_HEADER) as video_socket:
 
-            # 연결되면 연결 정보를 TextMessage로 보냄
-            await video_socket.send(CONNECTION_INFO_SENDER)
+        # 웹캡이 켜져 있는동안 반복
+        while cap.isOpened():
+            # 프레임 단위로 영상 읽음
+            ret, frame = cap.read()
+            if not ret:
+                break
 
-            await asyncio.sleep(1)
+            falldown.append_frame(frame)
 
-            # 웹캡이 켜져 있는동안 반복
-            while cap.isOpened():
-                # 프레임 단위로 영상 읽음
-                ret, frame = cap.read()
-                if not ret:
-                    break
+            # 저장을 위한 버퍼에 프레임 추가, 비디오 저장
+            save_task = asyncio.create_task(falldown.append_new_temp_frame(frame))
+            # Movenet 적용하여 포지션 정보 전송하는 Task 생성
+            position_task = asyncio.create_task(get_position_and_send(frame, position_socket))
 
-                falldown.append_frame(frame)
+            # 두 개의 Task를 동시에 실행 - 둘 다 끝나길 기다림
+            await save_task
+            await position_task
 
-                # 저장을 위한 버퍼에 프레임 추가, 비디오 저장
-                save_task = asyncio.create_task(falldown.append_new_temp_frame(frame))
-                # Movenet 적용하여 포지션 정보 전송하는 Task 생성
-                position_task = asyncio.create_task(get_position_and_send(frame, position_socket))
-                # frame을 jpg로 인코딩 하여 전송하는 Task 생성
-                video_task = asyncio.create_task(encode_image_and_send(frame, video_socket))
 
-                # 세개의 Task를 동시에 실행 - 셋 다 끝나길 기다림
-                await save_task
-                await position_task
-                await video_task
+# 서버에서 넘어짐을 알리는 메시지를 받는다.
+async def receive_message(falldown: FallDown):
+    async with websockets.connect("ws://localhost:10000/video", extra_headers=EXTRA_HEADER) as video_socket:
+
+        # 소켓에 연결 정보 전송
+        await video_socket.send(CONNECTION_INFO)
+
+        while True:
+            # 서버에서 오는 메시지 기다리기
+            falldown_time = await video_socket.recv()
+
+            falldown.append_new_video_writer(falldown_time=falldown_time)
+            falldown.append_new_temp_frame_list()
 
 
 # frame에 movenet을 적용하여 keypoint들의 좌표를 추출한 후 전송한다
@@ -237,30 +242,6 @@ async def get_position_and_send(frame, position_socket):
 
     json_message = json.dumps(temp)
     await position_socket.send(json_message)
-
-
-# frame을 jpg형태로 인코딩하여 전송한다.
-async def encode_image_and_send(frame, video_socket):
-    _, encoded_image = cv2.imencode('.jpg', frame)
-    encoded_image = encoded_image.tobytes()
-    await video_socket.send(encoded_image)
-
-
-# 서버에서 넘어짐을 알리는 메시지를 받는다.
-async def receive_message(falldown: FallDown):
-    async with websockets.connect("ws://localhost:10000/video", extra_headers=EXTRA_HEADER) as video_socket:
-
-        # 충돌을 방지하기 위하여 0.5초 대기
-        await asyncio.sleep(1)
-        # 소켓에 연결 정보 전송
-        await video_socket.send(CONNECTION_INFO_RECEIVER)
-
-        while True:
-            # 서버에서 오는 메시지 기다리기
-            falldown_time = await video_socket.recv()
-
-            falldown.append_new_video_writer(falldown_time=falldown_time)
-            falldown.append_new_temp_frame_list()
 
 
 async def main():
