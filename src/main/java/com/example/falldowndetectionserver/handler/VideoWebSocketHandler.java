@@ -23,6 +23,8 @@ public class VideoWebSocketHandler extends TextWebSocketHandler {
     private final HashMap<String, WebSocketSession> receiverSessions = new HashMap<>();
     // 세션ID(sender), 카메라ID
     private final HashMap<String, String> senderCameraIDs = new HashMap<>();
+    // 카메라ID, 세션(sender)
+    private final HashMap<String, WebSocketSession> senderSessions = new HashMap<>();
     // 카메라ID, 영상URL
     private final HashMap<String, String> streamingUrls = new HashMap<>();
 
@@ -48,8 +50,8 @@ public class VideoWebSocketHandler extends TextWebSocketHandler {
             if (identifier.equals("sender")) {
                 try {
                     String streamingUrl = object.get("streaming_url").toString();
+                    // 카메라ID, 스트리밍 주소
                     streamingUrls.put(cameraId, streamingUrl);
-                    log.info(streamingUrl);
                 } catch (Exception e) {
                     log.info(e.getMessage());
                     session.close();
@@ -57,6 +59,8 @@ public class VideoWebSocketHandler extends TextWebSocketHandler {
 
                 // 세션ID : 카메라ID
                 senderCameraIDs.put(sessionId, cameraId);
+                // 카메라ID : 세션
+                senderSessions.put(cameraId, session);
                 log.info("sender connected - " + cameraId);
 
             } else if (identifier.equals("receiver")) {
@@ -105,13 +109,14 @@ public class VideoWebSocketHandler extends TextWebSocketHandler {
         } else {
             log.info("sender disconnected - " + senderCameraIDs.get(session.getId()));
             streamingUrls.remove(senderCameraIDs.get(session.getId()));
+            senderSessions.remove(senderCameraIDs.get(session.getId()));
             senderCameraIDs.remove(session.getId());
         }
     }
 
     public void sendFalldownMessageToWaiter(String cameraId, String fallDownTime) {
         try {
-            receiverSessions.get(cameraId).sendMessage(new TextMessage(fallDownTime));
+            senderSessions.get(cameraId).sendMessage(new TextMessage(fallDownTime));
         } catch (IOException e) {
             e.printStackTrace();
         }
