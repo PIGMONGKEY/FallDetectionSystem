@@ -2,11 +2,15 @@ package com.example.falldetectionapp;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.app.Activity;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
+import android.widget.CheckBox;
+import android.widget.CompoundButton;
 import android.widget.EditText;
 import android.widget.Toast;
 
@@ -36,19 +40,22 @@ public class LoginActivity extends AppCompatActivity {
 
     private Button registerButton, loginButton;
     private EditText cameraIdEditText, passwordEditText;
+    private CheckBox autoLoginCheckBox;
     private String fcmDeviceToken;
+    private boolean autoLoginFlag;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
 
+        getFcmDeviceToken();
+        checkAutoLogin();
         init();
     }
 
     // 초기 설정을 넣어주세요
     private void init() {
-        getFcmDeviceToken();
         setView();
         setListener();
     }
@@ -65,6 +72,7 @@ public class LoginActivity extends AppCompatActivity {
         loginButton = findViewById(R.id.loginButton_login);
         cameraIdEditText = findViewById(R.id.cameraIdEditText_login);
         passwordEditText = findViewById(R.id.passwordEditText_login);
+        autoLoginCheckBox = findViewById(R.id.autoLoginCheckBox_login);
     }
 
     // 리스너는 여기 모아주세요
@@ -95,6 +103,41 @@ public class LoginActivity extends AppCompatActivity {
                 }
             }
         });
+
+        // 자동로그인 체크박스
+        autoLoginCheckBox.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+                autoLoginFlag = isChecked;
+            }
+        });
+    }
+
+    // 자동로그인 정보를 SharedPreferences에 저장
+    private void saveLoginInfo(String cameraId, String password) {
+        SharedPreferences sp = getSharedPreferences("autoLogin", Activity.MODE_PRIVATE);
+        SharedPreferences.Editor editor = sp.edit();
+
+        // 혹시 값이 이미 있다면 삭제
+        if (sp.contains("auto")) {
+            editor.remove("auto");
+            editor.commit();
+        }
+
+        if (sp.contains("cameraId")) {
+            editor.remove("cameraId");
+            editor.commit();
+        }
+
+        if (sp.contains("password")) {
+            editor.remove("password");
+            editor.commit();
+        }
+
+        editor.putBoolean("auto", true);
+        editor.putString("cameraId", cameraId);
+        editor.putString("password", password);
+        editor.commit();
     }
 
     /**
@@ -119,6 +162,12 @@ public class LoginActivity extends AppCompatActivity {
             public void onResponse(Call<BasicResponseDTO<AuthTokenDTO>> call, Response<BasicResponseDTO<AuthTokenDTO>> response) {
                 if (response.isSuccessful()) {
                     // 로그인 성공
+
+                    // 자동로그인이 체크되어 있다면, SharedPreferences에 로그인 정보 저장
+                    if (autoLoginFlag) {
+                        saveLoginInfo(cameraId, password);
+                    }
+
                     Intent intent = new Intent(LoginActivity.this, HomeActivity.class);
                     // api 접근을 위한 token을 받아서 넘겨준다.
                     intent.putExtra("personalToken", response.body().getData().getToken());
@@ -131,9 +180,13 @@ public class LoginActivity extends AppCompatActivity {
                                 BasicResponseDTO.class,
                                 BasicResponseDTO.class.getAnnotations()
                         ).convert(response.errorBody());
+
+                        // 자동로그인 정보 삭제
+                        removeAutoLoginInfo();
                         Toast.makeText(getApplicationContext(), basicResponseDTO.getMessage(), Toast.LENGTH_LONG).show();
                     } catch (IOException e) {
                         Log.d("HTTP_ERROR", e.getMessage());
+                        removeAutoLoginInfo();
                     }
                 }
             }
@@ -142,8 +195,52 @@ public class LoginActivity extends AppCompatActivity {
             public void onFailure(Call<BasicResponseDTO<AuthTokenDTO>> call, Throwable t) {
                 // 서버 연결 실패
                 Log.d("LOGIN", t.getMessage());
+
+                // 자동로그인 정보 삭제
+                removeAutoLoginInfo();
                 Toast.makeText(getApplicationContext(), "서버 연결에 실패했습니다.", Toast.LENGTH_LONG).show();
             }
         });
+    }
+
+    // 자동로그인 체크
+    private void checkAutoLogin() {
+        SharedPreferences sp = getSharedPreferences("autoLogin", Activity.MODE_PRIVATE);
+
+        if (sp.contains("auto")) {
+            if (sp.getBoolean("auto", false)) {
+                String cameraId = sp.getString("cameraId", null);
+                String password = sp.getString("password", null);
+
+                autoLoginFlag = false;
+
+                if (cameraId != null && password != null) {
+                    requestLogin(cameraId, password);
+                }
+            }
+        }
+    }
+
+    // 자동로그인 정보 삭제
+    private void removeAutoLoginInfo() {
+        // 자동 로그인 정보 삭제
+        SharedPreferences sp = getSharedPreferences("autoLogin", Activity.MODE_PRIVATE);
+        SharedPreferences.Editor editor = sp.edit();
+
+        // 혹시 값이 이미 있다면 삭제
+        if (sp.contains("auto")) {
+            editor.remove("auto");
+            editor.commit();
+        }
+
+        if (sp.contains("cameraId")) {
+            editor.remove("cameraId");
+            editor.commit();
+        }
+
+        if (sp.contains("password")) {
+            editor.remove("password");
+            editor.commit();
+        }
     }
 }

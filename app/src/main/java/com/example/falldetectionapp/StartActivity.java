@@ -2,7 +2,9 @@ package com.example.falldetectionapp;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.app.Activity;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
@@ -18,6 +20,7 @@ public class StartActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_start);
 
+        checkAutoLogin();
         init();
     }
 
@@ -56,5 +59,16 @@ public class StartActivity extends AppCompatActivity {
                 startActivity(intent);
             }
         });
+    }
+
+    private void checkAutoLogin() {
+        SharedPreferences sp = getSharedPreferences("autoLogin", Activity.MODE_PRIVATE);
+
+        if (sp.contains("auto")) {
+            if (sp.getBoolean("auto", false)) {
+                Intent intent = new Intent(StartActivity.this, LoginActivity.class);
+                startActivity(intent);
+            }
+        }
     }
 }

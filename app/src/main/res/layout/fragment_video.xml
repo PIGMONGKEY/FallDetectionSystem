@@ -15,18 +15,10 @@
         android:orientation="vertical"
         tools:context=".VideoActivity">
 
-        <ImageButton
-            android:id="@+id/backButton_video"
-            android:layout_width="63dp"
-            android:layout_height="63dp"
-            android:layout_gravity="top|left"
-            app:srcCompat="?attr/actionModeCloseDrawable" />
-
-        <ImageView
+        <VideoView
             android:id="@+id/videoImageView"
             android:layout_width="411dp"
-            android:layout_height="525dp"
-            tools:srcCompat="@tools:sample/avatars" />
+            android:layout_height="525dp" />
 
     </LinearLayout>
 
