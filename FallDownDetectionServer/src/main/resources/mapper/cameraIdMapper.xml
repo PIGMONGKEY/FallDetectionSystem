@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0/EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.example.falldowndetectionserver.mapper.CameraIdMapper">
+    <select id="select" resultType="int">
+        SELECT COUNT(CAMERA_ID) FROM TBL_CAMERA_ID WHERE CAMERA_ID = #{cameraId};
+    </select>
+</mapper>

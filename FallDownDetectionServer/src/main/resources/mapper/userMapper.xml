@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0/EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.example.falldowndetectionserver.mapper.UserMapper">
+    <insert id="insert">
+        INSERT INTO TBL_USER
+        (CAMERA_ID, USER_PASSWORD, USER_NAME, USER_AGE, USER_GENDER, USER_BLOOD_TYPE, USER_PHONE, USER_ADDRESS, USER_ROLE)
+        VALUES(#{cameraId}, #{userPassword}, #{userName}, #{userAge}, #{userGender}, #{userBloodType}, #{userPhone}, #{userAddress}, "USER");
+    </insert>
+
+    <select id="select" resultType="userVO">
+        SELECT CAMERA_ID, USER_PASSWORD, USER_NAME, USER_AGE, USER_GENDER, USER_BLOOD_TYPE, USER_PHONE, USER_ADDRESS, USER_ROLE, REGDATE, UPDATEDATE
+        FROM TBL_USER
+        WHERE CAMERA_ID = #{cameraId};
+    </select>
+
+    <delete id="delete">
+        DELETE FROM TBL_USER
+        WHERE CAMERA_ID = #{cameraId};
+    </delete>
+
+    <update id="update">
+        UPDATE TBL_USER
+        SET USER_PASSWORD=#{userPassword}, USER_NAME=#{userName}, USER_AGE=#{userAge}, USER_GENDER=#{userGender}, USER_BLOOD_TYPE=#{userBloodType}, USER_PHONE=#{userPhone}, USER_ADDRESS=#{userAddress}, UPDATEDATE=NOW()
+        WHERE CAMERA_ID=#{cameraId};
+    </update>
+</mapper>
