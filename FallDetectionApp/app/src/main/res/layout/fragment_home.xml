@@ -1,0 +1,245 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:padding="25dp"
+    android:background="@drawable/background"
+    android:keepScreenOn="true"
+    tools:context=".fragments.HomeFragment">
+    
+    <ImageView
+        android:id="@+id/logo_home"
+        android:layout_width="match_parent"
+        android:layout_height="134dp"
+        app:layout_constraintTop_toTopOf="parent"
+        android:src="@drawable/logo" />
+
+<!--    <LinearLayout-->
+<!--        android:id="@+id/info_linear_home"-->
+<!--        android:layout_width="match_parent"-->
+<!--        android:layout_height="wrap_content"-->
+<!--        app:layout_constraintTop_toBottomOf="@id/logo_home"-->
+<!--        android:padding="30dp"-->
+<!--        android:orientation="vertical">-->
+
+<!--        <LinearLayout-->
+<!--            android:layout_width="match_parent"-->
+<!--            android:layout_height="wrap_content"-->
+<!--            android:orientation="horizontal">-->
+
+<!--            <ImageView-->
+<!--                android:layout_width="wrap_content"-->
+<!--                android:layout_height="wrap_content"-->
+<!--                android:layout_gravity="center"-->
+<!--                tools:src="@tools:sample/avatars" />-->
+
+<!--            <LinearLayout-->
+<!--                android:layout_width="match_parent"-->
+<!--                android:layout_height="wrap_content"-->
+<!--                android:paddingLeft="30dp"-->
+<!--                android:orientation="vertical">-->
+
+<!--                <LinearLayout-->
+<!--                    android:layout_width="match_parent"-->
+<!--                    android:layout_height="wrap_content"-->
+<!--                    android:orientation="horizontal">-->
+
+<!--                    <TextView-->
+<!--                        android:layout_width="wrap_content"-->
+<!--                        android:layout_height="wrap_content"-->
+<!--                        android:layout_gravity="right"-->
+<!--                        android:text="이름"-->
+<!--                        android:textColor="#F14559"-->
+<!--                        android:textSize="25sp"-->
+<!--                        android:textStyle="bold"/>-->
+
+<!--                    <TextView-->
+<!--                        android:id="@+id/userName_home"-->
+<!--                        android:layout_width="match_parent"-->
+<!--                        android:layout_height="wrap_content"-->
+<!--                        android:textColor="#000000"-->
+<!--                        android:textSize="25sp"-->
+<!--                        android:textStyle="bold"-->
+<!--                        android:textAlignment="center" />-->
+<!--                </LinearLayout>-->
+
+<!--                <LinearLayout-->
+<!--                    android:layout_width="match_parent"-->
+<!--                    android:layout_height="wrap_content"-->
+<!--                    android:orientation="horizontal">-->
+
+<!--                    <TextView-->
+<!--                        android:layout_width="wrap_content"-->
+<!--                        android:layout_height="wrap_content"-->
+<!--                        android:layout_gravity="right"-->
+<!--                        android:text="성별"-->
+<!--                        android:textColor="#F14559"-->
+<!--                        android:textSize="25sp"-->
+<!--                        android:textStyle="bold"/>-->
+
+<!--                    <TextView-->
+<!--                        android:id="@+id/userGender_home"-->
+<!--                        android:layout_width="match_parent"-->
+<!--                        android:layout_height="wrap_content"-->
+<!--                        android:textColor="#000000"-->
+<!--                        android:textSize="25sp"-->
+<!--                        android:textStyle="bold"-->
+<!--                        android:textAlignment="center" />-->
+<!--                </LinearLayout>-->
+
+<!--                <LinearLayout-->
+<!--                    android:layout_width="match_parent"-->
+<!--                    android:layout_height="wrap_content"-->
+<!--                    android:orientation="horizontal">-->
+
+<!--                    <TextView-->
+<!--                        android:layout_width="wrap_content"-->
+<!--                        android:layout_height="wrap_content"-->
+<!--                        android:layout_gravity="right"-->
+<!--                        android:text="나이"-->
+<!--                        android:textColor="#F14559"-->
+<!--                        android:textSize="25sp"-->
+<!--                        android:textStyle="bold"/>-->
+
+<!--                    <TextView-->
+<!--                        android:id="@+id/userAge_home"-->
+<!--                        android:layout_width="match_parent"-->
+<!--                        android:layout_height="wrap_content"-->
+<!--                        android:textColor="#000000"-->
+<!--                        android:textSize="25sp"-->
+<!--                        android:textStyle="bold"-->
+<!--                        android:textAlignment="center" />-->
+<!--                </LinearLayout>-->
+
+<!--                <LinearLayout-->
+<!--                    android:layout_width="match_parent"-->
+<!--                    android:layout_height="wrap_content"-->
+<!--                    android:orientation="horizontal">-->
+
+<!--                    <TextView-->
+<!--                        android:layout_width="wrap_content"-->
+<!--                        android:layout_height="wrap_content"-->
+<!--                        android:layout_gravity="right"-->
+<!--                        android:text="혈액형"-->
+<!--                        android:textColor="#F14559"-->
+<!--                        android:textSize="25sp"-->
+<!--                        android:textStyle="bold"/>-->
+
+<!--                    <TextView-->
+<!--                        android:id="@+id/userBloodType_home"-->
+<!--                        android:layout_width="match_parent"-->
+<!--                        android:layout_height="wrap_content"-->
+<!--                        android:textColor="#000000"-->
+<!--                        android:textSize="25sp"-->
+<!--                        android:textStyle="bold"-->
+<!--                        android:textAlignment="center" />-->
+<!--                </LinearLayout>-->
+<!--            </LinearLayout>-->
+<!--        </LinearLayout>-->
+<!--    </LinearLayout>-->
+
+    <TextView
+        android:id="@+id/app_name_home"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:layout_constraintTop_toBottomOf="@id/logo_home"
+        android:layout_marginTop="25dp"
+        android:fontFamily="sans-serif-condensed-medium"
+        android:text="긴급 상황 신고 서비스"
+        android:textAlignment="center"
+        android:textColor="#F14559"
+        android:textSize="35sp"
+        android:textStyle="bold" />
+
+    <GridLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="40dp"
+        android:columnCount="2"
+        android:orientation="vertical"
+        android:rowCount="2"
+        app:layout_constraintTop_toBottomOf="@id/app_name_home"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent">
+
+        <androidx.appcompat.widget.AppCompatButton
+            android:id="@+id/toVideoButton"
+            android:layout_row="0"
+            android:layout_rowWeight="1"
+            android:layout_column="0"
+            android:layout_columnWeight="1"
+            android:layout_marginLeft="5dp"
+            android:layout_marginTop="5dp"
+            android:layout_marginRight="5dp"
+            android:layout_marginBottom="5dp"
+            android:background="@drawable/button_shape_round"
+            android:drawableTop="@drawable/ic_video_big"
+            android:paddingTop="20dp"
+            android:paddingBottom="20dp"
+            android:text="영상재생"
+            android:textColor="#F14559"
+            android:textSize="20sp"
+            android:textStyle="bold" />
+
+        <androidx.appcompat.widget.AppCompatButton
+            android:id="@+id/toGuideButton"
+            android:layout_row="0"
+            android:layout_rowWeight="1"
+            android:layout_column="1"
+            android:layout_columnWeight="1"
+            android:layout_marginLeft="5dp"
+            android:layout_marginTop="5dp"
+            android:layout_marginRight="5dp"
+            android:layout_marginBottom="5dp"
+            android:background="@drawable/button_shape_round"
+            android:backgroundTint="#ffffff"
+            android:drawableTop="@drawable/ic_book_big"
+            android:paddingTop="20dp"
+            android:paddingBottom="20dp"
+            android:text="가이드보기"
+            android:textColor="#F14559"
+            android:textSize="20sp"
+            android:textStyle="bold" />
+
+        <androidx.appcompat.widget.AppCompatButton
+            android:id="@+id/toMyPageButton"
+            android:layout_row="1"
+            android:layout_rowWeight="1"
+            android:layout_column="0"
+            android:layout_columnWeight="1"
+            android:layout_marginLeft="5dp"
+            android:layout_marginTop="5dp"
+            android:layout_marginRight="5dp"
+            android:layout_marginBottom="5dp"
+            android:background="@drawable/button_shape_round"
+            android:drawableTop="@drawable/ic_person_big"
+            android:paddingTop="20dp"
+            android:paddingBottom="20dp"
+            android:text="마이페이지"
+            android:textColor="#F14559"
+            android:textSize="20sp"
+            android:textStyle="bold" />
+
+        <androidx.appcompat.widget.AppCompatButton
+            android:id="@+id/toNotificationBoardButton"
+            android:layout_row="1"
+            android:layout_rowWeight="1"
+            android:layout_column="1"
+            android:layout_columnWeight="1"
+            android:layout_marginLeft="5dp"
+            android:layout_marginTop="5dp"
+            android:layout_marginRight="5dp"
+            android:layout_marginBottom="5dp"
+            android:background="@drawable/button_shape_round"
+            android:drawableTop="@drawable/ic_notice_big"
+            android:paddingTop="20dp"
+            android:paddingBottom="20dp"
+            android:text="공지사항"
+            android:textColor="#F14559"
+            android:textSize="20sp"
+            android:textStyle="bold" />
+    </GridLayout>
+
+</androidx.constraintlayout.widget.ConstraintLayout>

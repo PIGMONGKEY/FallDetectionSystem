@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:padding="10dp"
+    android:orientation="vertical"
+    android:keepScreenOn="true"
+    tools:context=".GuideActivity">
+
+    <com.denzcoskun.imageslider.ImageSlider
+        android:id="@+id/slider_activity"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        app:iss_auto_cycle="false"
+        app:iss_delay="0"
+        app:iss_corner_radius="20"
+        app:iss_error_image="@color/white"
+        app:iss_placeholder="@color/black"
+        app:iss_no_dots="true" />
+
+</RelativeLayout>

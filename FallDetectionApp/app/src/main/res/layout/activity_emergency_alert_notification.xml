@@ -1,0 +1,82 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="#D6B8BB"
+    android:padding="30dp"
+    android:keepScreenOn="true"
+    tools:context=".notification.EmergencyAlertNotificationActivity">
+
+    <TextView
+        android:id="@+id/alertMessageTextView"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="16dp"
+        android:gravity="center"
+        android:text="위급상황이 감지되었습니다\n\n위급상황이 아니라면\n1분 30초 이내에 위급상황 해제 버튼을 눌러주세요 "
+        android:textColor="#000000"
+        android:textSize="30sp"
+        android:textStyle="bold"
+        app:layout_constraintTop_toTopOf="parent"
+        tools:layout_editor_absoluteX="30dp" />
+
+    <TextView
+        android:id="@+id/alertTimerTextView"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="76dp"
+        android:textAlignment="center"
+        android:textSize="70sp"
+        android:textStyle="bold"
+        app:layout_constraintTop_toBottomOf="@id/alertMessageTextView"
+        tools:layout_editor_absoluteX="30dp"
+        tools:text="1:30" />
+
+    <GridLayout
+        android:layout_width="378dp"
+        android:layout_height="159dp"
+        android:layout_gravity="center"
+        android:layout_marginBottom="4dp"
+        android:columnCount="2"
+        android:orientation="horizontal"
+        android:rowCount="1"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintHorizontal_bias="0.515"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent">
+
+        <Button
+            android:id="@+id/release_button"
+            android:layout_width="wrap_content"
+            android:layout_height="150dp"
+            android:layout_row="0"
+            android:layout_column="0"
+            android:layout_columnWeight="1"
+            android:layout_gravity="center"
+            android:layout_marginBottom="30dp"
+            android:backgroundTint="#FF12877A"
+            android:text="위급상황\n해제"
+            android:textSize="30sp"
+            android:textStyle="bold"
+            app:cornerRadius="20dp" />
+
+        <Button
+            android:id="@+id/SOS_button"
+            android:layout_width="wrap_content"
+            android:layout_height="150dp"
+            android:layout_row="0"
+            android:layout_column="1"
+            android:layout_columnWeight="1"
+            android:layout_gravity="center"
+            android:layout_marginBottom="30dp"
+            android:backgroundTint="#F14559"
+            android:text="긴급구조\n요청"
+            android:textSize="30sp"
+            android:textStyle="bold"
+            app:cornerRadius="20dp" />
+
+    </GridLayout>
+
+</androidx.constraintlayout.widget.ConstraintLayout>

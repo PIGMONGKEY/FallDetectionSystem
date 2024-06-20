@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Show Video</title>
+</head>
+<body>
+    <h1>SHOW VIDEO</h1>
+    <button type="button" name="connect">connect</button>
+    <button type="button" name="disconnect">disconnect</button>
+    <img id="video" />
+</body>
+<script src="http://code.jquery.com/jquery-3.6.4.min.js"></script>
+<script>
+    let socket;
+    const $connect = $("button[name='connect']");
+    const $disconnect = $("button[name='disconnect']");
+    const $video = document.getElementById("video");
+    let blob;
+    let blobCheck = 1;
+    let blobURL_1;
+    let blobURL_2;
+    const CONNECT_INFO = JSON.stringify({
+        "camera_id": "cam01",
+        "identifier": "receiver"
+    });
+
+    $connect.on("click", function (arrayLike) {
+        socket = new WebSocket("ws://localhost:10000/video");
+
+        socket.addEventListener("open", () => {
+            console.log("connected");
+            socket.send(CONNECT_INFO);
+        });
+
+        socket.addEventListener("message", (event) => {
+            blob = new Blob([event.data], {type: "image/jpeg"});
+            if (blobCheck == 1) {
+                blobURL_1 = URL.createObjectURL(blob);
+                $video.src = blobURL_1;
+                blobCheck = -1;
+                URL.revokeObjectURL(blobURL_2);
+            } else {
+                blobURL_2 = URL.createObjectURL(blob);
+                $video.src = blobURL_2;
+                blobCheck = 1;
+                URL.revokeObjectURL(blobURL_1);
+            }
+        });
+    });
+
+    $disconnect.on("click", function() {
+        socket.close();
+    });
+
+
+</script>
+</html>
