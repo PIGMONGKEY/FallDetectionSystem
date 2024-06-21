@@ -1,5 +1,9 @@
 # FallDetectionSystem
 
+### [개발 보고서](https://drive.google.com/file/d/1J0N4tWgM3rrh6MndQsfRDTTGw-xNEgjW/view?usp=sharing)
+
+### [ICTAES 제출 논문](https://drive.google.com/file/d/13QC6ZKJvAbbr3zint8Oid9gCTuIBX9a7/view?usp=sharing)
+
 ## 개요
 대한민국의 1인가구 수는 매년 늘어나고 있으며, 그에 따라 고독사의 수 또한 꾸준히 늘어나고 있습니다.
 독거인에게 발생하는 실신 등의 위급상황에 빠르게 대처하기 위하여 시스템을 개발했습니다.
@@ -46,7 +50,3 @@
 
 ### 위급상황 판단 로직 Sequence Diagram
 ![실신감지Sequence](https://github.com/PIGMONGKEY/ChurchProject/assets/113700356/ead5bdc6-45bd-40ee-bc15-47b2c1bf857f)
-
-### [개발 보고서](https://drive.google.com/file/d/1J0N4tWgM3rrh6MndQsfRDTTGw-xNEgjW/view?usp=sharing)
-
-### [ICTAES 제출 논문](https://drive.google.com/file/d/13QC6ZKJvAbbr3zint8Oid9gCTuIBX9a7/view?usp=sharing)
