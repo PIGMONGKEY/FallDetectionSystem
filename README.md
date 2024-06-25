@@ -1,6 +1,6 @@
 # FallDetectionSystem
 
-### [개발 보고서](https://drive.google.com/file/d/1J0N4tWgM3rrh6MndQsfRDTTGw-xNEgjW/view?usp=sharing)
+### [개발 보고서 전문](https://drive.google.com/file/d/1J0N4tWgM3rrh6MndQsfRDTTGw-xNEgjW/view?usp=sharing)
 
 ### [ICTAES 제출 논문](https://drive.google.com/file/d/13QC6ZKJvAbbr3zint8Oid9gCTuIBX9a7/view?usp=sharing)
 
